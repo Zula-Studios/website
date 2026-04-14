@@ -1,0 +1,192 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Shopify Migration',
+  description: 'Migration zu Shopify von WooCommerce, Magento, OXID & Co. Datensicher, SEO-neutral, minimale Downtime.',
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  serviceType: 'E-Commerce Migration',
+  areaServed: { '@type': 'Country', name: 'Germany' },
+};
+
+const migrationSystems = [
+  'WooCommerce', 'Magento 1 & 2', 'OXID eSales', 'Shopware', 'PrestaShop', 'Wix / Jimdo',
+];
+
+const steps = [
+  { n: '01', title: 'Analyse & Audit', desc: 'Systemarchitektur, Datenstruktur, SEO-Situation — wir erstellen einen detaillierten Migrationsplan.' },
+  { n: '02', title: 'Shopify-Aufbau', desc: 'Parallel richten wir den neuen Shop ein: Theme, Apps, Einstellungen — alles vorbereitet.' },
+  { n: '03', title: 'Datenmigration', desc: 'Produkte, Kunden, Bestellungen, Kategorien — automatisiert und manuell geprüft.' },
+  { n: '04', title: 'SEO & Redirects', desc: 'Vollständige URL-Map, 301-Weiterleitungen, Sitemap — Ihre Rankings bleiben erhalten.' },
+  { n: '05', title: 'QA & Testing', desc: 'Checkout, Zahlungen, E-Mails, Mobile — intensives Testing vor dem Launch.' },
+  { n: '06', title: 'Go-Live & Support', desc: 'Kontrollierter Switchover, minimale Downtime. 60 Tage Post-Launch-Support inklusive.' },
+];
+
+const migratedData = [
+  'Produkte & Varianten', 'Kundendaten', 'Bestellhistorie', 'Kategorien', 'Produktbewertungen',
+  'Blogbeiträge', 'SEO-URLs & Redirects', 'Produktbilder', 'Zahlungsanbieter', 'Versandoptionen',
+  'Gutscheincodes', 'Analytics-Setup',
+];
+---
+
+<BaseLayout
+  title="Shopify Migration – Sicher & SEO-neutral zu Shopify wechseln"
+  description="Professionelle Shopify Migration von WooCommerce, Magento, OXID & Co. Datensicher, SEO-neutral, minimale Downtime. Jetzt kostenlose Analyse anfragen."
+  schema={serviceSchema}
+  darkHero={true}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Leistungen', url: '/leistungen' },
+    { name: 'Shopify Migration', url: '/leistungen/shopify-migration' },
+  ]}
+>
+
+  <!-- HERO -->
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[600px]" style="background: radial-gradient(circle at 75% 15%, rgba(6,78,59,0.2), transparent 60%);"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
+        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
+        <span class="text-[#AEAEB5]">Shopify Migration</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          Shopify Migration
+        </div>
+        <h1
+          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
+          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
+        >
+          Zu Shopify —<br/>
+          <span class="font-light italic text-white/55">ohne Datenverlust,</span><br/>
+          ohne Ranking-Verlust.
+        </h1>
+        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
+          Wir migrieren Ihren bestehenden Shop zu Shopify — vollständig, SEO-neutral und mit minimaler Unterbrechung.
+        </p>
+        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
+          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
+            Kostenlose Migrations-Analyse
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#prozess" class="btn btn-ghost py-3.5 px-7 text-[15px]">Prozess ansehen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEMS -->
+  <section class="py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container">
+      <p class="label mb-6 text-center">Wir migrieren von</p>
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        {migrationSystems.map(s => (
+          <div class="flex items-center gap-2 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-2.5 text-sm font-medium text-[#44444F]">
+            {s}
+          </div>
+        ))}
+        <div class="flex items-center gap-2 bg-accent-50 border border-accent-100 rounded-xl px-4 py-2.5 text-sm font-medium text-accent-600">
+          + weitere Systeme
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT GETS MIGRATED -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <p class="label mb-3">Vollständige Datenmigration</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Kein Datenpunkt bleibt zurück
+        </h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {migratedData.map((item, i) => (
+          <div class="flex items-center gap-3 bg-white border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 4) + 1)}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 shrink-0">
+              <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-sm font-medium text-[#44444F]">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="py-20 lg:py-24 bg-white" id="prozess">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+        <div data-reveal>
+          <p class="label mb-4">In 6 Schritten</p>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Ihr Weg zu Shopify
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed">Strukturiert, transparent und sicher — so sieht eine professionelle Migration aus.</p>
+        </div>
+        <div class="space-y-0 border-t border-[#EBEBEF]">
+          {steps.map((step, i) => (
+            <div class="flex gap-7 py-6 border-b border-[#EBEBEF]" data-reveal data-delay={String((i % 3) + 1)}>
+              <span class="text-xs font-bold text-[#D4D4D9] tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
+              <div>
+                <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
+                <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-[#FAFAF8]">
+    <div class="container max-w-2xl">
+      <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
+      <div class="space-y-2">
+        {[
+          { q: 'Verliere ich meine SEO-Rankings?', a: 'Nein — wir erstellen eine vollständige URL-Map und richten alle 301-Weiterleitungen korrekt ein. Ihre Google-Rankings bleiben erhalten.' },
+          { q: 'Wie lange dauert eine Shopify Migration?', a: 'Typischerweise 2–8 Wochen, abhängig von Datenmenge und Komplexität. Nach dem kostenlosen Analyse-Gespräch erhalten Sie einen konkreten Zeitplan.' },
+          { q: 'Gibt es Downtime während der Migration?', a: 'Wir arbeiten mit Staged Migration: Der neue Shop wird parallel aufgebaut. Die Downtime beim finalen Switchover beträgt meist unter 30 Minuten.' },
+          { q: 'Was kostet eine Shopify Migration?', a: 'Abhängig von Shopgröße und Komplexität. Kleine Shops: 1.500–3.000 €. Mittlere Shops: 3.000–8.000 €. Große Shops auf Anfrage.' },
+        ].map(item => (
+          <details class="group bg-white rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
+              {item.q}
+              <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform">
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+            </summary>
+            <div class="px-5 pb-4 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-3.5">{item.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 120%, rgba(6,78,59,0.2), transparent 60%);"></div>
+    <div class="container relative z-10 text-center max-w-xl mx-auto">
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Bereit für den Wechsel zu Shopify?</h2>
+      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Lassen Sie uns Ihren Shop analysieren — kostenlos, unverbindlich, innerhalb von 48 Stunden.</p>
+      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+        Kostenlose Migrations-Analyse
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  </style>
+</BaseLayout>

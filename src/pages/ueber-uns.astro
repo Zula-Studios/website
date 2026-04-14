@@ -1,0 +1,128 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
+
+const team = [
+  { name: 'Serdar Sahbazoglu', role: 'Gründer & Lead Developer', bio: 'Shopify-Experte seit 2018. Spezialisiert auf Custom Apps und komplexe Migrationen.', initials: 'SS' },
+  { name: 'Anna Müller', role: 'UX/UI Designerin', bio: 'Conversion-fokussiertes Design. Über 80 Shop-Projekte mit messbaren Ergebnissen.', initials: 'AM' },
+  { name: 'Jonas Weber', role: 'Full-Stack Developer', bio: 'Headless Commerce & API-Integrationen. Zertifizierter Shopify Developer.', initials: 'JW' },
+];
+
+const values = [
+  { iconName: 'target', title: 'Ergebnisorientiert', desc: 'Jede Entscheidung zielt auf messbare Conversion.' },
+  { iconName: 'eye', title: 'Transparent', desc: 'Keine versteckten Kosten. Klare Kommunikation.' },
+  { iconName: 'layers', title: 'Technisch tief', desc: 'Shopify bis in die Tiefe — APIs, Liquid, Apps.' },
+  { iconName: 'users', title: 'Partnerschaftlich', desc: 'Wir denken mit und empfehlen ehrlich.' },
+];
+---
+
+<BaseLayout
+  title="Über uns – Shopify-Experten aus Hamburg"
+  description="Das Team hinter Zula Studios — Shopify-Experten mit über 5 Jahren Erfahrung und 100+ erfolgreich abgeschlossenen E-Commerce-Projekten."
+  darkHero={true}
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Über uns', url: '/ueber-uns' }]}
+>
+  <!-- Hero -->
+  <section class="bg-[#0C0C0F] py-20 lg:py-28 relative overflow-hidden">
+    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 right-0 w-[500px] h-[500px]" style="background: radial-gradient(circle at 75% 20%, rgba(56,189,248,0.15), transparent 60%);"></div>
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
+        <span class="text-white">Über uns</span>
+      </nav>
+      <p class="label text-[#9898A0] mb-4">Über Zula Studios</p>
+      <h1 class="font-bold text-white tracking-[-0.04em] max-w-2xl" style="font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 0.93;">
+        Shopify-Experten<br/>
+        <span class="font-light italic text-white/50">aus Hamburg.</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-28 items-start">
+        <div data-reveal>
+          <p class="label mb-4">Unsere Geschichte</p>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-6" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+            Warum wir {SITE.name} gegründet haben
+          </h2>
+          <div class="space-y-4 text-[#62626E] leading-relaxed text-sm lg:text-[15px]">
+            <p>Zu viele gute Produkte scheitern an schlechten Online-Shops. Händler kämpften mit langsamen WooCommerce-Installationen, unintuitivem Design und Dienstleistern, die mehr versprachen als sie lieferten.</p>
+            <p>Wir gründeten Zula Studios mit einem klaren Versprechen: Transparente Entwicklung, messbare Ergebnisse und ein Partner, der unternehmerisch mitdenkt.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3" data-reveal data-delay="2">
+          {[
+            { value: '100+', label: 'Abgeschlossene Projekte' },
+            { value: '5+', label: 'Jahre Erfahrung' },
+            { value: '40+', label: 'Zufriedene Kunden' },
+            { value: '98%', label: 'Kundenzufriedenheit' },
+          ].map(stat => (
+            <div class="p-6 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF]">
+              <div class="font-bold text-[#0C0C0F] text-3xl tracking-[-0.04em] mb-1">{stat.value}</div>
+              <div class="text-[#88888F] text-xs">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="py-20 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <p class="label mb-3">Team</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Menschen hinter dem Code</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {team.map((m, i) => (
+          <div class="bg-white rounded-2xl p-7 border border-[#EBEBEF]" data-reveal data-delay={String(i + 1)}>
+            <div class="w-12 h-12 rounded-xl bg-[#0C0C0F] text-white font-bold text-sm flex items-center justify-center mb-5 tracking-wide">
+              {m.initials}
+            </div>
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-0.5">{m.name}</h3>
+            <p class="text-accent-600 text-xs font-medium mb-3">{m.role}</p>
+            <p class="text-[#88888F] text-sm leading-relaxed">{m.bio}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="py-20 bg-white">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <p class="label mb-3">Unsere Werte</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Wofür wir stehen</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {values.map((v, i) => (
+          <div class="p-6 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF] hover:bg-white hover:border-[#D4D4D9] transition-all" data-reveal data-delay={String(i + 1)}>
+            <Icon name={v.iconName} size={20} class="text-[#AEAEB5] mb-4" strokeWidth={1.5} />
+            <h3 class="font-semibold text-[#0C0C0F] text-[14.5px] mb-2">{v.title}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.18), transparent 55%);"></div>
+    <div class="container relative z-10 text-center max-w-lg mx-auto" data-reveal>
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl mb-4">Lassen Sie uns zusammenarbeiten.</h2>
+      <p class="text-[#9898A0] mb-8">Wir freuen uns auf Ihr Projekt.</p>
+      <a href="/kontakt" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 rounded-xl font-semibold text-[15px]">
+        Kontakt aufnehmen
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

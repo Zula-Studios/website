@@ -1,0 +1,364 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import { projekte, serviceBadge, type ServiceType } from '@/data/projekte';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Referenzen – Zula Studios',
+  description: 'Ausgewählte Shopify-Projekte von Zula Studios: Migrationen, Custom Shops und individuelle Entwicklungen.',
+  url: `${SITE.url}/referenzen`,
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+};
+
+const featured = projekte.filter(p => p.featured);
+const rest = projekte.filter(p => !p.featured);
+
+const stats = [
+  { value: '100+', label: 'Abgeschlossene Projekte' },
+  { value: '40+', label: 'Zufriedene Kunden' },
+  { value: '5', label: 'Jahre Erfahrung' },
+  { value: '98%', label: 'Weiterbeschäftigungsquote' },
+];
+
+const allServices: { key: ServiceType | 'all'; label: string }[] = [
+  { key: 'all', label: 'Alle' },
+  { key: 'shop', label: 'Shop erstellt' },
+  { key: 'migration', label: 'Migration' },
+  { key: 'entwicklung', label: 'Individuelle Entwicklung' },
+];
+---
+
+<BaseLayout
+  title="Referenzen – Ausgewählte Shopify-Projekte"
+  description="Echte Ergebnisse aus über 100 Shopify-Projekten: Migrationen, Custom Shops, individuelle Apps. Entdecken Sie unsere Referenzen."
+  schema={schema}
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Referenzen', url: '/referenzen' }]}
+  darkHero={true}
+>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] pt-20 pb-0 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[600px]" style="background: radial-gradient(circle at 75% 15%, rgba(56,189,248,0.16), transparent 60%);"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a>
+        <span>/</span>
+        <span class="text-white font-medium">Referenzen</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-end pb-16 lg:pb-20 border-b border-[#1C1C25]">
+        <div>
+          <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-6 flex items-center gap-3">
+            <span class="w-5 h-px bg-[#3E3E4A]"></span>
+            Ausgewählte Projekte
+          </p>
+          <h1
+            class="font-bold text-white leading-[0.93] tracking-[-0.04em] mb-6"
+            style="font-size: clamp(3rem, 8vw, 6.5rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
+          >
+            Echte Shops.<br/>
+            <span class="font-light italic text-white/45">Echte</span>
+            <span> Ergebnisse.</span>
+          </h1>
+          <p
+            class="text-[#9898A0] text-base lg:text-lg max-w-xl leading-relaxed"
+            style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both"
+          >
+            Ausgewählte Projekte aus über 100 erfolgreichen E-Commerce-Umsetzungen — Migrationen, Custom Shops und individuelle Entwicklungen.
+          </p>
+        </div>
+
+        <!-- Stats -->
+        <div
+          class="hidden lg:grid grid-cols-2 gap-px bg-[#1C1C25] rounded-2xl overflow-hidden border border-[#1C1C25]"
+          style="animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.25s both"
+        >
+          {stats.map((s, i) => (
+            <div class="bg-[#0C0C0F] px-6 py-5">
+              <div class="font-bold text-white text-xl tracking-[-0.03em] leading-none mb-1">{s.value}</div>
+              <div class="text-[#9898A0] text-[11px] font-medium">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Filter tabs -->
+      <div class="flex flex-wrap gap-2 py-5" id="filter-tabs">
+        {allServices.map(s => (
+          <button
+            class="filter-btn px-4 py-2 rounded-lg text-[12.5px] font-semibold transition-all"
+            data-filter={s.key}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FEATURED PROJECTS
+  ═══════════════════════════════════════ -->
+  <section class="bg-white py-6 lg:py-8" id="projekte">
+    <div class="container space-y-5">
+      {featured.map((p, i) => (
+        <a
+          href={`/referenzen/${p.slug}`}
+          class="project-card group grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-0 rounded-2xl overflow-hidden border border-[#EBEBEF] hover:border-[#D4D4D9] hover:shadow-md transition-all"
+          data-service={p.serviceType}
+          data-reveal
+          data-delay={String(i + 1)}
+        >
+          <!-- Visual -->
+          <div
+            class="relative flex flex-col justify-between p-8 lg:p-12 min-h-[280px] lg:min-h-[360px]"
+            style={`background: ${p.cardBg};`}
+          >
+            <!-- Large monogram bg -->
+            <div
+              class="absolute bottom-0 right-0 font-bold leading-none select-none pointer-events-none"
+              style={`font-size: clamp(8rem, 18vw, 14rem); letter-spacing: -0.05em; color: ${p.cardAccent}; opacity: 0.12; line-height: 0.85; transform: translate(8%, 8%);`}
+              aria-hidden="true"
+            >
+              {p.clientKurz}
+            </div>
+
+            <div class="relative z-10">
+              <span
+                class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md mb-4"
+                style={`background: rgba(255,255,255,0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.18);`}
+              >
+                {p.service}
+              </span>
+              <div class="font-semibold text-white/70 text-sm">{p.industry}</div>
+            </div>
+
+            <div class="relative z-10">
+              <div class="font-bold text-white text-2xl lg:text-3xl tracking-[-0.02em] mb-1">{p.client}</div>
+              <div class="text-white/55 text-xs">{p.jahr}</div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-8 lg:p-12 bg-white flex flex-col justify-between">
+            <div>
+              <p class="text-[#0C0C0F] text-lg lg:text-xl font-semibold tracking-[-0.01em] leading-snug mb-4 group-hover:text-accent-600 transition-colors">
+                {p.tagline}
+              </p>
+              <p class="text-[#88888F] text-sm leading-relaxed mb-8">{p.description}</p>
+
+              <!-- Metrics grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+                {p.metrics.map(m => (
+                  <div class="bg-[#FAFAF8] rounded-xl p-4 border border-[#EBEBEF]">
+                    <div class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.03em] leading-none mb-1">{m.value}</div>
+                    <div class="text-[#AEAEB5] text-[11px] leading-tight">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-1.5">
+                {p.tags.map(t => (
+                  <span class="text-[10.5px] font-medium text-[#62626E] bg-[#F5F5F8] px-2.5 py-1 rounded-md">{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-8 pt-6 border-t border-[#EBEBEF]">
+              <span class="text-sm font-semibold text-[#0C0C0F] group-hover:text-accent-600 transition-colors flex items-center gap-2">
+                Case Study lesen
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-1 transition-transform">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="text-[11px] text-[#AEAEB5]">{p.jahr}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       REGULAR PROJECT GRID
+  ═══════════════════════════════════════ -->
+  <section class="bg-white pb-16">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {rest.map((p, i) => (
+          <a
+            href={`/referenzen/${p.slug}`}
+            class="project-card group rounded-2xl border border-[#EBEBEF] overflow-hidden hover:border-[#D4D4D9] hover:shadow-md transition-all flex flex-col"
+            data-service={p.serviceType}
+            data-reveal
+            data-delay={String((i % 3) + 1)}
+          >
+            <!-- Visual -->
+            <div
+              class="relative h-44 p-6 flex flex-col justify-between overflow-hidden"
+              style={`background: ${p.cardBg};`}
+            >
+              <div
+                class="absolute bottom-0 right-0 font-bold leading-none select-none pointer-events-none"
+                style={`font-size: 7rem; letter-spacing: -0.05em; color: ${p.cardAccent}; opacity: 0.14; line-height: 0.85; transform: translate(10%, 10%);`}
+                aria-hidden="true"
+              >
+                {p.clientKurz}
+              </div>
+              <div class="relative z-10">
+                <span
+                  class="inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded"
+                  style="background: rgba(255,255,255,0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.16);"
+                >
+                  {p.service}
+                </span>
+              </div>
+              <div class="relative z-10">
+                <div class="font-bold text-white text-lg tracking-[-0.01em]">{p.client}</div>
+                <div class="text-white/65 text-xs mt-0.5">{p.industry}</div>
+              </div>
+            </div>
+
+            <!-- Card body -->
+            <div class="p-6 flex flex-col flex-grow">
+              <p class="font-semibold text-[#0C0C0F] text-[15px] tracking-[-0.01em] leading-snug mb-3 group-hover:text-accent-600 transition-colors flex-grow">
+                {p.tagline}
+              </p>
+
+              <!-- 2 key metrics -->
+              <div class="grid grid-cols-2 gap-2 mb-5">
+                {p.metrics.slice(0, 2).map(m => (
+                  <div class="bg-[#FAFAF8] rounded-xl p-3.5 border border-[#EBEBEF]">
+                    <div class="font-bold text-[#0C0C0F] text-lg tracking-[-0.03em] leading-none mb-0.5">{m.value}</div>
+                    <div class="text-[#AEAEB5] text-[10px] leading-tight">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div class="flex items-center justify-between pt-4 border-t border-[#EBEBEF]">
+                <span class="text-xs font-semibold text-[#62626E] group-hover:text-accent-600 transition-colors flex items-center gap-1.5">
+                  Case Study
+                  <svg width="11" height="11" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-0.5 transition-transform">
+                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="text-[10.5px] text-[#D4D4D9]">{p.jahr}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CLIENTS BAND (text list)
+  ═══════════════════════════════════════ -->
+  <section class="py-16 lg:py-20 bg-[#FAFAF8] border-y border-[#EBEBEF]">
+    <div class="container">
+      <div class="flex flex-col lg:flex-row gap-10 lg:gap-20 items-start lg:items-center" data-reveal>
+        <div class="shrink-0">
+          <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#AEAEB5] mb-2">Kunden</p>
+          <p class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em]">40+ Unternehmen</p>
+          <p class="text-[#88888F] text-sm mt-1">vertrauen auf Zula Studios</p>
+        </div>
+        <div class="h-px lg:h-16 w-full lg:w-px bg-[#EBEBEF] shrink-0"></div>
+        <div class="flex flex-wrap gap-x-8 gap-y-4">
+          {projekte.map(p => (
+            <span class="text-sm font-semibold text-[#AEAEB5] hover:text-[#44444F] transition-colors cursor-default">{p.client}</span>
+          ))}
+          <span class="text-sm text-[#D4D4D9]">+ viele weitere</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CTA
+  ═══════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] py-24 relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.18), transparent 55%);"></div>
+    <div class="container relative z-10" data-reveal>
+      <div class="max-w-xl mx-auto text-center">
+        <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4">
+          Ihr Projekt als nächstes?
+        </h2>
+        <p class="text-[#9898A0] mb-8 leading-relaxed">
+          Lassen Sie uns in einem kostenlosen Erstgespräch herausfinden, wie wir Ihren Shop auf das nächste Level bringen.
+        </p>
+        <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold">
+          Kostenloses Erstgespräch
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Filter buttons — sit on dark hero background */
+  .filter-btn {
+    color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .filter-btn:hover {
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .filter-btn.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  /* Hide/show based on filter */
+  .project-card[data-hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  // ── Filter logic ──
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+  function setFilter(filter: string) {
+    buttons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+    cards.forEach(card => {
+      const matches = filter === 'all' || card.dataset.service === filter;
+      if (matches) {
+        card.removeAttribute('data-hidden');
+      } else {
+        card.setAttribute('data-hidden', '');
+      }
+    });
+  }
+
+  // Set initial active
+  setFilter('all');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setFilter(btn.dataset.filter ?? 'all');
+    });
+  });
+</script>

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const services = [
+  {
+    num: '01',
+    title: 'Shopify Shop erstellen',
+    desc: 'Von der Konzeption über das Custom Theme bis zum Launch. Performante Shops, die konvertieren.',
+    href: '/leistungen/shopify-shop-erstellen',
+    cta: 'Shop erstellen lassen',
+    features: ['Custom Theme Entwicklung', 'Mobile-first Design', 'SEO-Volloptimierung', 'Zahlungsanbieter-Integration', 'Performance-Optimierung'],
+  },
+  {
+    num: '02',
+    title: 'Shopify Migration',
+    desc: 'Sicher & datenverlustfrei von WooCommerce, Magento, OXID, Shopware und anderen Systemen zu Shopify.',
+    href: '/leistungen/shopify-migration',
+    cta: 'Migration starten',
+    features: ['Datenmigration (Produkte, Kunden, Bestellungen)', 'SEO URL-Redirects', 'Zero-Downtime Ansatz', 'QA & Testing', 'Post-Launch Support'],
+  },
+  {
+    num: '03',
+    title: 'Individuelle Entwicklung',
+    desc: 'Custom Apps, Liquid-Entwicklung, API-Integrationen — maßgeschneidert für Ihr Business, wenn Standard nicht ausreicht.',
+    href: '/leistungen/individuelle-entwicklung',
+    cta: 'Projekt besprechen',
+    features: ['Custom Shopify Apps', 'Liquid Template Entwicklung', 'ERP / PIM / WMS Integration', 'Headless Commerce', 'Performance-Audits'],
+  },
+];
+---
+
+<BaseLayout
+  title="Leistungen"
+  description="Shopify Shop erstellen, Migration zu Shopify und individuelle E-Commerce-Entwicklung — Zula Studios ist Ihr Experte für alle Shopify-Anforderungen."
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Leistungen', url: '/leistungen' }]}
+>
+  <!-- Header -->
+  <section class="py-20 lg:py-28 bg-[#FAFAF8] border-b border-[#EBEBEF]">
+    <div class="container">
+      <nav class="flex items-center gap-2 text-xs text-[#AEAEB5] mb-10 flex-wrap">
+        <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
+        <span class="text-[#0C0C0F] font-medium">Leistungen</span>
+      </nav>
+      <p class="label mb-4">Unsere Leistungen</p>
+      <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-5 max-w-2xl" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
+        Shopify-Expertise für ambitionierte Unternehmen
+      </h1>
+      <p class="text-[#62626E] text-lg max-w-xl leading-relaxed">
+        Über 100 Projekte. Tiefe Shopify-Expertise. Ergebnisorientiertes Arbeiten.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="py-20 lg:py-24 bg-white">
+    <div class="container space-y-0 border-t border-[#EBEBEF]">
+      {services.map((s, i) => (
+        <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-8 lg:gap-16 py-14 border-b border-[#EBEBEF] items-start group" data-reveal>
+          <span class="text-xs font-bold text-[#D4D4D9] tabular-nums pt-1">{s.num}</span>
+          <div>
+            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-3">{s.title}</h2>
+            <p class="text-[#62626E] text-base leading-relaxed mb-6 max-w-xl">{s.desc}</p>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {s.features.map(f => (
+                <li class="flex items-center gap-2.5 text-sm text-[#44444F]">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" class="text-accent-500 shrink-0">
+                    <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="lg:pt-1">
+            <a href={s.href} class="btn btn-primary whitespace-nowrap">
+              {s.cta}
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 bg-[#0C0C0F] relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.18), transparent 55%);"></div>
+    <div class="container relative z-10 text-center max-w-xl mx-auto" data-reveal>
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl mb-4">Welche Leistung passt zu Ihnen?</h2>
+      <p class="text-[#62626E] mb-8">Im kostenlosen Erstgespräch finden wir gemeinsam die optimale Lösung.</p>
+      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 rounded-xl font-semibold text-[15px]">
+        Kostenloses Beratungsgespräch
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

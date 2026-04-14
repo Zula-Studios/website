@@ -1,0 +1,681 @@
+---
+/**
+ * Meta Ads Lead-Generation Landing Page
+ * URL: /kampagne/shopify
+ * Color scheme: #0C0C0F (black) + #F5C518 (golden yellow)
+ */
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
+
+const results = [
+  { value: '+18 %',  label: 'Conversion Rate'         },
+  { value: '-71 %',  label: 'Ladezeit'                },
+  { value: '0',      label: 'Tage Downtime'           },
+  { value: '+105 %', label: 'Organischer Traffic'     },
+  { value: '98 %',   label: 'Kundenzufriedenheit'     },
+  { value: '100+',   label: 'Projekte abgeschlossen'  },
+];
+
+const painPoints = [
+  { pain: 'Ihr WooCommerce-Shop ist langsam und verliert täglich Kunden',   fix: 'Shopify lädt in unter 2 Sekunden – auch mit tausenden Produkten.' },
+  { pain: 'Technische Probleme fressen Ihre Zeit statt Ihres Umsatzes',     fix: 'Shopify übernimmt Hosting, Sicherheit und Updates automatisch.' },
+  { pain: 'Ihr Shop sieht generisch aus und spiegelt Ihre Marke nicht wider', fix: 'Custom Themes, die zu 100 % Ihre Identität widerspiegeln.' },
+  { pain: 'Integrationen und Plugins funktionieren nicht zuverlässig',      fix: 'Native Shopify Apps + eigene Custom-Entwicklung für jeden Bedarf.' },
+];
+
+const steps = [
+  { n: '01', title: 'Kostenloses Erstgespräch',  desc: 'In 30 Minuten analysieren wir Ihre Situation und zeigen Ihnen konkrete Möglichkeiten.' },
+  { n: '02', title: 'Maßgeschneidertes Konzept', desc: 'Sie erhalten ein individuelles Konzept mit klarem Zeitplan und transparenter Preisübersicht.' },
+  { n: '03', title: 'Entwicklung & Launch',       desc: 'Wir entwickeln agil, mit wöchentlichen Updates – und begleiten Sie über den Launch hinaus.' },
+];
+
+const testimonials = [
+  {
+    quote: 'Zula Studios hat unseren WooCommerce-Shop in Rekordzeit zu Shopify Plus migriert – ohne einen einzigen Tag Downtime. Die Conversion Rate hat sich in Wochen spürbar verbessert.',
+    name: 'Markus Weber',
+    role: 'CEO, TechFashion GmbH',
+    initials: 'MW',
+    result: '+18 % Conversion',
+  },
+  {
+    quote: 'Der neue Shop übertrifft alle Erwartungen. Die Conversion Rate hat sich in den ersten drei Monaten verdoppelt und unsere Kunden lieben das Design.',
+    name: 'Sandra Koch',
+    role: 'Gründerin, Naturkosmetik Berlin',
+    initials: 'SK',
+    result: '+105 % Traffic',
+  },
+  {
+    quote: 'Die Custom-App hat unsere Fulfillment-Prozesse revolutioniert. Transparente Kommunikation, sauberer Code, top Ergebnis.',
+    name: 'Thomas Bauer',
+    role: 'E-Commerce Manager, SportWorld AG',
+    initials: 'TB',
+    result: '-94 % Bestellfehler',
+  },
+];
+
+const faqs = [
+  { q: 'Was kostet ein Shopify-Projekt?',
+    a: 'Je nach Umfang beginnen Shopify-Shops bei 2.500 €, Migrationen ab 3.500 € und Custom-Entwicklungen ab 5.000 €. Im kostenlosen Erstgespräch erhalten Sie eine transparente Kalkulation.' },
+  { q: 'Verliere ich meine SEO-Rankings bei einer Migration?',
+    a: 'Nein – wenn die Migration professionell durchgeführt wird. Wir setzen vollständige 301-Redirects, erhalten alle Metadaten und validieren die Ergebnisse in der Google Search Console.' },
+  { q: 'Wie lange dauert die Entwicklung?',
+    a: 'Einfache Shops: 3–6 Wochen. Migrationen: 2–8 Wochen je nach Datenmenge. Custom-Projekte nach Briefing. Alle Zeitpläne werden vertraglich festgelegt.' },
+  { q: 'Bekomme ich Support nach dem Launch?',
+    a: 'Ja. Jedes Projekt beinhaltet 60 Tage kostenlosen Post-Launch-Support. Danach bieten wir flexible Retainer-Pakete an.' },
+  { q: 'Arbeitet ihr auch mit bestehenden Shopify-Shops?',
+    a: 'Absolut. Ob Redesign, App-Entwicklung, Performance-Audit oder Conversion-Optimierung – wir übernehmen Shopify-Projekte jeder Größe.' },
+];
+---
+
+<LandingLayout
+  title="Shopify Studio Hamburg – Shops, Migration & Custom-Entwicklung"
+  description="Professionelle Shopify-Entwicklung in Hamburg. Laravel, Next.js & Astro. 100+ Projekte, 0 Tage Downtime. Jetzt kostenloses Erstgespräch sichern."
+  noindex={true}
+>
+
+  <!-- META PIXEL — uncomment + replace YOUR_PIXEL_ID -->
+  <!--
+  <script>!function(f,b,e,v,n,t,s){...}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','YOUR_PIXEL_ID');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
+  -->
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
+  <section class="relative bg-[#0C0C0F] overflow-hidden">
+    <!-- Dot grid -->
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 28px 28px;"></div>
+    <!-- Yellow glow -->
+    <div class="absolute -top-32 -left-32 w-[640px] h-[640px] pointer-events-none rounded-full" style="background: radial-gradient(circle, rgba(245,197,24,0.12), transparent 65%);"></div>
+
+    <div class="container relative z-10 pt-20 pb-24 lg:pt-28 lg:pb-32">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-center">
+
+        <!-- Left: Headline -->
+        <div style="animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.05s both">
+
+          <div class="inline-flex items-center gap-2.5 rounded-full border border-[#2E2E3A] bg-[#161618] px-4 py-2 mb-8">
+            <span class="w-2 h-2 rounded-full bg-[#F5C518] animate-pulse"></span>
+            <span class="text-[11px] font-semibold text-[#AEAEB5] tracking-[0.12em] uppercase">Shopify Studio Hamburg</span>
+          </div>
+
+          <h1 class="font-bold text-white leading-[0.92] tracking-[-0.04em] mb-7" style="font-size: clamp(2.75rem, 6.5vw, 5rem);">
+            Mehr Umsatz.<br/>
+            <span style="color: #F5C518;">Weniger Stress.</span><br/>
+            <span class="font-light italic text-white/40">Mit Shopify.</span>
+          </h1>
+
+          <p class="text-[#9898A0] text-base lg:text-[17px] leading-relaxed mb-9 max-w-[480px]">
+            Wir entwickeln Shopify-Shops, Custom-Themes und individuelle Web-Apps mit
+            <strong class="text-[#D4D4D9] font-semibold">Laravel, Next.js & Astro</strong> —
+            von der Migration bis zur maßgeschneiderten Lösung.
+            Über 100 erfolgreiche Projekte.
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+            {[
+              'Shopify-zertifizierte Entwickler',
+              '0 Tage Downtime — garantiert',
+              'Antwort innerhalb von 24 Stunden',
+              'Kein Verkaufsdruck, kein Risiko',
+            ].map(t => (
+              <div class="flex items-center gap-2.5 text-[13px] text-[#9898A0]">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style="background: rgba(245,197,24,0.15);">
+                  <Icon name="check" size={11} class="shrink-0" strokeWidth={2.5} style="color: #F5C518;" />
+                </div>
+                {t}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: Lead form -->
+        <div id="lead-form-top" style="animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.18s both">
+          <!-- Yellow top accent stripe -->
+          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #F5C518, #D9A912);"></div>
+          <div class="bg-white rounded-b-2xl shadow-[0_28px_80px_rgba(0,0,0,0.4)] px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9">
+
+            <div class="mb-6">
+              <h2 class="font-bold text-[#0C0C0F] text-[18px] tracking-[-0.02em] mb-1">
+                Jetzt kostenlos anfragen
+              </h2>
+              <p class="text-[#AEAEB5] text-xs">Unverbindlich · Antwort in 24 Std. · Kein Spam</p>
+            </div>
+
+            <!-- Service quick-select pills -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              {[
+                { value: 'neuer-shop',  label: 'Neuer Shop'       },
+                { value: 'migration',   label: 'Migration'        },
+                { value: 'custom-app',  label: 'Custom App'       },
+                { value: 'laravel-next',label: 'Laravel / Next.js'},
+                { value: 'sonstiges',   label: 'Sonstiges'        },
+              ].map((s, i) => (
+                <label class="quick-pill cursor-pointer">
+                  <input type="radio" name="service_quick" value={s.value} class="sr-only" checked={i === 0} />
+                  <div class="pill-label rounded-full border border-[#EBEBEF] px-3.5 py-1.5 text-[12px] font-semibold text-[#88888F] transition-all duration-150 select-none">
+                    {s.label}
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            <form name="meta-lead" method="POST" action="/danke" class="space-y-3" id="hero-form">
+              <input type="hidden" name="service" id="service-hidden" value="neuer-shop" />
+              <input type="hidden" name="source" value="meta-ads-hero" />
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="lp-field">
+                  <input type="text" name="vorname" placeholder=" " required autocomplete="given-name" class="lp-input" />
+                  <label class="lp-label">Vorname *</label>
+                </div>
+                <div class="lp-field">
+                  <input type="text" name="nachname" placeholder=" " required autocomplete="family-name" class="lp-input" />
+                  <label class="lp-label">Nachname *</label>
+                </div>
+              </div>
+
+              <div class="lp-field">
+                <input type="email" name="email" placeholder=" " required autocomplete="email" class="lp-input" />
+                <label class="lp-label">E-Mail-Adresse *</label>
+              </div>
+
+              <div class="lp-field">
+                <input type="tel" name="telefon" placeholder=" " autocomplete="tel" class="lp-input" />
+                <label class="lp-label">Telefon (für Rückruf)</label>
+              </div>
+
+              <button type="submit" class="lp-cta-btn w-full mt-1">
+                Jetzt kostenlos anfragen
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <p class="text-center text-[10.5px] text-[#D4D4D9] pt-0.5">
+                <a href="/datenschutz" class="underline underline-offset-2 hover:text-[#AEAEB5] transition-colors">Datenschutzerklärung</a> · DSGVO-konform
+              </p>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TRUST BAR
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-[#111118] border-y border-[#1C1C25]">
+    <div class="container">
+      <div class="grid grid-cols-3 lg:grid-cols-6 divide-x divide-[#1C1C25]">
+        {results.map(r => (
+          <div class="px-5 py-7 text-center">
+            <div class="font-bold text-[22px] tracking-[-0.04em] leading-none mb-1.5" style="color: #F5C518;">{r.value}</div>
+            <div class="text-[#9898A0] text-[11px] leading-tight">{r.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PAIN → SOLUTION
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-[#111118] py-20 lg:py-28 border-y border-[#1C1C25]">
+    <div class="container">
+
+      <!-- Header -->
+      <div class="max-w-2xl mx-auto text-center mb-14" data-reveal>
+        <p class="label text-[#9898A0] mb-3">Kennen Sie das?</p>
+        <h2 class="font-bold text-white tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Probleme, die Sie täglich Umsatz kosten
+        </h2>
+      </div>
+
+      <!-- Column labels (desktop) -->
+      <div class="hidden lg:grid grid-cols-[1fr_56px_1fr] max-w-4xl mx-auto mb-3 px-1">
+        <div class="flex items-center gap-2.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+          <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-[#6E3030]">Das Problem</span>
+        </div>
+        <div></div>
+        <div class="flex items-center gap-2.5">
+          <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:#F5C518;"></span>
+          <span class="text-[11px] font-bold uppercase tracking-[0.14em]" style="color:#A07B10;">Die Lösung</span>
+        </div>
+      </div>
+
+      <!-- Rows -->
+      <div class="max-w-4xl mx-auto divide-y divide-[#1C1C25]" data-reveal data-delay="1">
+        {painPoints.map((p, i) => (
+          <div class="grid grid-cols-1 lg:grid-cols-[1fr_56px_1fr] items-center gap-4 py-6">
+
+            <!-- Pain -->
+            <div class="flex items-start gap-3.5">
+              <div class="w-6 h-6 rounded-full border border-red-900/60 bg-[#1C0A0A] flex items-center justify-center shrink-0 mt-0.5">
+                <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 2l6 6M8 2L2 8" stroke="#F87171" stroke-width="1.75" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <p class="text-[#9898A0] text-[14px] leading-relaxed">{p.pain}</p>
+            </div>
+
+            <!-- Arrow connector -->
+            <div class="hidden lg:flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10h12M11 5l5 5-5 5" stroke="#3E3E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <!-- Mobile: subtle separator -->
+            <div class="lg:hidden flex items-center gap-3 pl-9.5">
+              <div class="flex-1 h-px bg-[#1C1C25]"></div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v10M2 8l5 5 5-5" stroke="#3E3E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="flex-1 h-px bg-[#1C1C25]"></div>
+            </div>
+
+            <!-- Solution -->
+            <div class="flex items-start gap-3.5">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: rgba(245,197,24,0.12); border: 1px solid rgba(245,197,24,0.25);">
+                <Icon name="check" size={10} strokeWidth={2.75} style="color: #F5C518;" />
+              </div>
+              <p class="text-white text-[14px] leading-relaxed font-medium">{p.fix}</p>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-12" data-reveal>
+        <a href="#lead-form-bottom" class="lp-cta-btn inline-flex px-9 py-4 text-[15px]">
+          Kostenloses Erstgespräch sichern
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] py-20 lg:py-28 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 28px 28px;"></div>
+    <div class="container relative z-10">
+      <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
+        <p class="label text-[#9898A0] mb-3">So einfach geht's</p>
+        <h2 class="font-bold text-white tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          In 3 Schritten zu Ihrem Shopify-Shop
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
+        {steps.map((s, i) => (
+          <div class="relative rounded-2xl border border-[#1C1C25] bg-[#111118] p-8 hover:border-[#2E2E3A] transition-colors" data-reveal data-delay={String(i + 1)}>
+            {i < 2 && (
+              <div class="hidden lg:block absolute top-10 -right-2.5 z-10 opacity-30">
+                <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            )}
+            <!-- Step number with yellow -->
+            <div class="font-black text-5xl tracking-[-0.05em] leading-none mb-6 select-none" style="color: #F5C518; opacity: 0.9;">{s.n}</div>
+            <h3 class="font-bold text-white text-[15px] mb-2.5 tracking-[-0.01em]">{s.title}</h3>
+            <p class="text-[#9898A0] text-sm leading-relaxed">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       TESTIMONIALS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-white py-20 lg:py-28">
+    <div class="container">
+      <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
+        <p class="label mb-3">Kundenstimmen</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+          Was unsere Kunden sagen
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {testimonials.map((t, i) => (
+          <div class="flex flex-col bg-[#FAFAF8] border border-[#EBEBEF] rounded-2xl p-7 lg:p-8" data-reveal data-delay={String(i + 1)}>
+
+            <!-- Stars -->
+            <div class="flex gap-0.5 mb-5">
+              {[1,2,3,4,5].map(() => (
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="#F5C518">
+                  <path d="M8 1l1.85 3.75L14 5.5l-3 2.92.7 4.1L8 10.4l-3.7 2.12.7-4.1L2 5.5l4.15-.75L8 1z"/>
+                </svg>
+              ))}
+            </div>
+
+            <p class="text-[#44444F] text-sm leading-relaxed mb-6 flex-grow">"{t.quote}"</p>
+
+            <div class="flex items-center justify-between pt-5 border-t border-[#EBEBEF]">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#0C0C0F] text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+                  {t.initials}
+                </div>
+                <div>
+                  <div class="font-semibold text-[#0C0C0F] text-[13px]">{t.name}</div>
+                  <div class="text-[#AEAEB5] text-[11px]">{t.role}</div>
+                </div>
+              </div>
+              <div class="text-[11px] font-bold px-2.5 py-1 rounded-lg whitespace-nowrap" style="background: #FEFCE8; color: #92400E;">
+                {t.result}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       FAQ
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-[#FAFAF8] border-t border-[#EBEBEF] py-20 lg:py-28">
+    <div class="container max-w-3xl">
+      <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
+        <p class="label mb-3">Häufige Fragen</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+          Ihre Fragen — unsere Antworten
+        </h2>
+      </div>
+
+      <div class="space-y-3" data-reveal data-delay="1">
+        {faqs.map(faq => (
+          <details class="faq-item bg-white border border-[#EBEBEF] rounded-2xl overflow-hidden group">
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer select-none">
+              <span class="font-semibold text-[#0C0C0F] text-[14.5px] leading-snug">{faq.q}</span>
+              <div class="faq-icon w-8 h-8 rounded-xl border border-[#EBEBEF] flex items-center justify-center shrink-0 transition-all duration-200">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="faq-chevron transition-transform duration-200">
+                  <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-[#62626E] text-sm leading-relaxed border-t border-[#F5F5F8] pt-4">{faq.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       BOTTOM CTA — dark with second form
+  ══════════════════════════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] py-20 lg:py-28 relative overflow-hidden" id="lead-form-bottom">
+    <!-- Yellow glow bottom -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(245,197,24,0.14), transparent 60%);"></div>
+
+    <div class="container relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-center">
+
+        <!-- Left copy -->
+        <div data-reveal>
+          <p class="label text-[#9898A0] mb-5">Jetzt starten</p>
+          <h2 class="font-bold text-white tracking-[-0.04em] mb-6" style="font-size: clamp(2rem, 5vw, 3.75rem); line-height: 0.95;">
+            Ihr nächster<br/>
+            <span style="color: #F5C518;">Shopify-Shop</span><br/>
+            fängt hier an.
+          </h2>
+          <p class="text-[#9898A0] text-base leading-relaxed mb-8 max-w-md">
+            Kein Verkaufsdruck, kein Risiko. Nur ein ehrliches Gespräch darüber, wie wir Ihren Shop auf das nächste Level bringen.
+          </p>
+          <div class="space-y-3.5">
+            {[
+              'Kostenlos & unverbindlich',
+              'Antwort innerhalb von 24 Stunden',
+              'Kein Minimalbudget für die Anfrage',
+            ].map(item => (
+              <div class="flex items-center gap-3 text-[13.5px] text-[#9898A0]">
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(245,197,24,0.12);">
+                  <Icon name="check" size={12} strokeWidth={2.5} style="color: #F5C518;" />
+                </div>
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: second form -->
+        <div data-reveal data-delay="2">
+          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #F5C518, #D9A912);"></div>
+          <div class="bg-white rounded-b-2xl px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9 shadow-[0_32px_80px_rgba(0,0,0,0.45)]">
+
+            <h3 class="font-bold text-[#0C0C0F] text-[17px] tracking-[-0.02em] mb-1">Anfrage absenden</h3>
+            <p class="text-[#AEAEB5] text-xs mb-6">Nur E-Mail ist Pflicht · Wir melden uns innerhalb von 24 Std.</p>
+
+            <form name="meta-lead-bottom" method="POST" action="/danke" class="space-y-3" id="bottom-form">
+              <input type="hidden" name="source" value="meta-ads-bottom" />
+
+              <div class="grid grid-cols-2 gap-3">
+                <div class="lp-field">
+                  <input type="text" name="vorname" placeholder=" " autocomplete="given-name" class="lp-input" />
+                  <label class="lp-label">Vorname</label>
+                </div>
+                <div class="lp-field">
+                  <input type="text" name="nachname" placeholder=" " autocomplete="family-name" class="lp-input" />
+                  <label class="lp-label">Nachname</label>
+                </div>
+              </div>
+
+              <div class="lp-field">
+                <input type="email" name="email" placeholder=" " required autocomplete="email" class="lp-input" />
+                <label class="lp-label">E-Mail-Adresse *</label>
+              </div>
+
+              <div class="lp-field">
+                <input type="tel" name="telefon" placeholder=" " autocomplete="tel" class="lp-input" />
+                <label class="lp-label">Telefon (für Rückruf)</label>
+              </div>
+
+              <button type="submit" class="lp-cta-btn w-full mt-1">
+                Jetzt kostenlos anfragen
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+
+              <p class="text-center text-[10.5px] text-[#D4D4D9] pt-0.5">
+                <a href="/datenschutz" class="underline underline-offset-2">Datenschutzerklärung</a> · DSGVO-konform
+              </p>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</LandingLayout>
+
+<style>
+  /* ── Yellow accent tokens ──────────────────────────────────────────────────
+     --y:    primary golden yellow
+     --y-dk: darker hover/pressed
+     --y-lt: very light tint for backgrounds
+  ──────────────────────────────────────────────────────────────────────── */
+  :root {
+    --y:    #F5C518;
+    --y-dk: #D9A912;
+    --y-lt: #FEFCE8;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── CTA Button — yellow + black text ────────────────────────────────────── */
+  .lp-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--y);
+    color: #0C0C0F;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border-radius: 0.875rem;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 18px rgba(245, 197, 24, 0.3);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .lp-cta-btn:hover {
+    background: var(--y-dk);
+    box-shadow: 0 6px 24px rgba(245, 197, 24, 0.4);
+    transform: translateY(-1px);
+  }
+  .lp-cta-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 8px rgba(245, 197, 24, 0.2);
+  }
+  /* Loading state */
+  .lp-cta-btn.is-loading {
+    opacity: 0.75;
+    pointer-events: none;
+  }
+  .lp-cta-btn.is-loading svg { display: none; }
+  .lp-cta-btn.is-loading::after {
+    content: '';
+    width: 16px; height: 16px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: #0C0C0F;
+    border-radius: 50%;
+    animation: spin 0.55s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Quick-select pills ───────────────────────────────────────────────────── */
+  .quick-pill input:checked ~ .pill-label {
+    background: var(--y-lt);
+    border-color: var(--y);
+    color: #78350F;
+  }
+  .pill-label:hover {
+    border-color: #D4D4D9;
+    color: #44444F;
+  }
+
+  /* ── Floating label inputs ────────────────────────────────────────────────── */
+  .lp-field { position: relative; }
+
+  .lp-input {
+    width: 100%;
+    padding: 1.4rem 0.9rem 0.55rem;
+    background: #FAFAF8;
+    border: 1.5px solid #EBEBEF;
+    border-radius: 0.875rem;
+    font-size: 0.875rem;
+    color: #0C0C0F;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
+  }
+  .lp-input:hover { border-color: #D4D4D9; }
+  .lp-input:focus {
+    border-color: var(--y);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.12);
+  }
+
+  .lp-label {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8125rem;
+    color: #AEAEB5;
+    pointer-events: none;
+    transition: top 0.13s ease, font-size 0.13s ease, color 0.13s ease, transform 0.13s ease;
+    white-space: nowrap;
+  }
+  .lp-input:focus ~ .lp-label,
+  .lp-input:not(:placeholder-shown) ~ .lp-label {
+    top: 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #A16207;
+    transform: none;
+  }
+
+  /* ── FAQ accordion ───────────────────────────────────────────────────────── */
+  .faq-item[open] {
+    border-color: rgba(245, 197, 24, 0.4);
+    box-shadow: 0 0 0 1px rgba(245, 197, 24, 0.15), 0 4px 20px rgba(0,0,0,0.05);
+  }
+  .faq-item[open] .faq-icon {
+    background: var(--y-lt);
+    border-color: rgba(245, 197, 24, 0.4);
+    color: #92400E;
+  }
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+    color: #92400E;
+  }
+
+  /* ── Reveal animations ───────────────────────────────────────────────────── */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  [data-reveal].visible { opacity: 1; transform: none; }
+  [data-delay="1"] { transition-delay: 0.08s; }
+  [data-delay="2"] { transition-delay: 0.16s; }
+  [data-delay="3"] { transition-delay: 0.26s; }
+</style>
+
+<script>
+  // ── Sync quick-pill → hidden input ───────────────────────────────────────
+  document.querySelectorAll<HTMLInputElement>('.quick-pill input').forEach(inp => {
+    inp.addEventListener('change', () => {
+      const h = document.getElementById('service-hidden') as HTMLInputElement | null;
+      if (h) h.value = inp.value;
+    });
+  });
+
+  // ── Loading state on submit ──────────────────────────────────────────────
+  ['hero-form', 'bottom-form'].forEach(id => {
+    document.getElementById(id)?.addEventListener('submit', e => {
+      (e.currentTarget as HTMLElement).querySelector('.lp-cta-btn')?.classList.add('is-loading');
+    });
+  });
+
+  // ── Smooth-scroll anchor ─────────────────────────────────────────────────
+  document.querySelectorAll('a[href="#lead-form-bottom"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('lead-form-bottom')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ── Reveal intersection observer ─────────────────────────────────────────
+  const obs = new IntersectionObserver(
+    es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('[data-reveal]').forEach(el => obs.observe(el));
+
+  // ── Meta Pixel: fire Lead on submit (uncomment when pixel is active) ─────
+  // ['hero-form','bottom-form'].forEach(id => {
+  //   document.getElementById(id)?.addEventListener('submit', () => {
+  //     if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+  //   });
+  // });
+</script>

@@ -1,0 +1,198 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Individuelle Web-Entwicklung',
+  description: 'Custom Shopify Apps, Laravel-Backends, Next.js & Astro Frontends, API-Integrationen und Headless Commerce — maßgeschneidert für Ihr Business.',
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  serviceType: 'Custom Software Development',
+  areaServed: { '@type': 'Country', name: 'Germany' },
+};
+
+const capabilities = [
+  {
+    title: 'Custom Shopify Apps',
+    desc: 'Public & Private Apps nach Maß — für interne Prozesse oder als eigenständiges Produkt.',
+    tags: ['Node.js', 'Remix', 'Shopify CLI', 'GraphQL'],
+  },
+  {
+    title: 'Liquid Theme Entwicklung',
+    desc: 'Individuelle Sections, Blöcke und Templates in Shopifys Templating-Engine.',
+    tags: ['Liquid', 'Alpine.js', 'Tailwind'],
+  },
+  {
+    title: 'API & System-Integrationen',
+    desc: 'ERP, PIM, WMS, CRM — reibungslose Anbindung via REST oder GraphQL.',
+    tags: ['REST', 'GraphQL', 'Webhooks', 'SAP'],
+  },
+  {
+    title: 'Headless Commerce & Web-Apps',
+    desc: 'Maximale Performance mit Astro, Next.js oder Laravel als Frontend — Shopify, REST oder eigene APIs als Backend.',
+    tags: ['Astro', 'Next.js', 'Laravel', 'Storefront API'],
+  },
+  {
+    title: 'Analytics & Tracking',
+    desc: 'Serverside-Tracking, GA4, GTM — datenschutzkonform und DSGVO-sicher.',
+    tags: ['GA4', 'GTM', 'Server-Side Tracking'],
+  },
+  {
+    title: 'Performance-Optimierung',
+    desc: 'Core Web Vitals verbessern, Ladezeiten senken — messbar mehr Conversion.',
+    tags: ['Lighthouse', 'Core Web Vitals', 'CDN'],
+  },
+];
+
+const useCases = [
+  { case: 'ERP-Integration', example: 'SAP / Navision → Shopify Bestandssync in Echtzeit' },
+  { case: 'Custom Checkout', example: 'B2B-Kundenpreise, Mindestbestellwert, Sonderkonditionen' },
+  { case: 'PIM-Anbindung', example: 'Akeneo / Pimcore → automatischer Produktimport' },
+  { case: 'Reporting Dashboard', example: 'Custom Analytics-App für Ihr Management' },
+  { case: 'Multi-Store', example: 'Zentrale Produktverwaltung für mehrere Shops' },
+  { case: 'Subscription Commerce', example: 'Abo-Modelle & Recurring Revenue automatisiert' },
+];
+---
+
+<BaseLayout
+  title="Individuelle Web-Entwicklung – Laravel, Next.js & Astro"
+  description="Custom Shopify Apps, Laravel-Backends, Next.js & Astro Frontends, API-Integrationen und Headless Commerce. Maßgeschneiderte Lösungen von Zula Studios. Jetzt anfragen."
+  schema={serviceSchema}
+  darkHero={true}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Leistungen', url: '/leistungen' },
+    { name: 'Individuelle Entwicklung', url: '/leistungen/individuelle-entwicklung' },
+  ]}
+>
+
+  <!-- HERO -->
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 right-0 w-[600px] h-[500px]" style="background: radial-gradient(circle at 75% 20%, rgba(124,58,237,0.2), transparent 60%);"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
+        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
+        <span class="text-[#AEAEB5]">Individuelle Entwicklung</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+          Individuelle Entwicklung
+        </div>
+        <h1
+          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
+          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
+        >
+          Wenn Standard<br/>
+          <span class="font-light italic text-white/55">nicht ausreicht.</span>
+        </h1>
+        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
+          Custom Apps, tiefe Integrationen, Headless Commerce — wir entwickeln exakt das, was Ihr Business braucht.
+        </p>
+        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
+          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
+            Projekt anfragen
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="py-20 lg:py-24 bg-white">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <p class="label mb-3">Kernkompetenzen</p>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Was wir entwickeln</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {capabilities.map((cap, i) => (
+          <div
+            class="p-7 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF] hover:bg-white hover:border-[#D4D4D9] hover:shadow-sm transition-all group cursor-default"
+            data-reveal data-delay={String((i % 3) + 1)}
+          >
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2 group-hover:text-accent-600 transition-colors">{cap.title}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed mb-4">{cap.desc}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {cap.tags.map(tag => (
+                <span class="text-[11px] font-medium bg-[#EBEBEF] text-[#62626E] px-2.5 py-0.5 rounded-md">{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASES + WHY CUSTOM -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-24">
+
+        <div data-reveal>
+          <p class="label mb-4">Warum maßgeschneidert?</p>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-5" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Volle Kontrolle.<br/>Kein Kompromiss.
+          </h2>
+          <p class="text-[#62626E] text-sm leading-relaxed mb-8">
+            Standard-Apps limitieren Ihr Wachstum. Custom-Lösungen wachsen mit Ihrem Business und kosten keine monatlichen App-Gebühren.
+          </p>
+          <ul class="space-y-3">
+            {[
+              { t: 'Kein monatlicher App-Cost', d: 'Sie besitzen den Code — keine Abhängigkeit.' },
+              { t: 'Nahtlose Integration', d: 'Perfekt angebunden an Ihre bestehenden Systeme.' },
+              { t: 'Volle Kontrolle', d: 'Wächst und ändert sich mit Ihrem Business.' },
+              { t: 'Performance-Vorteil', d: 'Kein Code-Bloat durch fremde App-Abhängigkeiten.' },
+            ].map(item => (
+              <li class="flex items-start gap-3">
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 mt-0.5 shrink-0">
+                  <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div>
+                  <span class="font-semibold text-[#0C0C0F] text-sm">{item.t}: </span>
+                  <span class="text-[#88888F] text-sm">{item.d}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Use cases -->
+        <div class="bg-white rounded-2xl border border-[#EBEBEF] p-7" data-reveal data-delay="2">
+          <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-6">Typische Projekte</h3>
+          <div class="space-y-0 border-t border-[#EBEBEF]">
+            {useCases.map(uc => (
+              <div class="py-4 border-b border-[#EBEBEF]">
+                <div class="font-semibold text-[#0C0C0F] text-sm mb-0.5">{uc.case}</div>
+                <div class="text-[#88888F] text-xs">{uc.example}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 120%, rgba(124,58,237,0.2), transparent 60%);"></div>
+    <div class="container relative z-10 text-center max-w-xl mx-auto">
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Haben Sie ein Projekt im Kopf?</h2>
+      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Schildern Sie uns Ihre Anforderungen — wir antworten innerhalb von 24 Stunden.</p>
+      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+        Projekt anfragen
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  </style>
+</BaseLayout>

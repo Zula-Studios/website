@@ -1,37 +1,91 @@
 ---
-import { AllBlogPostsScreen } from '@/features/blog';
-import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
-const lang = (Astro.currentLocale ?? defaultLanguage) as LanguageCode;
-const t = useTranslations(lang, 'blogPage');
-
-const blogEntries: Array<CollectionEntry<'blog'>> = await getCollection(
-  'blog',
-  ({ data, id }) => {
-    return data.isDraft !== true && id.startsWith('fr/');
-  }
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts.sort(
+  (a, b) => new Date(b.data.publishedDate).getTime() - new Date(a.data.publishedDate).getTime()
 );
-
-const enrichedPosts = await Promise.all(
-  blogEntries.map(async (postEntry: CollectionEntry<'blog'>) => {
-    const { remarkPluginFrontmatter } = await render(postEntry);
-    return {
-      id: postEntry.id,
-      slug: postEntry.id,
-      collection: postEntry.collection,
-      data: {
-        ...postEntry.data,
-        readingTimeMinutes: remarkPluginFrontmatter.readingTimeMinutes,
-      },
-    };
-  })
-);
-
-enrichedPosts.sort(
-  (a, b) =>
-    new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
-);
+const featured = posts.filter(p => p.data.featured).slice(0, 2);
+const rest = posts.filter(p => !p.data.featured);
 ---
 
-<AllBlogPostsScreen posts={enrichedPosts} lang={lang} />
+<BaseLayout
+  title="Blog – Shopify & E-Commerce Insights"
+  description="Praxisnahe Artikel zu Shopify-Entwicklung, Migrationen, SEO und E-Commerce-Strategie — vom Team der Zula Studios."
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Blog', url: '/blog' }]}
+>
+  <!-- Header -->
+  <section class="py-20 lg:py-28 bg-[#FAFAF8] border-b border-[#EBEBEF]">
+    <div class="container">
+      <nav class="flex items-center gap-2 text-xs text-[#AEAEB5] mb-10">
+        <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
+        <span class="text-[#0C0C0F] font-medium">Blog</span>
+      </nav>
+      <p class="label mb-4">Blog</p>
+      <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-4" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
+        Insights & Wissen
+      </h1>
+      <p class="text-[#62626E] text-lg max-w-xl">Praktische Artikel zu Shopify, E-Commerce-Strategie, SEO und Migrationen.</p>
+    </div>
+  </section>
+
+  <!-- Featured posts -->
+  {featured.length > 0 && (
+    <section class="py-16 bg-white border-b border-[#EBEBEF]">
+      <div class="container">
+        <p class="label mb-8">Empfohlene Artikel</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {featured.map((post, i) => (
+            <a
+              href={`/blog/${post.slug}`}
+              class="group p-8 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF] hover:border-[#D4D4D9] hover:bg-white hover:shadow-sm transition-all"
+              data-reveal data-delay={String(i + 1)}
+            >
+              {post.data.category && (
+                <span class="inline-block text-[10.5px] font-bold uppercase tracking-wider text-accent-600 bg-accent-50 px-2.5 py-1 rounded-md mb-5">{post.data.category}</span>
+              )}
+              <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] leading-tight mb-3 group-hover:text-accent-600 transition-colors">{post.data.title}</h2>
+              <p class="text-[#88888F] text-sm leading-relaxed mb-6 line-clamp-2">{post.data.description}</p>
+              <div class="flex items-center justify-between text-xs text-[#AEAEB5]">
+                <time datetime={post.data.publishedDate}>{new Date(post.data.publishedDate).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                {post.data.readingTime && <span>{post.data.readingTime} Min. Lesezeit</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- All posts -->
+  <section class="py-16 bg-white">
+    <div class="container">
+      {rest.length > 0 && <p class="label mb-8">Alle Artikel</p>}
+      <div class="border-t border-[#EBEBEF]">
+        {posts.map((post, i) => (
+          <a
+            href={`/blog/${post.slug}`}
+            class="group flex items-start gap-6 lg:gap-10 py-7 border-b border-[#EBEBEF] hover:bg-[#FAFAF8] -mx-2 px-2 rounded-xl transition-colors"
+            data-reveal
+          >
+            <div class="text-xs font-bold text-[#D4D4D9] tabular-nums mt-1 w-6 shrink-0">{String(i + 1).padStart(2, '0')}</div>
+            <div class="flex-1 min-w-0">
+              {post.data.category && (
+                <span class="text-[10.5px] font-bold uppercase tracking-wider text-[#AEAEB5] mb-2 block">{post.data.category}</span>
+              )}
+              <h3 class="font-semibold text-[#0C0C0F] text-base lg:text-lg tracking-[-0.01em] group-hover:text-accent-600 transition-colors mb-1.5 leading-snug">
+                {post.data.title}
+              </h3>
+              <p class="text-[#88888F] text-sm line-clamp-1">{post.data.description}</p>
+            </div>
+            <div class="shrink-0 text-right hidden sm:block">
+              <time class="text-xs text-[#AEAEB5]">{new Date(post.data.publishedDate).toLocaleDateString('de-DE', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+              {post.data.readingTime && <div class="text-xs text-[#D4D4D9] mt-0.5">{post.data.readingTime} Min.</div>}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,262 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Kontakt – Zula Studios',
+  url: `${SITE.url}/kontakt`,
+  mainEntity: {
+    '@type': 'Organization',
+    name: SITE.name,
+    telephone: SITE.phone,
+    email: SITE.email,
+  },
+};
+---
+
+<BaseLayout
+  title="Kontakt – Zula Studios"
+  description="Kontaktieren Sie Zula Studios. Wir sind per E-Mail, Telefon und Formular erreichbar. Antwort innerhalb von 24 Stunden."
+  schema={schema}
+  darkHero={true}
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Kontakt', url: '/kontakt' }]}
+>
+
+  <!-- HERO -->
+  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 left-0 w-[600px] h-[500px]" style="background: radial-gradient(circle at 25% 20%, rgba(56,189,248,0.12), transparent 60%);"></div>
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a>
+        <span>/</span>
+        <span class="text-white font-medium">Kontakt</span>
+      </nav>
+      <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 flex items-center gap-3">
+        <span class="w-5 h-px bg-[#2E2E3A]"></span>
+        Wir sind für Sie da
+      </p>
+      <h1 class="font-bold text-white tracking-[-0.04em]" style="font-size: clamp(2.75rem, 7vw, 5.5rem); line-height: 0.93; animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both">
+        Schreiben<br/>
+        <span class="font-light italic text-white/45">Sie uns.</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-12 lg:gap-20 items-start">
+
+        <!-- Left: contact info -->
+        <aside class="lg:sticky lg:top-28 space-y-8" data-reveal>
+
+          <div>
+            <p class="label mb-5">Direkter Kontakt</p>
+            <div class="space-y-4">
+
+              <a href={`mailto:${SITE.email}`} class="flex items-center gap-4 group p-4 rounded-2xl border border-[#EBEBEF] hover:border-[#D4D4D9] hover:bg-[#FAFAF8] transition-all">
+                <div class="w-11 h-11 rounded-xl bg-[#F5F5F8] group-hover:bg-accent-50 flex items-center justify-center transition-colors shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[#88888F] group-hover:text-accent-600 transition-colors">
+                    <path d="M3 7l7 5 7-5M3 6h14a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1V7a1 1 0 011-1z" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-[10px] label mb-0.5">E-Mail</div>
+                  <div class="text-sm font-semibold text-[#0C0C0F] group-hover:text-accent-600 transition-colors">{SITE.email}</div>
+                </div>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="ml-auto text-[#AEAEB5] group-hover:text-accent-600 group-hover:translate-x-0.5 transition-all">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+
+              <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} class="flex items-center gap-4 group p-4 rounded-2xl border border-[#EBEBEF] hover:border-[#D4D4D9] hover:bg-[#FAFAF8] transition-all">
+                <div class="w-11 h-11 rounded-xl bg-[#F5F5F8] group-hover:bg-accent-50 flex items-center justify-center transition-colors shrink-0">
+                  <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="text-[#88888F] group-hover:text-accent-600 transition-colors">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V17a2 2 0 01-2 2h-1C9.716 19 3 12.284 3 4V3z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-[10px] label mb-0.5">Telefon</div>
+                  <div class="text-sm font-semibold text-[#0C0C0F] group-hover:text-accent-600 transition-colors">{SITE.phone}</div>
+                </div>
+                <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="ml-auto text-[#AEAEB5] group-hover:text-accent-600 group-hover:translate-x-0.5 transition-all">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+
+              <div class="flex items-center gap-4 p-4 rounded-2xl border border-[#EBEBEF]">
+                <div class="w-11 h-11 rounded-xl bg-[#F5F5F8] flex items-center justify-center shrink-0">
+                  <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[#88888F]">
+                    <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6zM10 9a1 1 0 100-2 1 1 0 000 2z" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-[10px] label mb-0.5">Adresse</div>
+                  <div class="text-sm font-medium text-[#0C0C0F]">{SITE.address.street}</div>
+                  <div class="text-sm text-[#88888F]">{SITE.address.zip} {SITE.address.city}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Availability -->
+          <div class="rounded-2xl bg-[#FAFAF8] border border-[#EBEBEF] p-5">
+            <p class="text-[10px] label mb-4">Erreichbarkeit</p>
+            <div class="space-y-2.5 text-sm">
+              <div class="flex justify-between">
+                <span class="text-[#62626E]">Montag – Freitag</span>
+                <span class="font-semibold text-[#0C0C0F]">09:00 – 18:00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-[#62626E]">Samstag – Sonntag</span>
+                <span class="text-[#AEAEB5]">Auf Anfrage</span>
+              </div>
+              <div class="pt-3 border-t border-[#EBEBEF] flex items-center gap-2 text-emerald-600 text-xs font-semibold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                Antwort innerhalb von 24 Stunden
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA to project wizard -->
+          <div class="rounded-2xl bg-[#0C0C0F] p-5">
+            <p class="text-white font-semibold text-[15px] mb-1.5 tracking-[-0.01em]">Haben Sie ein konkretes Projekt?</p>
+            <p class="text-[#9898A0] text-sm leading-relaxed mb-4">Nutzen Sie unseren geführten Projektassistenten für eine schnellere Antwort.</p>
+            <a href="/projekt-starten" class="inline-flex items-center gap-2 bg-white text-[#0C0C0F] text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors">
+              Projekt starten
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+        </aside>
+
+        <!-- Right: simple form -->
+        <div data-reveal data-delay="2">
+
+          <div class="mb-8">
+            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.03em] mb-2">Nachricht schicken</h2>
+            <p class="text-[#88888F] text-sm">Allgemeine Anfragen, Feedback oder einfach ein kurzes Hallo – wir lesen alles.</p>
+          </div>
+
+          <form name="kontakt" method="POST" action="/danke" id="contact-form" novalidate class="space-y-4">
+
+            <!-- Name row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="float-group">
+                <input type="text" id="vorname" name="vorname" required placeholder=" " class="float-input" autocomplete="given-name" />
+                <label for="vorname" class="float-label">Vorname *</label>
+              </div>
+              <div class="float-group">
+                <input type="text" id="nachname" name="nachname" required placeholder=" " class="float-input" autocomplete="family-name" />
+                <label for="nachname" class="float-label">Nachname *</label>
+              </div>
+            </div>
+
+            <!-- Email + Phone -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="float-group">
+                <input type="email" id="email" name="email" required placeholder=" " class="float-input" autocomplete="email" />
+                <label for="email" class="float-label">E-Mail *</label>
+              </div>
+              <div class="float-group">
+                <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
+                <label for="telefon" class="float-label">Telefon (optional)</label>
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="float-group float-group--textarea">
+              <textarea id="nachricht" name="nachricht" required placeholder=" " rows="6" maxlength="1000" class="float-input float-textarea"></textarea>
+              <label for="nachricht" class="float-label float-label--textarea">Ihre Nachricht *</label>
+              <div id="char-counter" class="absolute bottom-3 right-3.5 text-[10.5px] text-[#D4D4D9] pointer-events-none tabular-nums">0 / 1000</div>
+            </div>
+
+            <!-- GDPR -->
+            <div class="flex items-start gap-3 pt-1">
+              <div class="custom-cb-wrapper mt-0.5 shrink-0 cursor-pointer" id="cb-wrapper">
+                <input type="checkbox" id="datenschutz" name="datenschutz" required class="sr-only" />
+                <div class="cb-box w-5 h-5 rounded-md border-2 border-[#D4D4D9] flex items-center justify-center transition-all duration-150">
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="cb-check opacity-0 scale-75 transition-all duration-150">
+                    <path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <label for="datenschutz" class="text-xs text-[#88888F] leading-relaxed cursor-pointer">
+                Ich habe die <a href="/datenschutz" class="text-accent-600 hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *
+              </label>
+            </div>
+
+            <!-- Submit -->
+            <div class="pt-2">
+              <button type="submit" class="btn btn-primary w-full justify-center py-4 text-[15px]" id="submit-btn">
+                Nachricht absenden
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <p class="text-center text-xs text-[#D4D4D9] mt-3">Wir antworten innerhalb von 24 Stunden · Kein Spam</p>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .float-group { position: relative; }
+  .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0C0C0F; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
+  .float-input:hover { border-color: #D4D4D9; }
+  .float-input:focus { border-color: #0284C7; background: white; box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+  .float-textarea    { resize: none; padding-bottom: 2rem; }
+  .float-label       { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.875rem; color: #AEAEB5; pointer-events: none; transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease, transform 0.15s ease; white-space: nowrap; transform-origin: left center; }
+  .float-label--textarea { top: 1rem; transform: none; }
+  .float-input:focus ~ .float-label,
+  .float-input:not(:placeholder-shown) ~ .float-label { top: 0.45rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; transform: none; }
+  .float-textarea:focus ~ .float-label--textarea,
+  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea { top: 0.35rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; }
+  .custom-cb-wrapper:hover .cb-box { border-color: #AEAEB5; }
+  .cb-box.is-checked { background: #0284C7; border-color: #0284C7; }
+  .cb-box.is-checked .cb-check { opacity: 1 !important; transform: scale(1) !important; }
+  #submit-btn.loading { opacity: 0.7; pointer-events: none; }
+  #submit-btn.loading::after { content: ''; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 0.25rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+  const cbWrapper = document.getElementById('cb-wrapper');
+  const cbInput   = document.getElementById('datenschutz') as HTMLInputElement | null;
+  const cbBox     = cbWrapper?.querySelector('.cb-box');
+  cbWrapper?.addEventListener('click', () => {
+    if (!cbInput) return;
+    cbInput.checked = !cbInput.checked;
+    cbBox?.classList.toggle('is-checked', cbInput.checked);
+  });
+  document.querySelector('label[for="datenschutz"]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    cbWrapper?.click();
+  });
+
+  const textarea = document.getElementById('nachricht') as HTMLTextAreaElement | null;
+  const counter  = document.getElementById('char-counter');
+  textarea?.addEventListener('input', () => {
+    const len = textarea.value.length;
+    if (counter) {
+      counter.textContent = `${len} / 1000`;
+      counter.style.color = len > 960 ? '#DC2626' : len > 880 ? '#0284C7' : '#D4D4D9';
+    }
+  });
+
+  document.getElementById('contact-form')?.addEventListener('submit', () => {
+    document.getElementById('submit-btn')?.classList.add('loading');
+  });
+</script>

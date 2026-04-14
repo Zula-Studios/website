@@ -1,234 +1,278 @@
 ---
-import '../styles/global.css';
-import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
-import Footer from '@/components/Footer.astro';
+import SEO from '@/components/SEO.astro';
 import Header from '@/components/Header.astro';
-import BottomAppBar from '@/components/BottomAppBar.astro';
-import { Home, Briefcase, FileText, Lightbulb, MessageSquare } from 'lucide-react';
-import { ClientRouter } from 'astro:transitions';
+import Footer from '@/components/Footer.astro';
 
-import {
-  prepareLanguagesForSelector,
-  type LanguageSelectorItem,
-} from '@/lib/i18n-utils';
-import { Toaster } from 'sonner';
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: object | object[];
+  publishedDate?: string;
+  modifiedDate?: string;
+  author?: string;
+  breadcrumbs?: { name: string; url: string }[];
+  darkHero?: boolean;
+}
 
-type Props = {
-  pageTitle: string;
-  pageDescription?: string;
-};
-
-export type NavItem = {
-  href: string;
-  label: string;
-  icon: any;
-};
-
-const { pageTitle, pageDescription } = Astro.props;
-const lang =
-  (Astro.currentLocale as LanguageCode | undefined) ?? defaultLanguage;
-const currentPathname = Astro.url.pathname;
-
-const tSite = useTranslations(lang, 'site');
-const tNav = useTranslations(lang, 'nav');
-
-const navItems: Array<NavItem> = [
-  { href: '/', label: tNav('home'), icon: Home },
-  { href: '/projects', label: tNav('projects'), icon: Briefcase },
-  { href: '/blog', label: tNav('blog'), icon: FileText },
-  { href: '/tips', label: tNav('tips'), icon: Lightbulb },
-  { href: '/contact', label: tNav('contact'), icon: MessageSquare },
-];
-
-const languagesForSelector: Array<LanguageSelectorItem> =
-  prepareLanguagesForSelector(currentPathname, lang);
+const { darkHero = false, ...props } = Astro.props;
 ---
 
-<!doctype html>
-<html lang={lang}>
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content={pageDescription || tSite('description')}
-    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0C0C0F" />
 
-    <link
-      rel="icon"
-      type="image/png"
-      href="/favicons/light-mode/favicon-96x96.png"
-      sizes="96x96"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/favicons/dark-mode/favicon-96x96.png"
-      sizes="96x96"
-      media="(prefers-color-scheme: dark)"
-    />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/favicons/light-mode/favicon.svg"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="/favicons/dark-mode/favicon.svg"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <link
-      rel="shortcut icon"
-      href="/favicons/light-mode/favicon.ico"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="shortcut icon"
-      href="/favicons/dark-mode/favicon.ico"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/favicons/light-mode/apple-touch-icon.png"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/favicons/dark-mode/apple-touch-icon.png"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <link
-      rel="manifest"
-      href="/favicons/light-mode/site.webmanifest"
-      media="(prefers-color-scheme: light)"
-    />
-    <link
-      rel="manifest"
-      href="/favicons/dark-mode/site.webmanifest"
-      media="(prefers-color-scheme: dark)"
-    />
-
-    <script is:inline>
-      const getInitialTheme = () => {
-        if (
-          typeof localStorage !== 'undefined' &&
-          localStorage.getItem('theme')
-        ) {
-          return localStorage.getItem('theme');
-        }
-        if (
-          window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches
-        ) {
-          return 'dark';
-        }
-        return 'light';
-      };
-      const theme = getInitialTheme();
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-      // Ensure localStorage is consistent if theme was derived from prefers-color-scheme
-      // or if localStorage was empty.
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('theme', theme);
-      }
-    </script>
-    <title>{pageTitle || tSite('title')}</title>
-
-    {/* Font, for example Google Fonts - to adapt according to your choices */}
+    <!-- ── Font resource hints (non-blocking) ────────────────────────────────
+         dns-prefetch is the fallback for browsers that don't support preconnect.
+         preconnect initiates the TLS handshake to Google's servers early so the
+         font request fires immediately without a cold DNS+TCP+TLS round-trip.
+    ──────────────────────────────────────────────────────────────────────── -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/mermaid@11.6.0/dist/mermaid.min.js"
-      defer></script>
-    <ClientRouter />
-  </head>
-  <body class="h-[100dvh] bg-background font-sans antialiased flex flex-col">
-    {/* Tailwind classes for the body */}
-    <header class="hidden md:block">
-      <!-- passer aussi navItems mais sans le premier element dont le href === '/' -->
-      <Header
-        languagesForSelector={languagesForSelector}
-        navItems={navItems.filter((item) => item.href !== '/') as NavItem[]}
-      />
-    </header>
 
-    <main
-      class="container mx-auto px-4 py-8 flex-1 max-w-screen-2xl pb-20 md:pb-8"
-    >
+    <!-- ── Async font loading (loadCSS technique) ────────────────────────────
+         Using rel="preload" with onload avoids render-blocking font CSS.
+         Only the weights actually used in the design are requested.
+         font-display:swap is included via the &display=swap parameter.
+         <noscript> ensures the font still loads when JS is disabled.
+    ──────────────────────────────────────────────────────────────────────── -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      />
+    </noscript>
+    <SEO {...props} />
+    <style is:global>
+      /* ── Design Tokens ── */
+      :root {
+        --ink: #0C0C0F;
+        --ink-muted: #62626E;
+        --ink-subtle: #AEAEB5;
+        --surface-warm: #FAFAF8;
+        --border: #EBEBEF;
+        --accent: #0284C7;
+        --accent-light: #F0F9FF;
+        --radius: 0.75rem;
+        --transition: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      /* ── Base ── */
+      *, *::before, *::after { box-sizing: border-box; }
+
+      html { font-feature-settings: 'cv11' on, 'ss01' on, 'cv01' on, 'cv08' on; }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: #ffffff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      /* ── Selection ── */
+      ::selection {
+        background: #BAE6FD;
+        color: #0C4A6E;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar { width: 5px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #D4D4D9; border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: #AEAEB5; }
+
+      /* ── Focus ── */
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      /* ── Container ── */
+      .container {
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+      @media (min-width: 640px) {
+        .container { padding-left: 2rem; padding-right: 2rem; }
+      }
+      @media (min-width: 1024px) {
+        .container { padding-left: 2.5rem; padding-right: 2.5rem; }
+      }
+
+      /* ── Section Label ── */
+      .label {
+        display: inline-block;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-subtle);
+      }
+
+      /* ── Scroll Progress Bar ── */
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 0%;
+        background: var(--accent);
+        z-index: 9999;
+        transition: width 80ms linear;
+        pointer-events: none;
+      }
+
+      /* ── Reveal Animations ── */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(18px);
+        transition:
+          opacity 0.65s var(--transition),
+          transform 0.65s var(--transition);
+        will-change: opacity, transform;
+      }
+      [data-reveal="fade"] { transform: none; }
+      [data-reveal="left"] { transform: translateX(-18px); }
+      [data-reveal="scale"] { transform: scale(0.97); }
+      [data-reveal].visible {
+        opacity: 1;
+        transform: none;
+      }
+      [data-delay="1"] { transition-delay: 0.08s; }
+      [data-delay="2"] { transition-delay: 0.16s; }
+      [data-delay="3"] { transition-delay: 0.24s; }
+      [data-delay="4"] { transition-delay: 0.32s; }
+      [data-delay="5"] { transition-delay: 0.42s; }
+      [data-delay="6"] { transition-delay: 0.52s; }
+
+      /* ── Marquee ── */
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 32s linear infinite;
+      }
+      .marquee-track:hover { animation-play-state: paused; }
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+
+      /* ── Smooth details/summary ── */
+      details > summary { list-style: none; cursor: pointer; }
+      details > summary::-webkit-details-marker { display: none; }
+
+      /* ── Button base ── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.625rem;
+        transition: all 0.15s ease;
+        cursor: pointer;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .btn:active { transform: scale(0.97); }
+      .btn-primary {
+        background: var(--ink);
+        color: #ffffff;
+      }
+      .btn-primary:hover { background: #1C1C25; }
+      .btn-ghost {
+        background: transparent;
+        color: rgba(255,255,255,0.75);
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+      .btn-ghost:hover {
+        background: rgba(255,255,255,0.08);
+        color: #ffffff;
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--ink);
+        border: 1.5px solid var(--border);
+      }
+      .btn-outline:hover { border-color: #D4D4D9; background: var(--surface-warm); }
+      .btn-accent {
+        background: var(--accent);
+        color: #ffffff;
+      }
+      .btn-accent:hover { background: #0369A1; }
+    </style>
+  </head>
+  <body data-hero={darkHero ? 'dark' : 'light'}>
+    <div id="scroll-progress"></div>
+    <Header />
+    <main id="main-content">
       <slot />
     </main>
-    <div class="hidden md:block">
-      <Footer />
-    </div>
-    <BottomAppBar
-      navItems={navItems}
-      languagesForSelector={languagesForSelector}
-    />
-    <Toaster position="bottom-right" richColors client:load />
-    {/* Global scripts if needed, for example for analytics */}
-    <script is:inline type="text/javascript">
-      document.addEventListener('DOMContentLoaded', () => {
-        const initializeAndRunMermaid = () => {
-          if (typeof mermaid !== 'undefined') {
-            const isDarkMode =
-              document.documentElement.classList.contains('dark');
-            const mermaidTheme = isDarkMode ? 'dark' : 'default';
+    <Footer />
 
-            let themeVars = {
-              fontFamily: '"Inter", sans-serif',
-              fontSize: '15px',
-              // Base variables (light mode defaults)
-              primaryColor: isDarkMode ? '#3B0764' : '#F3EFFF', // Node background
-              primaryTextColor: isDarkMode ? '#F3F4F6' : '#1f2937', // Node text
-              primaryBorderColor: isDarkMode ? '#A78BFA' : '#9333ea', // Node border
-              lineColor: isDarkMode ? '#A78BFA' : '#7E22CE', // Edge lines
-              textColor: isDarkMode ? '#E5E7EB' : '#374151', // General text (like edge labels)
-              edgeLabelBackground: isDarkMode ? '#4B3264' : '#E9D5FF', // Background for edge labels
-              // Specific for sequence diagrams, etc. (can be expanded)
-              actorBkg: isDarkMode ? '#3B0764' : '#F3EFFF',
-              actorBorder: isDarkMode ? '#A78BFA' : '#9333ea',
-              labelBoxBkgColor: isDarkMode ? '#2e104f' : '#f7f2ff', // Background for loop/alt/opt boxes
-              labelTextColor: isDarkMode ? '#E5E7EB' : '#374151',
-              noteBkgColor: isDarkMode ? '#2a0f4a' : '#fbf7ff',
-              noteTextColor: isDarkMode ? '#E5E7EB' : '#374151',
-              clusterBkg: isDarkMode ? '#240a3c' : '#faf5ff',
-              clusterBorder: isDarkMode ? '#7c3aed' : '#a855f7',
-            };
+    <script>
+      // ── Scroll Progress ──
+      const progressBar = document.getElementById('scroll-progress');
+      function updateProgress() {
+        const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+        if (progressBar) progressBar.style.width = (scrolled * 100) + '%';
+      }
+      window.addEventListener('scroll', updateProgress, { passive: true });
 
-            mermaid.initialize({
-              startOnLoad: false, // We call run() manually
-              theme: mermaidTheme,
-              themeVariables: themeVars,
-            });
+      // ── Reveal Animations ──
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 
-            mermaid.run({
-              nodes: document.querySelectorAll('pre.mermaid'), // Correct selector for inline-svg strategy
-            });
-          } else {
-            console.error('Mermaid object not found.');
-          }
-        };
+      // ── Header scroll behavior ──
+      const header = document.getElementById('site-header');
+      const heroDark = document.body.dataset.hero === 'dark';
 
-        initializeAndRunMermaid(); // Initial run on page load
+      function updateHeader() {
+        if (!header) return;
+        const scrolled = window.scrollY > 60;
+        header.classList.toggle('header-scrolled', scrolled);
+        if (heroDark) {
+          header.classList.toggle('header-on-dark', !scrolled);
+        }
+      }
 
-        document.addEventListener('astro:after-swap', () => {
-          initializeAndRunMermaid(); // Re-initialize and run after page swaps for SPA-like navigation
-        });
-      });
+      window.addEventListener('scroll', updateHeader, { passive: true });
+      updateHeader();
     </script>
   </body>
 </html>

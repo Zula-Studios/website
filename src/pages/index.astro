@@ -1,43 +1,578 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
-import {
-  PortfolioScreen,
-  getTranslatedProjects,
-  getTranslatedSkills,
-  type TranslatedSkill,
-  type TranslatedProject,
-} from '@/features/projects';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
 
-const lang =
-  (Astro.currentLocale as LanguageCode | undefined) ?? defaultLanguage;
-const t = useTranslations(lang, 'homePage');
-
-const pageTitle = t('pageTitle');
-const pageDescription = t('pageDescription');
-
-const projects: Array<TranslatedProject> = getTranslatedProjects(lang);
-const skills: Array<TranslatedSkill> = getTranslatedSkills(lang);
-
-const layoutProps = {
-  lang,
-  projects,
-  skills,
-  heroGreeting: t('heroGreeting'),
-  heroSubtitlePart1: t('heroSubtitlePart1'),
-  heroSubtitlePart2: t('heroSubtitlePart2'),
-  heroIntroduction: t('heroIntroduction'),
-  heroViewWorkButton: t('heroViewWorkButton'),
-  heroContactButton: t('heroContactButton'),
-  imageNotAvailable: t('imageNotAvailable'),
-  featuredProjectsTitle: t('featuredProjectsTitle'),
-  featuredProjectsDescription: t('featuredProjectsDescription'),
-  mySkillsTitle: t('mySkillsTitle'),
-  mySkillsDescription: t('mySkillsDescription'),
-  projectPreviewCtaText: t('projectCardViewProject'),
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.name,
+  description: SITE.description,
+  url: SITE.url,
+  telephone: SITE.phone,
+  email: SITE.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.zip,
+    addressCountry: SITE.address.country,
+  },
+  priceRange: '€€',
+  serviceType: ['Shopify Development', 'E-Commerce', 'Web Development'],
 };
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Was kostet ein Shopify Shop?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Ein professioneller Shopify-Shop kostet je nach Umfang zwischen 2.500 € und 50.000 €. Im kostenlosen Erstgespräch erstellen wir ein konkretes Angebot.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Wie lange dauert eine Shopify Migration?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Eine typische Shopify Migration dauert zwischen 2 und 8 Wochen – abhängig von der Datenmenge, der Komplexität des Shops und dem Quellsystem.' },
+    },
+    {
+      '@type': 'Question',
+      name: 'Bietet Zula Studios Support nach dem Launch an?',
+      acceptedAnswer: { '@type': 'Answer', text: 'Ja. Wir bieten flexible Support-Pakete von stundenbasierter Unterstützung bis zu monatlichen Retainern. Jedes Projekt beinhaltet mindestens 30 Tage Post-Launch-Support.' },
+    },
+  ],
+};
+
+const marqueeItems = [
+  'Shopify Partner', '100+ Projekte', 'Made in Germany', '5 Jahre Erfahrung',
+  'DSGVO-konform', '98% Kundenzufriedenheit', 'Shopify Plus', 'Zero-Downtime',
+];
+
+const services = [
+  {
+    num: '01',
+    title: 'Shopify Shop erstellen',
+    desc: 'Von der Konzeption bis zum Launch – performante Shops, die konvertieren.',
+    href: '/leistungen/shopify-shop-erstellen',
+  },
+  {
+    num: '02',
+    title: 'Shopify Migration',
+    desc: 'Sicher & datenverlustfrei von WooCommerce, Magento, OXID und mehr.',
+    href: '/leistungen/shopify-migration',
+  },
+  {
+    num: '03',
+    title: 'Individuelle Entwicklung',
+    desc: 'Custom Apps, Liquid-Entwicklung und API-Integrationen nach Maß.',
+    href: '/leistungen/individuelle-entwicklung',
+  },
+];
+
+const testimonials = [
+  {
+    quote: 'Zula Studios hat unseren WooCommerce-Shop in Rekordzeit zu Shopify migriert – ohne einen Tag Downtime. Klare Empfehlung.',
+    name: 'Markus Weber',
+    role: 'CEO, TechFashion GmbH',
+  },
+  {
+    quote: 'Der neue Shopify-Shop übertrifft alle Erwartungen. Die Conversion Rate hat sich in den ersten drei Monaten verdoppelt.',
+    name: 'Sandra Koch',
+    role: 'Gründerin, Naturkosmetik Berlin',
+  },
+  {
+    quote: 'Die Custom-App hat unsere Fulfillment-Prozesse revolutioniert. Transparente Kommunikation, sauberer Code, top Ergebnis.',
+    name: 'Thomas Bauer',
+    role: 'E-Commerce Manager, SportWorld AG',
+  },
+];
+
+const processSteps = [
+  { n: '01', title: 'Analyse', desc: 'Wir verstehen Ihr Business, Ihre Ziele und Ihre aktuelle Situation.' },
+  { n: '02', title: 'Konzept', desc: 'Wireframes, Architektur und ein klarer Plan – bevor eine Zeile Code geschrieben wird.' },
+  { n: '03', title: 'Entwicklung', desc: 'Agil, transparent, mit wöchentlichen Updates. Sie sehen den Fortschritt in Echtzeit.' },
+  { n: '04', title: 'Launch', desc: 'Reibungsloser Go-Live und langfristiger Support weit über den Launch hinaus.' },
+];
+
+const faqs = [
+  {
+    q: 'Was kostet ein Shopify Shop?',
+    a: 'Je nach Umfang und Anforderungen liegt der Preis zwischen 2.500 € und 50.000 €. Im kostenlosen Erstgespräch erstellen wir ein transparentes, konkretes Angebot für Ihr Projekt.',
+  },
+  {
+    q: 'Wie lange dauert eine Shopify Migration?',
+    a: 'Typischerweise 2–8 Wochen – abhängig von Datenmenge, Komplexität und Quellsystem. Wir garantieren dabei Datensicherheit und minimale Unterbrechung.',
+  },
+  {
+    q: 'Bietet ihr Support nach dem Launch an?',
+    a: 'Ja. Jedes Projekt beinhaltet 30 Tage kostenlosen Post-Launch-Support. Darüber hinaus bieten wir flexible Retainer-Pakete für laufende Betreuung.',
+  },
+  {
+    q: 'Arbeitet ihr auch mit bestehenden Shopify-Shops?',
+    a: 'Absolut. Wir übernehmen Optimierungen, Redesigns, App-Entwicklung und Performance-Audits für Shopify-Shops jeder Größe.',
+  },
+];
 ---
 
-<BaseLayout pageTitle={pageTitle} pageDescription={pageDescription}>
-  <PortfolioScreen {...layoutProps} />
+<BaseLayout
+  title="Shopify Studio Hamburg – Shops & Migration"
+  description="Professionelle Shopify-Entwicklung in Hamburg: Custom Shops, Migrationen & Apps mit Laravel, Next.js & Astro. 100+ Projekte, 5 Jahre Erfahrung. Kostenloses Erstgespräch anfragen."
+  schema={[localBusinessSchema, faqSchema]}
+  darkHero={true}
+>
+
+  <!-- ════════════════════════════════════════════
+       HERO
+  ════════════════════════════════════════════ -->
+  <section
+    id="hero-section"
+    class="relative min-h-screen bg-[#0C0C0F] flex flex-col justify-end pb-20 lg:pb-24 overflow-hidden"
+  >
+    <!-- Subtle dot grid -->
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px); background-size: 32px 32px;"
+    ></div>
+    <!-- Corner glow -->
+    <div
+      class="absolute top-0 right-0 w-[700px] h-[700px] pointer-events-none"
+      style="background: radial-gradient(circle at 70% 20%, rgba(56,189,248,0.18), transparent 65%);"
+    ></div>
+
+    <div class="container relative z-10 pt-32">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-end">
+
+        <!-- Left: Headline -->
+        <div>
+          <!-- Eyebrow -->
+          <p
+            class="text-[#9898A0] text-[12px] font-medium tracking-[0.2em] uppercase mb-8 flex items-center gap-3"
+            style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.05s both"
+          >
+            <span class="w-6 h-px bg-[#2E2E3A]"></span>
+            Shopify Studio · Hamburg · Seit {SITE.founded}
+          </p>
+
+          <!-- Headline -->
+          <h1 class="text-white mb-8 leading-none">
+            <span
+              class="block font-bold"
+              style="font-size: clamp(3.5rem, 8.5vw, 7.25rem); letter-spacing: -0.04em; animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.12s both"
+            >
+              Shops,
+            </span>
+            <span
+              class="block font-light italic text-white/55"
+              style="font-size: clamp(3.5rem, 8.5vw, 7.25rem); letter-spacing: -0.04em; animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.2s both"
+            >
+              die wirklich
+            </span>
+            <span
+              class="block font-bold"
+              style="font-size: clamp(3.5rem, 8.5vw, 7.25rem); letter-spacing: -0.04em; animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.28s both"
+            >
+              verkaufen.
+            </span>
+          </h1>
+
+          <!-- Sub -->
+          <p
+            class="text-[#88888F] text-base lg:text-lg max-w-lg leading-relaxed mb-10"
+            style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.38s both"
+          >
+            Wir entwickeln performante Shopify-Shops, führen Migrationen durch und bauen individuelle E-Commerce-Lösungen — für nachhaltig wachsende Unternehmen.
+          </p>
+
+          <!-- CTAs -->
+          <div
+            class="flex flex-wrap items-center gap-3"
+            style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.46s both"
+          >
+            <a href="/projekt-starten" class="btn btn-primary bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px]">
+              Projekt starten
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="/leistungen" class="btn btn-ghost text-[15px] py-3.5 px-7">
+              Leistungen ansehen
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Stats panel -->
+        <div
+          class="hidden lg:flex flex-col gap-0 border border-[#1C1C25] rounded-2xl overflow-hidden"
+          style="animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s both; min-width: 200px;"
+        >
+          {[
+            { value: '100+', label: 'Shopify Projekte' },
+            { value: '98%',  label: 'Kundenzufriedenheit' },
+            { value: '5 J.', label: 'Erfahrung' },
+            { value: '40+',  label: 'Kunden' },
+          ].map((stat, i) => (
+            <div class:list={["px-7 py-6", i < 3 ? "border-b border-[#1C1C25]" : ""]}>
+              <div class="font-bold text-white text-2xl tracking-[-0.03em] leading-none mb-1">{stat.value}</div>
+              <div class="text-[#9898A0] text-xs font-medium">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Mobile stats -->
+      <div
+        class="flex lg:hidden gap-6 mt-10 pt-8 border-t border-[#1C1C25]"
+        style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.5s both"
+      >
+        {[
+          { value: '100+', label: 'Projekte' },
+          { value: '98%',  label: 'Zufriedenheit' },
+          { value: '5 J.', label: 'Erfahrung' },
+        ].map(stat => (
+          <div>
+            <div class="font-bold text-white text-xl tracking-[-0.03em]">{stat.value}</div>
+            <div class="text-[#9898A0] text-xs mt-0.5">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Bottom scroll hint -->
+    <div
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#2E2E3A] hidden lg:flex"
+      style="animation: fadeUp 1s cubic-bezier(0.22,1,0.36,1) 0.9s both"
+    >
+      <span class="text-[10px] tracking-[0.2em] uppercase font-medium text-[#6E6E7A]">Scroll</span>
+      <div class="w-px h-8 bg-gradient-to-b from-[#6E6E7A] to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       MARQUEE STRIP
+  ════════════════════════════════════════════ -->
+  <div class="bg-[#111118] border-y border-[#1C1C25] py-4 overflow-hidden select-none" aria-hidden="true">
+    <div class="marquee-track">
+      {[...marqueeItems, ...marqueeItems].map(item => (
+        <span class="flex items-center gap-6 px-6 text-[#6E6E7A] text-xs font-medium tracking-[0.15em] uppercase whitespace-nowrap">
+          <span class="w-1 h-1 rounded-full bg-[#3E3E4A] shrink-0"></span>
+          {item}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       SERVICES
+  ════════════════════════════════════════════ -->
+  <section class="py-24 lg:py-32 bg-[#FAFAF8]">
+    <div class="container">
+      <!-- Header row -->
+      <div class="flex items-end justify-between mb-12 lg:mb-16" data-reveal>
+        <div>
+          <p class="label mb-3">Leistungen</p>
+          <h2
+            class="font-bold text-[#0C0C0F] tracking-[-0.03em]"
+            style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
+          >
+            Was wir für Sie bauen
+          </h2>
+        </div>
+        <a href="/leistungen" class="hidden sm:flex items-center gap-2 text-[13.5px] font-semibold text-[#62626E] hover:text-[#0C0C0F] transition-colors group">
+          Alle ansehen
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-1 transition-transform">
+            <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Service rows -->
+      <div class="border-t border-[#EBEBEF]">
+        {services.map((s, i) => (
+          <a
+            href={s.href}
+            class="group flex items-center gap-6 lg:gap-12 py-7 lg:py-8 border-b border-[#EBEBEF] hover:bg-white transition-all duration-200"
+            data-reveal
+            data-delay={String(i + 1)}
+          >
+            <span class="text-xs font-semibold text-[#AEAEB5] w-6 shrink-0 tabular-nums">{s.num}</span>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-[#0C0C0F] text-lg lg:text-xl tracking-[-0.01em] group-hover:text-accent-600 transition-colors mb-1">
+                {s.title}
+              </h3>
+              <p class="text-[#88888F] text-sm">{s.desc}</p>
+            </div>
+            <div class="shrink-0 w-8 h-8 rounded-full border border-[#EBEBEF] flex items-center justify-center text-[#AEAEB5] group-hover:border-accent-500 group-hover:text-accent-600 group-hover:bg-accent-50 transition-all">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-0.5 transition-transform">
+                <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-6 sm:hidden">
+        <a href="/leistungen" class="btn btn-outline w-full justify-center">Alle Leistungen ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       STATS
+  ════════════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] py-20 lg:py-24">
+    <div class="container">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-[#1C1C25] rounded-2xl overflow-hidden">
+        {[
+          { value: '100+', label: 'Shopify Projekte', sub: 'abgeschlossen' },
+          { value: '98%', label: 'Kundenzufrieden-', sub: 'heit' },
+          { value: '5+', label: 'Jahre', sub: 'Erfahrung' },
+          { value: '40+', label: 'Zufriedene', sub: 'Kunden' },
+        ].map((stat, i) => (
+          <div
+            class:list={[
+              "px-8 py-10 lg:py-12 border-[#1C1C25]",
+              i % 2 !== 0 && i < 3 ? "border-l" : "",
+              i < 2 ? "border-b lg:border-b-0" : "",
+              i > 0 ? "lg:border-l" : "",
+            ]}
+            data-reveal
+            data-delay={String(i + 1)}
+          >
+            <div
+              class="font-bold text-white leading-none mb-3 tabular-nums"
+              style="font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.04em;"
+            >
+              {stat.value}
+            </div>
+            <div class="text-[#9898A0] text-sm font-medium">{stat.label}{stat.sub}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       WHY US  (2-col asymmetric)
+  ════════════════════════════════════════════ -->
+  <section class="py-24 lg:py-32 bg-white">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-24 items-start">
+
+        <!-- Left -->
+        <div data-reveal>
+          <p class="label mb-4">Warum Zula Studios</p>
+          <h2
+            class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-6"
+            style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
+          >
+            Kein Agentur-Bingo.<br/>Nur Ergebnisse.
+          </h2>
+          <p class="text-[#62626E] leading-relaxed text-base lg:text-[17px] mb-8 max-w-sm">
+            Wir arbeiten transparent, liefern pünktlich und denken unternehmerisch mit. Kein aufgeblasenes Team, kein versteckter Overhead.
+          </p>
+          <a href="/ueber-uns" class="btn btn-outline inline-flex">
+            Über uns
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Right: Feature list -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            { iconName: 'target', title: 'Ergebnisorientiert', desc: 'Jede Entscheidung zielt auf messbare Conversion und Umsatz.' },
+            { iconName: 'eye', title: 'Transparent', desc: 'Keine versteckten Kosten. Klare Kommunikation, immer.' },
+            { iconName: 'layers', title: 'Technisch tief', desc: 'Shopify bis in die Tiefe — APIs, Liquid, Headless, Apps.' },
+            { iconName: 'users', title: 'Partnerschaftlich', desc: 'Wir denken mit, hinterfragen und empfehlen ehrlich.' },
+          ].map((item, i) => (
+            <div
+              class="p-6 rounded-2xl border border-[#EBEBEF] bg-[#FAFAF8] hover:border-[#D4D4D9] hover:bg-white transition-all duration-200"
+              data-reveal
+              data-delay={String(i + 1)}
+            >
+              <Icon name={item.iconName} size={20} class="text-[#AEAEB5] mb-4" strokeWidth={1.5} />
+              <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{item.title}</h3>
+              <p class="text-[#88888F] text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       TESTIMONIALS (editorial)
+  ════════════════════════════════════════════ -->
+  <section class="py-24 lg:py-32 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="flex items-end justify-between mb-12 lg:mb-16" data-reveal>
+        <div>
+          <p class="label mb-3">Kundenstimmen</p>
+          <h2
+            class="font-bold text-[#0C0C0F] tracking-[-0.03em]"
+            style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
+          >
+            Was unsere Kunden sagen
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {testimonials.map((t, i) => (
+          <div
+            class="bg-white rounded-2xl p-8 border border-[#EBEBEF] flex flex-col"
+            data-reveal
+            data-delay={String(i + 1)}
+          >
+            <!-- Big quote mark -->
+            <svg width="28" height="22" viewBox="0 0 28 22" fill="none" class="mb-5 shrink-0">
+              <path d="M0 22V13.2C0 5.6 4.2 1.4 12.6 0l1.4 2.8C9.8 3.8 7.7 5.6 7 8.4h5.6V22H0zm15.4 0V13.2C15.4 5.6 19.6 1.4 28 0l1.4 2.8C25.2 3.8 23.1 5.6 22.4 8.4H28V22H15.4z" fill="#EBEBEF"/>
+            </svg>
+            <blockquote class="text-[#44444F] text-[15px] leading-relaxed flex-grow mb-7">
+              {t.quote}
+            </blockquote>
+            <footer>
+              <div class="font-semibold text-[#0C0C0F] text-sm">{t.name}</div>
+              <div class="text-[#AEAEB5] text-xs mt-0.5">{t.role}</div>
+            </footer>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       PROCESS  (timeline style)
+  ════════════════════════════════════════════ -->
+  <section class="py-24 lg:py-32 bg-white">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+
+        <!-- Left: sticky label -->
+        <div data-reveal>
+          <p class="label mb-4">Prozess</p>
+          <h2
+            class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-6"
+            style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;"
+          >
+            Von der Idee zum<br/>fertigen Shop
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed">
+            Strukturiert, transparent und kommunikativ — so bringen wir Ihr Projekt sicher ins Ziel.
+          </p>
+        </div>
+
+        <!-- Right: Steps -->
+        <div class="space-y-0">
+          {processSteps.map((step, i) => (
+            <div
+              class:list={[
+                "flex gap-8 py-8 border-b border-[#EBEBEF]",
+                i === 0 ? "border-t" : ""
+              ]}
+              data-reveal
+              data-delay={String(i + 1)}
+            >
+              <span class="text-xs font-bold text-[#D4D4D9] tabular-nums shrink-0 mt-1 w-6">{step.n}</span>
+              <div>
+                <h3 class="font-semibold text-[#0C0C0F] text-base mb-2">{step.title}</h3>
+                <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       FAQ  (2-col layout)
+  ════════════════════════════════════════════ -->
+  <section class="py-24 lg:py-32 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-16 lg:gap-24">
+
+        <!-- Left -->
+        <div data-reveal>
+          <p class="label mb-4">FAQ</p>
+          <h2
+            class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4"
+            style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;"
+          >
+            Häufige Fragen
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed mb-8">
+            Noch weitere Fragen? Schreiben Sie uns direkt.
+          </p>
+          <a href={`mailto:${SITE.email}`} class="btn btn-outline inline-flex text-sm">
+            {SITE.email}
+          </a>
+        </div>
+
+        <!-- Right: Accordions -->
+        <div class="space-y-2" data-reveal data-delay="2">
+          {faqs.map(faq => (
+            <details class="group bg-white rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors overflow-hidden">
+              <summary class="flex items-center justify-between gap-4 px-6 py-5 font-semibold text-[#0C0C0F] text-[15px] cursor-pointer select-none">
+                {faq.q}
+                <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform duration-200">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  </svg>
+                </span>
+              </summary>
+              <div class="px-6 pb-5 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-4">
+                {faq.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════
+       CTA
+  ════════════════════════════════════════════ -->
+  <section class="bg-[#0C0C0F] py-24 lg:py-32 relative overflow-hidden">
+    <div
+      class="absolute inset-0 pointer-events-none"
+      style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.2), transparent 60%);"
+    ></div>
+    <div class="container relative z-10">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2
+          class="font-bold text-white mb-5 tracking-[-0.03em]"
+          style="font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.05;"
+          data-reveal
+        >
+          Bereit, Ihren Umsatz zu steigern?
+        </h2>
+        <p class="text-[#9898A0] text-base lg:text-lg mb-10 max-w-md mx-auto" data-reveal data-delay="1">
+          Kostenloses Erstgespräch — wir analysieren Ihre Situation und zeigen konkrete Wachstumspotenziale.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3" data-reveal data-delay="2">
+          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] font-semibold rounded-xl">
+            Jetzt Gespräch buchen
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} class="btn btn-ghost py-3.5 px-7 text-[15px]">
+            {SITE.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
+
+<style>
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>

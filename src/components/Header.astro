@@ -1,47 +1,242 @@
 ---
-import { defaultLanguage, type LanguageCode } from '@/i18n/ui';
-import type { NavItem } from '@/layouts/BaseLayout.astro';
-import { type LanguageSelectorItem } from '@/lib/i18n-utils';
-import { getRelativeLocaleUrl } from 'astro:i18n';
-import { LanguageSelector } from './LanguageSelector.tsx';
-import Logo from './Logo.astro';
-import ThemeToggle from './ThemeToggle.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
 
-interface Props {
-  languagesForSelector: Array<LanguageSelectorItem>;
-  navItems: Array<NavItem>;
-}
-const { languagesForSelector, navItems } = Astro.props as Props;
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
 
-const currentLocale =
-  (Astro.currentLocale as LanguageCode | undefined) ?? defaultLanguage;
+const navLinks = [
+  { label: 'Leistungen', href: '/leistungen' },
+  { label: 'Referenzen', href: '/referenzen' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Über uns', href: '/ueber-uns' },
+  { label: 'Kontakt', href: '/kontakt' },
+];
+
+const services = [
+  { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen', iconName: 'shop' },
+  { label: 'Shopify Migration', href: '/leistungen/shopify-migration', iconName: 'migration' },
+  { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung', iconName: 'code' },
+];
 ---
 
 <header
-  class="py-6 border-b sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+  id="site-header"
+  class:list={[
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+    isHome ? 'header-on-dark' : 'header-scrolled',
+  ]}
 >
-  <nav class="mx-auto px-4 max-w-screen-2xl flex justify-between items-center">
-    <Logo />
-    <div class="flex items-center gap-x-5">
-      {
-        navItems.map((link) => (
-          <a
-            href={getRelativeLocaleUrl(currentLocale, link.href)}
-            class="font-medium text-muted-foreground transition-colors hover:text-foreground relative group"
+  <nav class="container">
+    <div class="flex items-center justify-between h-[64px]">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2.5 shrink-0 group" aria-label="Zula Studios – Startseite">
+        <div class="logo-mark w-8 h-8 rounded-lg flex items-center justify-center transition-all">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M3 4h14L10 16 3 4z" fill="currentColor" class="logo-icon"/>
+          </svg>
+        </div>
+        <span class="logo-text font-semibold text-[15px] tracking-[-0.01em] transition-colors">Zula Studios</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <ul class="hidden lg:flex items-center gap-1" role="list">
+        <!-- Leistungen Dropdown -->
+        <li class="relative group/nav">
+          <button
+            class="nav-link flex items-center gap-1 px-3.5 py-2 rounded-lg text-[14px] font-medium transition-all"
+            aria-haspopup="true"
+            aria-expanded="false"
           >
-            {link.label}
-            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-          </a>
-        ))
-      }
-    </div>
-    <div class="flex items-center gap-x-3">
-      <LanguageSelector
-        currentLocale={currentLocale}
-        languages={languagesForSelector}
-        client:load
-      />
-      <ThemeToggle />
+            Leistungen
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="transition-transform duration-200 group-hover/nav:rotate-180">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-200">
+            <div class="w-64 bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#EBEBEF] p-2 overflow-hidden">
+              {services.map(s => (
+                <a href={s.href} class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors group/item">
+                  <div class="w-7 h-7 rounded-lg bg-[#F5F5F8] group-hover/item:bg-white flex items-center justify-center shrink-0 transition-colors">
+                    <Icon name={s.iconName} size={14} class="text-[#44444F] group-hover/item:text-accent-600 transition-colors" strokeWidth={1.75} />
+                  </div>
+                  <span class="text-[13.5px] font-medium text-[#0C0C0F] group-hover/item:text-accent-600 transition-colors">{s.label}</span>
+                </a>
+              ))}
+              <div class="h-px bg-[#EBEBEF] mx-3 my-1"></div>
+              <a href="/leistungen" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors">
+                <span class="text-base w-7 text-center">→</span>
+                <span class="text-[13.5px] font-medium text-[#62626E]">Alle Leistungen</span>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        {navLinks.slice(1).map(link => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                'nav-link px-3.5 py-2 rounded-lg text-[14px] font-medium transition-all block',
+                pathname.startsWith(link.href) ? 'nav-link-active' : ''
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- CTA + Mobile toggle -->
+      <div class="flex items-center gap-3">
+        <a href="/projekt-starten" class="hidden lg:inline-flex btn btn-primary text-sm py-2.5 px-5">
+          Projekt starten
+        </a>
+
+        <!-- Mobile burger -->
+        <button
+          id="mobile-toggle"
+          class="lg:hidden p-2 rounded-lg transition-colors nav-mobile-btn"
+          aria-label="Menü öffnen"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Menü</span>
+          <svg id="icon-burger" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <svg id="icon-x" width="20" height="20" viewBox="0 0 20 20" fill="none" class="hidden">
+            <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden bg-white border-t border-[#EBEBEF]"
+  >
+    <div class="container py-4 space-y-1">
+      <a href="/leistungen" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Leistungen</a>
+      {services.map(s => (
+        <a href={s.href} class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[14px] text-[#62626E] hover:bg-[#F5F5F8] transition-colors pl-7">
+          <Icon name={s.iconName} size={15} class="text-[#88888F] shrink-0" strokeWidth={1.75} />
+          {s.label}
+        </a>
+      ))}
+      <a href="/referenzen" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Referenzen</a>
+      <a href="/blog" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Blog</a>
+      <a href="/ueber-uns" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Über uns</a>
+      <div class="pt-2">
+        <a href="/projekt-starten" class="btn btn-primary w-full justify-center">Projekt starten</a>
+      </div>
+    </div>
+  </div>
 </header>
+
+<style>
+  /* ── Default state (light pages) ── */
+  #site-header {
+    background: transparent;
+  }
+  .nav-link {
+    color: #44444F;
+  }
+  .nav-link:hover {
+    background: #F5F5F8;
+    color: #0C0C0F;
+  }
+  .nav-link-active {
+    color: #0284C7;
+    background: #F0F9FF;
+  }
+  .logo-mark {
+    background: #0C0C0F;
+    color: white;
+  }
+  .logo-text { color: #0C0C0F; }
+  .nav-mobile-btn { color: #0C0C0F; }
+  .nav-mobile-btn:hover { background: #F5F5F8; }
+
+  /* ── On dark hero (homepage before scroll) ── */
+  #site-header.header-on-dark .nav-link {
+    color: rgba(255, 255, 255, 0.65);
+  }
+  #site-header.header-on-dark .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+  #site-header.header-on-dark .nav-link-active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+  }
+  #site-header.header-on-dark .nav-link-active:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+  #site-header.header-on-dark .logo-text {
+    color: #ffffff;
+  }
+  #site-header.header-on-dark .logo-mark {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  #site-header.header-on-dark .logo-icon {
+    fill: white;
+  }
+  #site-header.header-on-dark .btn-primary {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  #site-header.header-on-dark .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  #site-header.header-on-dark .nav-mobile-btn {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ── Scrolled state ── */
+  #site-header.header-scrolled {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #EBEBEF;
+  }
+  #site-header.header-scrolled .nav-link {
+    color: #44444F;
+  }
+  #site-header.header-scrolled .logo-text { color: #0C0C0F; }
+  #site-header.header-scrolled .logo-mark {
+    background: #0C0C0F;
+    color: white;
+  }
+  #site-header.header-scrolled .btn-primary {
+    background: #0C0C0F;
+    color: white;
+    border: none;
+  }
+  #site-header.header-scrolled .btn-primary:hover { background: #1C1C25; }
+  #site-header.header-scrolled .nav-mobile-btn { color: #0C0C0F; }
+
+  /* ── Logo icon ── */
+  .logo-icon { fill: white; }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconBurger = document.getElementById('icon-burger');
+  const iconX = document.getElementById('icon-x');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden', isOpen);
+    iconBurger?.classList.toggle('hidden', !isOpen);
+    iconX?.classList.toggle('hidden', isOpen);
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>

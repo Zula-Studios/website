@@ -1,0 +1,189 @@
+---
+import { SITE } from '@/config/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  schema?: object | object[];
+  publishedDate?: string;
+  modifiedDate?: string;
+  author?: string;
+  breadcrumbs?: { name: string; url: string }[];
+  keywords?: string[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  canonical,
+  ogImage = SITE.ogImage,
+  ogType = 'website',
+  noindex = false,
+  schema,
+  publishedDate,
+  modifiedDate,
+  author,
+  breadcrumbs,
+  keywords = [],
+} = Astro.props;
+
+// ── Title: max 60 chars, site name always at the end ─────────────────────────
+const pageTitle = title
+  ? `${title} | ${SITE.name}`
+  : `${SITE.name} – ${SITE.tagline}`;
+
+// ── Canonical: always absolute ────────────────────────────────────────────────
+const canonicalURL = canonical
+  ? new URL(canonical, SITE.url).toString()
+  : new URL(Astro.url.pathname, SITE.url).toString();
+
+// ── OG Image: always absolute with dimensions ─────────────────────────────────
+const ogImageURL = new URL(ogImage, SITE.url).toString();
+const ogImageAlt = title ? `${title} – ${SITE.name}` : SITE.name;
+
+// ── Robots directive ──────────────────────────────────────────────────────────
+const robotsContent = noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// JSON-LD Schemas
+// Each is emitted as a separate <script> tag for cleaner parsing by Googlebot
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Organization (sitewide)
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE.url}/#organization`,
+  name: SITE.name,
+  url: SITE.url,
+  logo: {
+    '@type': 'ImageObject',
+    '@id': `${SITE.url}/#logo`,
+    url: new URL(SITE.logo, SITE.url).toString(),
+    caption: SITE.name,
+  },
+  email: SITE.email,
+  telephone: SITE.phone,
+  foundingDate: SITE.founded,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.city,
+    postalCode: SITE.address.zip,
+    addressCountry: SITE.address.country,
+  },
+  sameAs: Object.values(SITE.social).filter(Boolean),
+};
+
+// WebSite with SearchAction (sitewide)
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  name: SITE.name,
+  url: SITE.url,
+  publisher: { '@id': `${SITE.url}/#organization` },
+  inLanguage: 'de-DE',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE.url}/blog?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+// BreadcrumbList (page-specific)
+const breadcrumbSchema = breadcrumbs?.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: breadcrumbs.map((crumb, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: crumb.name,
+        item: new URL(crumb.url, SITE.url).toString(),
+      })),
+    }
+  : null;
+
+// Merge all page-level schemas passed via props
+const pageSchemas: object[] = Array.isArray(schema)
+  ? schema
+  : schema
+  ? [schema]
+  : [];
+---
+
+<!-- ═══════════════════════════════════════════════
+     PRIMARY META TAGS
+════════════════════════════════════════════════ -->
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+<meta name="robots" content={robotsContent} />
+<meta name="language" content="de" />
+<meta name="author" content={author ?? SITE.name} />
+{keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+
+<!-- Phone / email auto-detection prevention (avoids CLS on iOS) -->
+<meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+
+<!-- ═══════════════════════════════════════════════
+     GEO — Local SEO signals for Google Maps / local pack
+════════════════════════════════════════════════ -->
+<meta name="geo.region" content="DE-BE" />
+<meta name="geo.placename" content={SITE.address.city} />
+
+<!-- ═══════════════════════════════════════════════
+     OPEN GRAPH (Facebook / LinkedIn / WhatsApp)
+════════════════════════════════════════════════ -->
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:image:secure_url" content={ogImageURL} />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogImageAlt} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:locale:alternate" content="de_AT" />
+<meta property="og:locale:alternate" content="de_CH" />
+{publishedDate && <meta property="article:published_time" content={publishedDate} />}
+{modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
+{author && <meta property="article:author" content={author} />}
+
+<!-- ═══════════════════════════════════════════════
+     TWITTER / X CARD
+════════════════════════════════════════════════ -->
+<meta name="twitter:card" content="summary_large_image" />
+{SITE.twitterHandle && <meta name="twitter:site" content={SITE.twitterHandle} />}
+{SITE.twitterHandle && <meta name="twitter:creator" content={SITE.twitterHandle} />}
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
+
+<!-- ═══════════════════════════════════════════════
+     STRUCTURED DATA — separate <script> per schema
+     for cleaner Googlebot parsing
+════════════════════════════════════════════════ -->
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{breadcrumbSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+)}
+{pageSchemas.map(s => (
+  <script type="application/ld+json" set:html={JSON.stringify(s)} />
+))}

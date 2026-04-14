@@ -1,0 +1,182 @@
+---
+title: "Shopify SEO Guide 2025: So bringt Ihr Shop Google an die Spitze"
+description: "Der vollständige Shopify SEO Guide für 2025: Meta Tags, Schema.org, Core Web Vitals, technisches SEO und Content-Strategie – alles was Sie wissen müssen."
+publishedDate: "2025-02-15"
+modifiedDate: "2025-04-10"
+author: "Zula Studios Team"
+category: "SEO"
+tags: ["shopify", "seo", "google", "content", "core-web-vitals"]
+readingTime: 12
+featured: true
+---
+
+Guter SEO ist kein Geheimnis – es ist Handwerk. In diesem Guide zeigen wir Ihnen Schritt für Schritt, wie Sie Ihren Shopify-Shop für Google optimieren und nachhaltigen organischen Traffic aufbauen.
+
+## 1. Technisches SEO: Das Fundament
+
+Bevor Sie Texte schreiben oder Backlinks aufbauen, muss das technische Fundament stimmen.
+
+### Canonicale URLs & Duplicate Content
+
+Shopify erzeugt von Haus aus Duplicate-Content-Probleme: Produkte sind sowohl unter `/products/[handle]` als auch unter `/collections/[collection]/products/[handle]` erreichbar.
+
+**Lösung:** Shopify setzt seit 2023 automatisch Canonical-Tags auf die Haupt-Produkt-URL. Überprüfen Sie dies in Ihrem Theme:
+
+```liquid
+<link rel="canonical" href="{{ canonical_url }}" />
+```
+
+### Sitemap einreichen
+
+Shopify erstellt automatisch eine Sitemap unter `ihreshop.de/sitemap.xml`. Reichen Sie diese in der Google Search Console ein.
+
+### HTTPS & Core Web Vitals
+
+Shopify bietet kostenloses SSL inklusive. Für Core Web Vitals sind diese Metriken entscheidend:
+
+- **LCP (Largest Contentful Paint):** Ziel < 2,5 Sekunden
+- **FID / INP (Interaction to Next Paint):** Ziel < 200ms
+- **CLS (Cumulative Layout Shift):** Ziel < 0,1
+
+> **Tipp:** Das kostenlose Tool [PageSpeed Insights](https://pagespeed.web.dev/) gibt Ihnen eine kostenlose Analyse Ihrer Core Web Vitals.
+
+## 2. On-Page SEO für Produktseiten
+
+Produktseiten sind das Herzstück jedes E-Commerce-Shops. So optimieren Sie sie richtig:
+
+### Titel-Tags & Meta-Descriptions
+
+```liquid
+{% assign page_title = product.title | append: ' – ' | append: shop.name %}
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ product.description | strip_html | truncate: 155 }}" />
+```
+
+**Best Practices:**
+- Hauptkeyword am Anfang des Titels
+- Maximal 60 Zeichen für den Titel-Tag
+- 150–160 Zeichen für die Meta-Description
+- Einzigartiger Titel für jedes Produkt
+
+### Produktbeschreibungen mit Keyword-Intent
+
+Schreiben Sie für Menschen, nicht für Crawler. Beantworten Sie diese Fragen:
+1. Was ist das Produkt?
+2. Warum sollte ich es kaufen?
+3. Wie verwende ich es?
+4. Für wen ist es geeignet?
+
+**Keyword-Platzierung:**
+- H1: Hauptkeyword (wird meist automatisch aus dem Produkttitel generiert)
+- Erster Absatz: Hauptkeyword natürlich einbauen
+- H2-H3: LSI-Keywords (verwandte Begriffe)
+- Alt-Tags aller Bilder
+
+## 3. Schema.org für Shopify
+
+Schema.org-Markup hilft Google, Ihre Inhalte besser zu verstehen. Für E-Commerce sind diese Typen besonders wichtig:
+
+### Product Schema
+
+Shopify fügt automatisch Produkt-Schema ein – überprüfen Sie es mit dem [Rich Results Test](https://search.google.com/test/rich-results):
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Produktname",
+  "image": ["https://..."],
+  "description": "...",
+  "sku": "SKU123",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "EUR",
+    "price": "29.99",
+    "availability": "https://schema.org/InStock"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "127"
+  }
+}
+```
+
+### BreadcrumbList Schema
+
+Breadcrumbs verbessern die Navigation in den Suchergebnissen:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://ihreshop.de/" },
+    { "@type": "ListItem", "position": 2, "name": "Kategorie", "item": "https://ihreshop.de/collections/kategorie" },
+    { "@type": "ListItem", "position": 3, "name": "Produkt" }
+  ]
+}
+```
+
+## 4. Collection-Seiten optimieren
+
+Kategorie-Seiten (Collections in Shopify) sind oft die wertvollsten SEO-Seiten – aber werden häufig vernachlässigt.
+
+**Checkliste für Collection-Seiten:**
+- [ ] Einzigartiger, keyword-reicher Titel
+- [ ] Meta-Description mit Hauptkeyword und Call-to-Action
+- [ ] Einleitungstext (200–500 Wörter) mit relevanten Keywords
+- [ ] Facetten-Filter mit korrekten Canonical-Tags
+- [ ] Interne Verlinkung zu verwandten Collections
+
+**Beispiel-Struktur:**
+```
+/collections/herren-laufschuhe
+├── H1: Herren Laufschuhe – Für jeden Läufer das Richtige
+├── Einleitung (300 Wörter, keyword-reich)
+├── Produktgitter
+└── Footer-Text mit internen Links
+```
+
+## 5. Blog-Content als SEO-Multiplikator
+
+Ein aktiver Blog ist einer der besten SEO-Hebel für Shopify. So bauen Sie eine Content-Strategie auf:
+
+### Keyword-Recherche
+
+Nutzen Sie diese kostenlosen Tools:
+- **Google Search Console:** Für welche Keywords rankt Ihr Shop bereits?
+- **Google Suggest:** Was tippen Nutzer ein?
+- **AnswerThePublic:** Welche Fragen stellen Nutzer zu Ihren Themen?
+- **Ubersuggest (kostenlose Version):** Suchvolumen und Wettbewerb
+
+### Content-Typen mit hohem SEO-Potenzial
+
+1. **Vergleichsartikel:** "Produkt A vs. Produkt B"
+2. **How-To Guides:** "Wie wähle ich die richtige Laufschuhe?"
+3. **Listen:** "Die 10 besten..."
+4. **Saison-Content:** "Weihnachtsgeschenke für Sportler 2025"
+
+## 6. Backlinks & Off-Page SEO
+
+Qualitäts-Backlinks sind nach wie vor einer der stärksten Ranking-Faktoren.
+
+**Strategien für E-Commerce:**
+- Produkt-PR an Lifestyle-Blogger
+- Guest Posts in Fach-Publikationen
+- Branchenverzeichnisse & Awards
+- Kooperationen mit komplementären Shops
+- HARO (Help a Reporter Out) – Werden Sie als Experte zitiert
+
+## Zusammenfassung: Ihr SEO-Aktionsplan
+
+1. **Technisches Audit** – Sitemap, Canonicals, Core Web Vitals
+2. **Keyword-Mapping** – Jede Seite bekommt ihr Haupt-Keyword
+3. **On-Page-Optimierung** – Titel, Descriptions, H1s, Alt-Tags
+4. **Schema.org** – Product, BreadcrumbList, Organization
+5. **Content-Plan** – Monatlich 2–4 Blogartikel
+6. **Linkaufbau** – Kontinuierlich Qualitäts-Backlinks aufbauen
+
+---
+
+*Brauchen Sie Unterstützung bei der SEO-Optimierung Ihres Shopify-Shops? Unser Team hilft Ihnen gerne weiter. [Jetzt Kontakt aufnehmen](/kontakt)*
