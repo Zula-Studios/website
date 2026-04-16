@@ -150,6 +150,22 @@ const badge = serviceBadge[p.serviceType];
             <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Jahr</p>
             <p class="font-semibold text-[#0C0C0F] text-sm">{p.jahr}</p>
           </div>
+          {p.url && (
+            <div data-reveal>
+              <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Website</p>
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors group"
+              >
+                {p.url.replace('https://', '')}
+                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" class="opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
+                  <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          )}
           <div data-reveal>
             <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Tags</p>
             <div class="flex flex-wrap gap-1.5">

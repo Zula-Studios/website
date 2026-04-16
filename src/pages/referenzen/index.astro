@@ -16,15 +16,16 @@ const featured = projekte.filter(p => p.featured);
 const rest = projekte.filter(p => !p.featured);
 
 const stats = [
-  { value: '100+', label: 'Abgeschlossene Projekte' },
-  { value: '40+', label: 'Zufriedene Kunden' },
-  { value: '5', label: 'Jahre Erfahrung' },
+  { value: '10+', label: 'Abgeschlossene Projekte' },
+  { value: '20+', label: 'Zufriedene Kunden' },
+  { value: '10+', label: 'Jahre Erfahrung' },
   { value: '98%', label: 'Weiterbeschäftigungsquote' },
 ];
 
 const allServices: { key: ServiceType | 'all'; label: string }[] = [
   { key: 'all', label: 'Alle' },
-  { key: 'shop', label: 'Shop erstellt' },
+  { key: 'shop', label: 'Shopify' },
+  { key: 'website', label: 'Website' },
   { key: 'migration', label: 'Migration' },
   { key: 'entwicklung', label: 'Individuelle Entwicklung' },
 ];
@@ -108,19 +109,20 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
   <section class="bg-white py-6 lg:py-8" id="projekte">
     <div class="container space-y-5">
       {featured.map((p, i) => (
-        <a
-          href={`/referenzen/${p.slug}`}
-          class="project-card group grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-0 rounded-2xl overflow-hidden border border-[#EBEBEF] hover:border-[#D4D4D9] hover:shadow-md transition-all"
+        <div
+          class="project-card group relative grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-0 rounded-2xl overflow-hidden border border-[#EBEBEF] hover:border-[#D4D4D9] hover:shadow-md transition-all"
           data-service={p.serviceType}
           data-reveal
           data-delay={String(i + 1)}
         >
+          {/* Cover link for card navigation */}
+          <a href={`/referenzen/${p.slug}`} class="absolute inset-0 z-10" aria-label={`Case Study ${p.client} lesen`}></a>
+
           <!-- Visual -->
           <div
             class="relative flex flex-col justify-between p-8 lg:p-12 min-h-[280px] lg:min-h-[360px]"
             style={`background: ${p.cardBg};`}
           >
-            <!-- Large monogram bg -->
             <div
               class="absolute bottom-0 right-0 font-bold leading-none select-none pointer-events-none"
               style={`font-size: clamp(8rem, 18vw, 14rem); letter-spacing: -0.05em; color: ${p.cardAccent}; opacity: 0.12; line-height: 0.85; transform: translate(8%, 8%);`}
@@ -129,7 +131,7 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
               {p.clientKurz}
             </div>
 
-            <div class="relative z-10">
+            <div class="relative">
               <span
                 class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md mb-4"
                 style={`background: rgba(255,255,255,0.12); color: #ffffff; border: 1px solid rgba(255,255,255,0.18);`}
@@ -139,14 +141,14 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
               <div class="font-semibold text-white/70 text-sm">{p.industry}</div>
             </div>
 
-            <div class="relative z-10">
+            <div class="relative">
               <div class="font-bold text-white text-2xl lg:text-3xl tracking-[-0.02em] mb-1">{p.client}</div>
               <div class="text-white/55 text-xs">{p.jahr}</div>
             </div>
           </div>
 
           <!-- Content -->
-          <div class="p-8 lg:p-12 bg-white flex flex-col justify-between">
+          <div class="relative p-8 lg:p-12 bg-white flex flex-col justify-between">
             <div>
               <p class="text-[#0C0C0F] text-lg lg:text-xl font-semibold tracking-[-0.01em] leading-snug mb-4 group-hover:text-accent-600 transition-colors">
                 {p.tagline}
@@ -178,10 +180,25 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span class="text-[11px] text-[#AEAEB5]">{p.jahr}</span>
+              <div class="flex items-center gap-3">
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="relative z-20 text-[11px] font-medium text-[#88888F] hover:text-accent-600 transition-colors flex items-center gap-1"
+                  >
+                    Live ansehen
+                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none">
+                      <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                )}
+                <span class="text-[11px] text-[#AEAEB5]">{p.jahr}</span>
+              </div>
             </div>
           </div>
-        </a>
+        </div>
       ))}
     </div>
   </section>
@@ -193,13 +210,15 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
     <div class="container">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {rest.map((p, i) => (
-          <a
-            href={`/referenzen/${p.slug}`}
-            class="project-card group rounded-2xl border border-[#EBEBEF] overflow-hidden hover:border-[#D4D4D9] hover:shadow-md transition-all flex flex-col"
+          <div
+            class="project-card group relative rounded-2xl border border-[#EBEBEF] overflow-hidden hover:border-[#D4D4D9] hover:shadow-md transition-all flex flex-col"
             data-service={p.serviceType}
             data-reveal
             data-delay={String((i % 3) + 1)}
           >
+            {/* Cover link for card navigation */}
+            <a href={`/referenzen/${p.slug}`} class="absolute inset-0 z-10" aria-label={`Case Study ${p.client} lesen`}></a>
+
             <!-- Visual -->
             <div
               class="relative h-44 p-6 flex flex-col justify-between overflow-hidden"
@@ -227,7 +246,7 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
             </div>
 
             <!-- Card body -->
-            <div class="p-6 flex flex-col flex-grow">
+            <div class="relative p-6 flex flex-col flex-grow">
               <p class="font-semibold text-[#0C0C0F] text-[15px] tracking-[-0.01em] leading-snug mb-3 group-hover:text-accent-600 transition-colors flex-grow">
                 {p.tagline}
               </p>
@@ -249,10 +268,25 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
                     <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </span>
-                <span class="text-[10.5px] text-[#D4D4D9]">{p.jahr}</span>
+                <div class="flex items-center gap-2.5">
+                  {p.url && (
+                    <a
+                      href={p.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="relative z-20 text-[10.5px] font-medium text-[#AEAEB5] hover:text-accent-600 transition-colors flex items-center gap-1"
+                    >
+                      Live
+                      <svg width="9" height="9" viewBox="0 0 14 14" fill="none">
+                        <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  )}
+                  <span class="text-[10.5px] text-[#D4D4D9]">{p.jahr}</span>
+                </div>
               </div>
             </div>
-          </a>
+          </div>
         ))}
       </div>
     </div>
@@ -266,7 +300,7 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
       <div class="flex flex-col lg:flex-row gap-10 lg:gap-20 items-start lg:items-center" data-reveal>
         <div class="shrink-0">
           <p class="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#AEAEB5] mb-2">Kunden</p>
-          <p class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em]">40+ Unternehmen</p>
+          <p class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em]">20+ Unternehmen</p>
           <p class="text-[#88888F] text-sm mt-1">vertrauen auf Zula Studios</p>
         </div>
         <div class="h-px lg:h-16 w-full lg:w-px bg-[#EBEBEF] shrink-0"></div>

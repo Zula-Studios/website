@@ -45,7 +45,7 @@ const faqSchema = {
 };
 
 const marqueeItems = [
-  'Shopify Partner', '100+ Projekte', 'Made in Germany', '5 Jahre Erfahrung',
+  'Shopify Partner', '10+ Projekte', 'Made in Germany', '10+ Jahre Erfahrung',
   'DSGVO-konform', '98% Kundenzufriedenheit', 'Shopify Plus', 'Zero-Downtime',
 ];
 
@@ -117,7 +117,7 @@ const faqs = [
 
 <BaseLayout
   title="Shopify Studio Hamburg – Shops & Migration"
-  description="Professionelle Shopify-Entwicklung in Hamburg: Custom Shops, Migrationen & Apps mit Laravel, Next.js & Astro. 100+ Projekte, 5 Jahre Erfahrung. Kostenloses Erstgespräch anfragen."
+  description="Professionelle Shopify-Entwicklung in Hamburg: Custom Shops, Migrationen & Apps mit Laravel, Next.js & Astro. 10+ Projekte, 10+ Jahre Erfahrung. Kostenloses Erstgespräch anfragen."
   schema={[localBusinessSchema, faqSchema]}
   darkHero={true}
 >
@@ -207,10 +207,10 @@ const faqs = [
           style="animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s both; min-width: 200px;"
         >
           {[
-            { value: '100+', label: 'Shopify Projekte' },
+            { value: '10+', label: 'Shopify Projekte' },
             { value: '98%',  label: 'Kundenzufriedenheit' },
             { value: '5 J.', label: 'Erfahrung' },
-            { value: '40+',  label: 'Kunden' },
+            { value: '20+',  label: 'Kunden' },
           ].map((stat, i) => (
             <div class:list={["px-7 py-6", i < 3 ? "border-b border-[#1C1C25]" : ""]}>
               <div class="font-bold text-white text-2xl tracking-[-0.03em] leading-none mb-1">{stat.value}</div>
@@ -226,7 +226,7 @@ const faqs = [
         style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.5s both"
       >
         {[
-          { value: '100+', label: 'Projekte' },
+          { value: '10+', label: 'Projekte' },
           { value: '98%',  label: 'Zufriedenheit' },
           { value: '5 J.', label: 'Erfahrung' },
         ].map(stat => (
@@ -324,10 +324,10 @@ const faqs = [
     <div class="container">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-[#1C1C25] rounded-2xl overflow-hidden">
         {[
-          { value: '100+', label: 'Shopify Projekte', sub: 'abgeschlossen' },
+          { value: '10+', label: 'Shopify Projekte', sub: 'abgeschlossen' },
           { value: '98%', label: 'Kundenzufrieden-', sub: 'heit' },
-          { value: '5+', label: 'Jahre', sub: 'Erfahrung' },
-          { value: '40+', label: 'Zufriedene', sub: 'Kunden' },
+          { value: '10+', label: 'Jahre', sub: 'Erfahrung' },
+          { value: '20+', label: 'Zufriedene', sub: 'Kunden' },
         ].map((stat, i) => (
           <div
             class:list={[

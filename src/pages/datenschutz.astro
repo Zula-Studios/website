@@ -1,0 +1,197 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+---
+
+<BaseLayout
+  title="Datenschutzerklärung"
+  description="Datenschutzerklärung von Zula Studios gemäß DSGVO."
+  noindex={true}
+>
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="container max-w-3xl">
+
+      <h1 class="font-bold text-[#0C0C0F] text-3xl lg:text-4xl tracking-[-0.03em] mb-2">Datenschutzerklärung</h1>
+      <p class="text-[#88888F] text-sm mb-12">Stand: April 2026 · Gemäß DSGVO, TTDSG und TMG</p>
+
+      <div class="space-y-12 text-[#44444F] leading-relaxed text-[15px]">
+
+        <!-- 1. Verantwortlicher -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">1. Verantwortlicher</h2>
+          <p>
+            Serdar Sahbazoglu – Zula Studios<br />
+            {SITE.address.street}<br />
+            {SITE.address.zip} {SITE.address.city}<br />
+            E-Mail: <a href={`mailto:${SITE.email}`} class="text-accent-600 hover:underline">{SITE.email}</a>
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 2. Allgemeines -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">2. Allgemeines zur Datenverarbeitung</h2>
+          <p class="mb-4">
+            Wir nehmen den Schutz Ihrer persönlichen Daten sehr ernst und behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.
+          </p>
+          <p>
+            Die Nutzung unserer Website ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (z. B. Name, E-Mail-Adresse) erhoben werden, erfolgt dies stets auf freiwilliger Basis.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 3. Hosting -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">3. Hosting</h2>
+          <p class="mb-4">
+            Diese Website wird bei <strong class="text-[#0C0C0F]">Vercel Inc.</strong> (340 Pine Street, Suite 801, San Francisco, CA 94104, USA) gehostet. Beim Aufruf unserer Website werden automatisch folgende Daten in sogenannten Server-Log-Dateien gespeichert:
+          </p>
+          <ul class="list-disc list-inside space-y-1 mb-4 text-[14px]">
+            <li>IP-Adresse des anfragenden Rechners</li>
+            <li>Datum und Uhrzeit des Zugriffs</li>
+            <li>Name und URL der abgerufenen Datei</li>
+            <li>Browsertyp und -version, Betriebssystem</li>
+            <li>Referrer-URL (zuvor besuchte Seite)</li>
+          </ul>
+          <p>
+            Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und funktionsfähigen Betrieb der Website). Die Daten werden nach spätestens 30 Tagen gelöscht. Mit Vercel besteht ein Auftragsverarbeitungsvertrag gemäß Art. 28 DSGVO. Weitere Informationen: <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">vercel.com/legal/privacy-policy</a>.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 4. Kontaktformular -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">4. Kontaktformular & E-Mail-Kontakt</h2>
+          <p class="mb-4">
+            Wenn Sie uns per Kontaktformular oder E-Mail Anfragen zukommen lassen, werden Ihre Angaben (Name, E-Mail-Adresse, Nachricht) zum Zweck der Bearbeitung der Anfrage bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+          </p>
+          <p>
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen). Die Daten werden gelöscht, sobald Ihre Anfrage abschließend bearbeitet wurde und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 5. Cookies -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">5. Cookies</h2>
+          <p class="mb-4">
+            Unsere Website verwendet Cookies – kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Wir unterscheiden zwischen:
+          </p>
+          <ul class="list-disc list-inside space-y-2 mb-4 text-[14px]">
+            <li><strong class="text-[#0C0C0F]">Notwendige Cookies:</strong> Technisch erforderlich für den Betrieb der Website. Kein Einverständnis erforderlich (§ 25 Abs. 2 TTDSG).</li>
+            <li><strong class="text-[#0C0C0F]">Marketing-Cookies:</strong> Werden nur mit Ihrer ausdrücklichen Einwilligung gesetzt (§ 25 Abs. 1 TTDSG, Art. 6 Abs. 1 lit. a DSGVO). Dazu zählen Cookies von Google Ads und Meta (Facebook/Instagram).</li>
+          </ul>
+          <p>
+            Sie können Cookies in Ihrem Browser jederzeit löschen oder deaktivieren. Dies kann jedoch die Funktionalität der Website einschränken.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 6. Google Ads -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">6. Google Ads & Google Remarketing</h2>
+          <p class="mb-4">
+            Diese Website nutzt <strong class="text-[#0C0C0F]">Google Ads</strong>, einen Online-Werbedienst der Google Ireland Limited (Gordon House, Barrow Street, Dublin 4, Irland). Wir nutzen Google Ads, um auf unsere Angebote durch Werbeanzeigen in der Google-Suche und im Google Display-Netzwerk aufmerksam zu machen.
+          </p>
+          <p class="mb-4">
+            Im Rahmen von Google Ads setzen wir das <strong class="text-[#0C0C0F]">Conversion-Tracking</strong> ein: Wenn Sie über eine Google-Anzeige auf unsere Website gelangen und eine definierte Aktion ausführen (z. B. Kontaktformular absenden), wird ein Cookie auf Ihrem Gerät gesetzt. Dieses Cookie ermöglicht es uns, den Erfolg unserer Werbeanzeigen zu messen.
+          </p>
+          <p class="mb-4">
+            Zusätzlich verwenden wir <strong class="text-[#0C0C0F]">Google Remarketing</strong> (auch: Google Retargeting), um Besuchern unserer Website nach ihrem Besuch interessenbezogene Werbeanzeigen auf anderen Websites anzuzeigen. Dazu wird ein Cookie auf Ihrem Gerät gesetzt, das Ihr Surfverhalten aufzeichnet.
+          </p>
+          <p class="mb-4">
+            Die erhobenen Informationen können an Server von Google in den USA übertragen werden. Google LLC ist nach dem EU-US Data Privacy Framework zertifiziert (Beschluss der EU-Kommission vom 10.07.2023), sodass ein angemessenes Datenschutzniveau gewährleistet ist.
+          </p>
+          <p class="mb-4">
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Sie können Ihre Einwilligung jederzeit über unsere Cookie-Einstellungen widerrufen.
+          </p>
+          <p>
+            Informationen zur Datennutzung durch Google: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">policies.google.com/privacy</a><br />
+            Opt-out für personalisierte Werbung: <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">adssettings.google.com</a>
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 7. Meta Ads -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">7. Meta Ads (Facebook & Instagram)</h2>
+          <p class="mb-4">
+            Diese Website verwendet den <strong class="text-[#0C0C0F]">Meta Pixel</strong> (ehemals Facebook Pixel), ein Analyse-Tool der Meta Platforms Ireland Limited (4 Grand Canal Square, Dublin 2, Irland). Mit dem Meta Pixel können wir die Aktionen von Nutzern verfolgen, nachdem diese durch Klick auf eine Facebook- oder Instagram-Werbeanzeige auf unsere Website weitergeleitet wurden.
+          </p>
+          <p class="mb-4">
+            Folgende Daten können dabei verarbeitet werden:
+          </p>
+          <ul class="list-disc list-inside space-y-1 mb-4 text-[14px]">
+            <li>Besuchte Seiten (Page Views)</li>
+            <li>Ausgeführte Aktionen (z. B. Formularabsendungen)</li>
+            <li>Geräteinformationen und Browser-Daten</li>
+            <li>IP-Adresse (anonymisiert)</li>
+          </ul>
+          <p class="mb-4">
+            Diese Daten können an Server von Meta in den USA übertragen werden. Meta Platforms Inc. ist nach dem EU-US Data Privacy Framework zertifiziert.
+          </p>
+          <p class="mb-4">
+            Wir nutzen den Meta Pixel zudem für <strong class="text-[#0C0C0F]">Custom Audiences</strong> (Zielgruppen aus Website-Besuchern) und <strong class="text-[#0C0C0F]">Lookalike Audiences</strong> sowie für das gezielte Ausspielen von Anzeigen auf Facebook und Instagram (Retargeting).
+          </p>
+          <p class="mb-4">
+            Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung). Sie können Ihre Einwilligung jederzeit über unsere Cookie-Einstellungen widerrufen.
+          </p>
+          <p>
+            Datenschutzrichtlinie von Meta: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">facebook.com/privacy/policy</a><br />
+            Opt-out für Facebook-Werbung: <a href="https://www.facebook.com/settings?tab=ads" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">facebook.com/settings?tab=ads</a>
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 8. Externe Links / Drittdienste -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">8. Externe Dienste & Fonts</h2>
+          <p class="mb-4">
+            <strong class="text-[#0C0C0F]">Google Fonts:</strong> Diese Website lädt Schriftarten von den Servern von Google Ireland Limited. Dabei wird Ihre IP-Adresse an Google übertragen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">policies.google.com/privacy</a>.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 9. Rechte der betroffenen Personen -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">9. Ihre Rechte</h2>
+          <p class="mb-4">Sie haben gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten:</p>
+          <ul class="list-disc list-inside space-y-2 mb-4 text-[14px]">
+            <li><strong class="text-[#0C0C0F]">Auskunftsrecht</strong> (Art. 15 DSGVO): Sie können Auskunft über die von uns verarbeiteten Daten verlangen.</li>
+            <li><strong class="text-[#0C0C0F]">Berichtigungsrecht</strong> (Art. 16 DSGVO): Sie können die Berichtigung unrichtiger Daten verlangen.</li>
+            <li><strong class="text-[#0C0C0F]">Recht auf Löschung</strong> (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</li>
+            <li><strong class="text-[#0C0C0F]">Recht auf Einschränkung</strong> (Art. 18 DSGVO): Sie können die Einschränkung der Verarbeitung verlangen.</li>
+            <li><strong class="text-[#0C0C0F]">Widerspruchsrecht</strong> (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen, sofern diese auf berechtigtem Interesse basiert.</li>
+            <li><strong class="text-[#0C0C0F]">Recht auf Datenübertragbarkeit</strong> (Art. 20 DSGVO): Sie können Ihre Daten in einem gängigen Format erhalten.</li>
+            <li><strong class="text-[#0C0C0F]">Widerruf von Einwilligungen</strong> (Art. 7 Abs. 3 DSGVO): Sie können erteilte Einwilligungen jederzeit mit Wirkung für die Zukunft widerrufen.</li>
+          </ul>
+          <p class="mb-4">
+            Um Ihre Rechte auszuüben, wenden Sie sich bitte per E-Mail an: <a href={`mailto:${SITE.email}`} class="text-accent-600 hover:underline">{SITE.email}</a>
+          </p>
+          <p>
+            Außerdem haben Sie das Recht, sich bei der zuständigen Aufsichtsbehörde zu beschweren. Die zuständige Aufsichtsbehörde für Schleswig-Holstein ist das <strong class="text-[#0C0C0F]">Unabhängige Landeszentrum für Datenschutz Schleswig-Holstein (ULD)</strong>, Holstenstraße 98, 24103 Kiel, <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener noreferrer" class="text-accent-600 hover:underline">www.datenschutzzentrum.de</a>.
+          </p>
+        </div>
+
+        <hr class="border-[#EBEBEF]" />
+
+        <!-- 10. Aktualität -->
+        <div>
+          <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">10. Aktualität und Änderung dieser Datenschutzerklärung</h2>
+          <p>
+            Diese Datenschutzerklärung ist aktuell gültig und hat den Stand April 2026. Durch die Weiterentwicklung unserer Website und Angebote oder aufgrund geänderter gesetzlicher bzw. behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung zu ändern. Die jeweils aktuelle Datenschutzerklärung kann jederzeit auf dieser Seite von Ihnen abgerufen werden.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

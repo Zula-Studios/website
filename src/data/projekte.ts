@@ -1,4 +1,4 @@
-export type ServiceType = 'migration' | 'shop' | 'entwicklung';
+export type ServiceType = 'migration' | 'shop' | 'entwicklung' | 'website';
 
 export interface Projekt {
   slug: string;
@@ -16,6 +16,7 @@ export interface Projekt {
   metrics: { value: string; label: string }[];
   tags: string[];
   testimonial?: { quote: string; name: string; role: string };
+  url?: string;
   featured: boolean;
   // Visual: used as background color for the project card visual
   cardBg: string;
@@ -24,195 +25,184 @@ export interface Projekt {
 
 export const projekte: Projekt[] = [
   {
-    slug: 'techfashion-shopify-migration',
-    client: 'TechFashion GmbH',
-    clientKurz: 'TF',
-    industry: 'Mode & Lifestyle',
-    service: 'Shopify Migration',
-    serviceType: 'migration',
-    jahr: '2024',
-    tagline: 'WooCommerce → Shopify Plus. Null Downtime. Null Ranking-Verlust.',
-    description:
-      'TechFashion betrieb einen langsamen WooCommerce-Shop mit wachsenden Performance-Problemen und hohem Wartungsaufwand. Ziel war eine vollständige Migration zu Shopify Plus mit Erhalt aller SEO-Rankings.',
-    challenge:
-      'Der bestehende WooCommerce-Shop mit über 3.200 Produkten, 18.000 Kundendaten und 5 Jahren Bestellhistorie war dauerhaft überlastet. Plugin-Konflikte führten zu regelmäßigen Ausfällen, während die Ladezeit auf über 7 Sekunden gestiegen war.',
-    solution:
-      'Wir entwickelten einen stufenweisen Migrationsplan: Parallel zum laufenden WooCommerce-Shop bauten wir den neuen Shopify Plus Store auf. Alle 3.200 Produkte, Kundendaten und die Bestellhistorie wurden automatisiert und manuell geprüft migriert. 100% der bestehenden URLs wurden per 301-Redirect übergeleitet.',
-    resultText:
-      'Der neue Shop war von Tag 1 schneller, sicherer und skalierbarer. Die Conversion Rate stieg innerhalb von 6 Wochen um 18%. Google Search Console zeigte keine Ranking-Verluste.',
-    metrics: [
-      { value: '+18%', label: 'Conversion Rate' },
-      { value: '-71%', label: 'Ladezeit' },
-      { value: '0', label: 'Tage Downtime' },
-      { value: '100%', label: 'SEO-Rankings erhalten' },
-    ],
-    tags: ['Shopify Plus', 'Migration', 'WooCommerce', 'SEO', '3.200 Produkte'],
-    testimonial: {
-      quote:
-        'Zula Studios hat unseren WooCommerce-Shop in Rekordzeit zu Shopify Plus migriert – ohne einen einzigen Tag Downtime. Die Conversion Rate hat sich innerhalb von Wochen spürbar verbessert.',
-      name: 'Markus Weber',
-      role: 'CEO, TechFashion GmbH',
-    },
-    featured: true,
-    cardBg: '#0C0C0F',
-    cardAccent: '#0284C7',
-  },
-  {
-    slug: 'naturkosmetik-berlin-shopify-shop',
-    client: 'Naturkosmetik Berlin',
-    clientKurz: 'NB',
-    industry: 'Beauty & Wellness',
-    service: 'Shopify Shop erstellen',
+    slug: 'acos-paris-shopify-shop',
+    client: 'Acos Paris',
+    clientKurz: 'AP',
+    industry: 'Friseur & Beauty B2B',
+    service: 'Full-Service Shopify',
     serviceType: 'shop',
     jahr: '2024',
-    tagline: 'Von 0 auf Shopify: Custom Theme, Subscription Commerce, Internationalisierung.',
+    tagline: 'Von null auf Vollgas: Shop-Design, Entwicklung, Google & Meta Ads — komplett aus einer Hand.',
     description:
-      'Naturkosmetik Berlin wollte den Sprung von stationärem Handel in den E-Commerce wagen. Wir entwickelten einen vollständig maßgeschneiderten Shopify-Shop mit Subscription-Commerce und mehrsprachiger Auslieferung.',
+      'Acos Paris ist ein europäischer Anbieter von Friseurbedarf, Salonmöbeln und Haarpflegeprodukten. Wir übernahmen das gesamte Projekt von A bis Z: vom Shop-Design über die technische Umsetzung auf Shopify bis hin zu laufenden Google- und Meta-Ads-Kampagnen.',
     challenge:
-      'Das Unternehmen hatte keinerlei Online-Präsenz und benötigte eine Lösung, die sowohl das Markenimage widerspiegelt als auch Abo-Modelle und den EU-Markt von Anfang an unterstützt.',
+      'Acos Paris startete ohne Online-Präsenz und benötigte nicht nur einen Shop, sondern eine komplette digitale Strategie. B2B-Karton-Bestellungen für Salons, ein breites Sortiment aus über 10 Marken sowie Salonmöbel mit hohen Warenkorbwerten mussten nahtlos abgebildet werden — und von Anfang an mit gezieltem Paid Traffic bespielt werden.',
     solution:
-      'Custom Shopify Theme entwickelt von Grund auf. Integration von ReCharge für Subscription Commerce. Shopify Markets für DE/AT/CH mit automatischer Währungsanpassung. Vollständige SEO-Optimierung mit strukturierten Daten für alle Produktseiten.',
+      'Komplette Umsetzung von A–Z: Konzept & UI/UX-Design, Shopify-Entwicklung mit strukturierter Kollektion-Architektur (Salonmöbel, Werkzeuge, Haarpflege), B2B-Karton-Kategorie für Großbestellungen sowie tägliche Deal-Sektionen. Parallel dazu Aufbau und Management der Google Shopping- & Search-Kampagnen sowie Meta-Ads (Facebook & Instagram) für den europäischen Markt.',
     resultText:
-      'Innerhalb der ersten drei Monate nach Launch überstieg der Online-Umsatz die gesetzten Ziele um 40%. Der organische Traffic wuchs durch konsequente SEO-Umsetzung monatlich um 15–20%.',
+      'Vom ersten Tag an brachten die Paid-Kampagnen qualifizierten Traffic in den neuen Shop. Google Shopping und Meta Ads spielten zielgruppengenau sowohl Endkunden als auch professionelle Salons an — mit messbaren Ergebnissen im Umsatz und bei den B2B-Großbestellungen.',
     metrics: [
-      { value: '+105%', label: 'Organischer Traffic (6 Mo.)' },
-      { value: '+40%', label: 'Umsatz über Ziel' },
-      { value: '4.8/5', label: 'Kundenbewertung' },
-      { value: '3', label: 'Märkte (DE/AT/CH)' },
+      { value: 'A–Z', label: 'Design bis Live-Betrieb' },
+      { value: 'Google', label: 'Shopping & Search Ads' },
+      { value: 'Meta', label: 'Facebook & Instagram Ads' },
+      { value: 'EU', label: 'Europa­weiter Markt' },
     ],
-    tags: ['Custom Theme', 'Shopify Markets', 'Subscription', 'SEO', 'Internationalisierung'],
-    testimonial: {
-      quote:
-        'Der Shop übertrifft alle Erwartungen. Die Conversion Rate hat sich in den ersten drei Monaten verdoppelt und unsere Kunden lieben das Design.',
-      name: 'Sandra Koch',
-      role: 'Gründerin, Naturkosmetik Berlin',
-    },
+    tags: ['Shopify', 'Full-Service', 'Google Ads', 'Meta Ads', 'UI/UX Design', 'B2B', 'Salonmöbel', 'Europa-Versand'],
+    url: 'https://acosparis.com',
     featured: true,
-    cardBg: '#0A1F12',
-    cardAccent: '#16A34A',
+    cardBg: 'linear-gradient(135deg, #1A0A00 0%, #0D0D0D 100%)',
+    cardAccent: '#C9A84C',
   },
   {
-    slug: 'sportworld-custom-app',
-    client: 'SportWorld AG',
-    clientKurz: 'SW',
-    industry: 'Sport & Outdoor',
-    service: 'Individuelle Entwicklung',
-    serviceType: 'entwicklung',
-    jahr: '2023',
-    tagline: 'Custom Fulfillment-App: Shopify + ERP-Integration in Echtzeit.',
+    slug: 'hochform-website',
+    client: 'HOCHFORM GmbH',
+    clientKurz: 'HF',
+    industry: 'Gebäudereinigung',
+    service: 'Website & SEO',
+    serviceType: 'website',
+    jahr: '2025',
+    tagline: 'Professioneller Web-Auftritt für ISO-zertifiziertes Reinigungsunternehmen — mehr Anfragen, mehr Aufträge.',
     description:
-      'SportWorld AG benötigte eine Echtzeit-Synchronisation zwischen ihrem Shopify Plus Store und dem SAP-ERP-System für Lager, Bestellungen und Kundenpreise.',
+      'HOCHFORM GmbH ist ein professionelles Reinigungsunternehmen in Hamburg und Norderstedt mit drei ISO-Zertifizierungen (9001, 14001, 45001). Wir entwickelten einen modernen, conversion-optimierten Website-Auftritt, der Vertrauen schafft und Neukunden gewinnt.',
     challenge:
-      'Bestehende Shopify-Apps konnten die komplexen B2B-Preislisten und das SAP-basierte Lagerverwaltungssystem nicht abbilden. Manuelle Datenpflege kostete täglich mehrere Stunden Arbeitszeit.',
+      'Als ISO-zertifiziertes Unternehmen fehlte HOCHFORM ein digitaler Auftritt, der das professionelle Niveau der Dienstleistungen widerspiegelt. 12 verschiedene Reinigungsleistungen mussten strukturiert und für Suchmaschinen optimiert dargestellt werden, ohne den Besucher zu überfordern.',
     solution:
-      'Entwicklung einer Private Shopify App mit bidirektionaler SAP-Anbindung. Echtzeit-Bestandssync, automatische Preislistenübergabe für B2B-Kunden, Custom Order-Routing zu den richtigen Fulfillment-Centern.',
+      'Entwicklung einer modernen Multi-Service-Website mit klarer Navigationsstruktur für alle 12 Leistungsseiten (Büro-, Gebäude-, Glas-, Industriereinigung und mehr). Integration der drei ISO-Zertifikate als Vertrauenssignale. Online-Buchungsformular für direkte Terminanfragen. Lokale SEO-Optimierung für Hamburg & Norderstedt.',
     resultText:
-      'Die manuelle Datenpflege wurde vollständig eliminiert. Die Fehlerquote bei Bestellungen sank auf nahezu null. Das Team spart täglich über 3 Stunden Arbeitszeit.',
+      'Der neue Auftritt positioniert HOCHFORM als klaren Qualitätsführer in der Region. Die ISO-Zertifikate als prominentes Design-Element erhöhen die Abschlussquote bei B2B-Anfragen spürbar.',
     metrics: [
-      { value: '0', label: 'Manuelle Datenpflege' },
-      { value: '-94%', label: 'Bestellfehler' },
-      { value: '3+ Std.', label: 'Zeitersparnis/Tag' },
-      { value: '<1s', label: 'Sync-Latenz' },
+      { value: '3', label: 'ISO-Zertifikate integriert' },
+      { value: '12', label: 'Leistungsseiten' },
+      { value: 'B2B', label: 'Fokus Gewerbe­kunden' },
+      { value: 'lokal', label: 'SEO Hamburg & Norderstedt' },
     ],
-    tags: ['Custom App', 'SAP Integration', 'Shopify Plus', 'B2B', 'Echtzeit-Sync'],
-    testimonial: {
-      quote:
-        'Die Custom-App hat unsere Fulfillment-Prozesse revolutioniert. Sauberer Code, klare Kommunikation, top Ergebnis.',
-      name: 'Thomas Bauer',
-      role: 'E-Commerce Manager, SportWorld AG',
-    },
-    featured: false,
-    cardBg: '#0C1020',
-    cardAccent: '#6366F1',
-  },
-  {
-    slug: 'haushaltskoenig-shopify-plus',
-    client: 'Haushalts-König',
-    clientKurz: 'HK',
-    industry: 'Haushalts­waren',
-    service: 'Shopify Migration',
-    serviceType: 'migration',
-    jahr: '2023',
-    tagline: 'Magento 2 → Shopify Plus: 8.000 Produkte, null Kompromisse.',
-    description:
-      'Haushalts-König betrieb einen veralteten Magento 2-Shop mit hohen Hosting-Kosten und steigendem Entwicklungsaufwand. Die Migration zu Shopify Plus sollte Kosten senken und die Performance drastisch verbessern.',
-    challenge:
-      'Über 8.000 Produkte mit komplexen Varianten, 24.000 Kundendaten und ein stark angepasstes Magento-Theme machten die Migration besonders herausfordernd.',
-    solution:
-      'Schrittweise Produktmigration mit Custom-Script für die Magento-spezifischen Attribute. Neues Shopify Plus Theme mit allen gewohnten Funktionen. Vollständiges 301-Redirect-Set für alle 8.000+ Produkt-URLs.',
-    resultText:
-      'Die Hosting-Kosten sanken um 62%. Die Ladezeit verbesserte sich von 5,8s auf 1,4s. Keine messbaren SEO-Verluste in der Google Search Console.',
-    metrics: [
-      { value: '-62%', label: 'Hosting-Kosten' },
-      { value: '1.4s', label: 'Ladezeit (vorher: 5.8s)' },
-      { value: '8.200+', label: 'Produkte migriert' },
-      { value: '0', label: 'SEO-Rankingverluste' },
-    ],
-    tags: ['Shopify Plus', 'Magento 2', 'Migration', '8.000 Produkte', 'Performance'],
-    featured: false,
-    cardBg: '#1A0C00',
-    cardAccent: '#0284C7',
-  },
-  {
-    slug: 'velotec-headless-commerce',
-    client: 'VeloTec GmbH',
-    clientKurz: 'VT',
-    industry: 'Fahrrad & Mobilität',
-    service: 'Individuelle Entwicklung',
-    serviceType: 'entwicklung',
-    jahr: '2024',
-    tagline: 'Headless Shopify mit Astro: 98 PageSpeed. Überall.',
-    description:
-      'VeloTec wollte maximale Performance und vollständige Design-Freiheit. Wir entwickelten ein Headless-Commerce-Setup mit Astro als Frontend und der Shopify Storefront API.',
-    challenge:
-      'Standard-Shopify-Themes konnten die komplexe Produktkonfigurator-Logik nicht abbilden. Gleichzeitig war eine PageSpeed-Score von über 95 nicht verhandelbar.',
-    solution:
-      'Headless Commerce mit Astro + Shopify Storefront API. Custom Produktkonfigurator in Alpine.js. Server-Side Rendering für SEO. Shopify bleibt für Bestellungen, Inventory und Zahlungen zuständig.',
-    resultText:
-      'PageSpeed Score von 98 auf Mobile und Desktop. Der Produktkonfigurator steigerte die durchschnittliche Bestellgröße um 34%.',
-    metrics: [
-      { value: '98', label: 'PageSpeed Score' },
-      { value: '+34%', label: 'Ø Bestellwert' },
-      { value: '<0.1s', label: 'Time to First Byte' },
-      { value: '100%', label: 'Core Web Vitals' },
-    ],
-    tags: ['Headless', 'Astro', 'Storefront API', 'Performance', 'Konfigurator'],
-    featured: false,
-    cardBg: '#000F1A',
+    tags: ['Webdesign', 'SEO', 'B2B', 'Lokale SEO', 'Gebäudereinigung', 'ISO-zertifiziert'],
+    url: 'https://hochform-management.de',
+    featured: true,
+    cardBg: 'linear-gradient(135deg, #001A2C 0%, #0C1A24 100%)',
     cardAccent: '#0EA5E9',
   },
   {
-    slug: 'biolandhof-mayer-shop',
-    client: 'Biolandhof Mayer',
-    clientKurz: 'BM',
-    industry: 'Lebensmittel & Bio',
-    service: 'Shopify Shop erstellen',
-    serviceType: 'shop',
-    jahr: '2023',
-    tagline: 'Vom Hofladen ins Netz: Shopify mit Abo-Gemüsekiste.',
+    slug: 'easy-kfzgutachten-website',
+    client: 'Easy Gutachten',
+    clientKurz: 'EG',
+    industry: 'KFZ-Gutachten',
+    service: 'Astro.js Website & Leadgenerierung',
+    serviceType: 'website',
+    jahr: '2025',
+    tagline: 'Blitzschnelle Astro.js-Website für KFZ-Gutachter: perfekte Core Web Vitals, maximale Conversions.',
     description:
-      'Biolandhof Mayer wollte seine beliebte Gemüsekiste als Abo-Modell online anbieten. Wir entwickelten einen Shopify-Shop mit vollständig integriertem Subscription-Commerce.',
+      'Easy Gutachten (Mehmet Killi) ist ein unabhängiger KFZ-Sachverständiger in Halstenbek mit über 10 Jahren Erfahrung. Wir entwickelten eine performance- und conversion-optimierte Website mit Astro.js — mehrstufiges Online-Schadenformular, Blog und lokale SEO inklusive.',
     challenge:
-      'Keine technische Erfahrung, kleines Budget, aber hohe Anforderungen: wöchentliche Abo-Kisten, flexible Pausen, Liefergebiete per PLZ-Prüfung.',
+      'Als selbstständiger Gutachter fehlte eine digitale Präsenz, die Unfallgeschädigte in der Region abholt und zur Kontaktaufnahme führt. Die Website musste auf mobilen Geräten am Unfallort sofort laden, informieren und Vertrauen aufbauen — gleichzeitig in Google für alle relevanten Regionen sichtbar sein.',
     solution:
-      'Shopify Basic mit Custom Subscription-App (ReCharge), PLZ-basierte Liefergebiets-Prüfung im Checkout, automatische Abo-Reminder per E-Mail-Flow.',
+      'Umsetzung mit Astro.js für maximale Performance: statisches Rendering, minimales JavaScript, perfekte Core Web Vitals. 3-stufiges Schadensmelde-Formular (Schadensart → Fahrzeugdaten → Kontakt). Blog mit SEO-Artikeln (Totalschaden, Unfallrechte, etc.). Lokale SEO für Halstenbek, Pinneberg und Hamburg. Service-Unterseiten für jede Gutachtenart.',
     resultText:
-      '85% der Bestellungen kommen inzwischen über das Abo-Modell. Der Hof konnte sein Liefergebiet auf 3 Landkreise ausweiten.',
+      'Die Astro.js-Website lädt in unter einer Sekunde und erreicht Top-Werte in den Core Web Vitals. Das Online-Formular generiert kontinuierlich qualifizierte Neukundenanfragen aus der Region.',
     metrics: [
-      { value: '85%', label: 'Anteil Abo-Bestellungen' },
-      { value: '3×', label: 'Liefergebiet ausgeweitet' },
-      { value: '+220%', label: 'Online-Umsatz (6 Mo.)' },
-      { value: '4.9/5', label: 'Shop-Bewertung' },
+      { value: '100+', label: 'Gutachten erstellt' },
+      { value: '<1s', label: 'Ladezeit (Astro.js)' },
+      { value: '100', label: 'PageSpeed Score' },
+      { value: 'lokal', label: 'SEO Halstenbek & Hamburg' },
     ],
-    tags: ['Subscription Commerce', 'ReCharge', 'Custom Checkout', 'Lokale Lieferung'],
+    tags: ['Astro.js', 'Performance', 'Leadgenerierung', 'Lokale SEO', 'Core Web Vitals', 'KFZ-Gutachten'],
+    url: 'https://easy-kfzgutachten.de',
     featured: false,
-    cardBg: '#0A1500',
-    cardAccent: '#65A30D',
+    cardBg: 'linear-gradient(135deg, #001A10 0%, #0C0C0F 100%)',
+    cardAccent: '#22C55E',
+  },
+  {
+    slug: 'dnmz-engineering-website',
+    client: 'DNMZ Engineering',
+    clientKurz: 'DN',
+    industry: 'KFZ-Gutachten & Ingenieurbüro',
+    service: 'Astro.js Website & Leadgenerierung',
+    serviceType: 'website',
+    jahr: '2025',
+    tagline: 'Astro.js-Hochleistungswebsite für KFZ-Ingenieurbüro: technische Kompetenz trifft digitale Sichtbarkeit.',
+    description:
+      'DNMZ Engineering & Consulting ist ein unabhängiges KFZ-Sachverständigen-Ingenieurbüro in Bergheim. Wir entwickelten eine performance-optimierte Astro.js-Website, die technische Seriosität ausstrahlt, sofort lädt und Unfallgeschädigte im Rhein-Erft-Kreis zuverlässig in Anfragen verwandelt.',
+    challenge:
+      'Als Ingenieurbüro fehlte ein digitaler Auftritt, der sowohl technische Kompetenz als auch persönliche Zugänglichkeit vermittelt. Die Website musste auf mobilen Geräten — oft direkt am Unfallort — in Millisekunden laden und das Einzugsgebiet Bergheim, Köln und den gesamten Rhein-Erft-Kreis lokal abdecken.',
+    solution:
+      'Entwicklung mit Astro.js für maximale Performance und perfekte Core Web Vitals. Klare Leistungsstruktur (KFZ-Gutachten, Fahrzeugbewertung, Schadensanalyse). 2-stufiges Online-Schadenformular. Lokale SEO für Bergheim, Köln, Pulheim, Frechen und 6 weitere Regionen. Mobile-first Design mit sofortigem CTA.',
+    resultText:
+      'Die Astro.js-Website liefert Top-PageSpeed-Werte und ist für das gesamte Rhein-Erft-Gebiet lokal sichtbar. Das Online-Formular generiert rund um die Uhr qualifizierte Anfragen.',
+    metrics: [
+      { value: '65+', label: 'Gutachten erstellt' },
+      { value: '<1s', label: 'Ladezeit (Astro.js)' },
+      { value: '100', label: 'PageSpeed Score' },
+      { value: '10', label: 'Lokale SEO-Regionen' },
+    ],
+    tags: ['Astro.js', 'Performance', 'Lokale SEO', 'Leadgenerierung', 'Core Web Vitals', 'KFZ-Gutachten', 'Bergheim'],
+    url: 'https://dnmz-engineering.de',
+    featured: false,
+    cardBg: 'linear-gradient(135deg, #0A001A 0%, #0C0C14 100%)',
+    cardAccent: '#818CF8',
+  },
+  {
+    slug: 'kfzgutachter-alhajji-website',
+    client: 'KFZ-Gutachter Al Hajji',
+    clientKurz: 'AH',
+    industry: 'KFZ-Gutachten',
+    service: 'Astro.js Website & Leadgenerierung',
+    serviceType: 'website',
+    jahr: '2025',
+    tagline: 'Astro.js-Performance trifft Hamburger Lokalpräsenz: Von null auf Google-Seite-1 in allen Stadtteilen.',
+    description:
+      'Bilal Al Hajji ist Kraftfahrzeugtechnikermeister und unabhängiger KFZ-Gutachter in Hamburg. Wir entwickelten eine blitzschnelle Astro.js-Website mit echter Schadensgalerie, 2-stufigem Formular und flächendeckender lokaler SEO für alle neun Hamburger Bezirke.',
+    challenge:
+      'Bilal Al Hajji hatte trotz langjähriger Erfahrung keinerlei digitale Präsenz. Potenzielle Kunden suchten online nach KFZ-Gutachtern in Hamburg — und fanden ihn nicht. Der neue Auftritt musste sofortige Sichtbarkeit in allen Hamburger Stadtteilen und gleichzeitig hohes Vertrauen schaffen.',
+    solution:
+      'Umsetzung mit Astro.js für maximale Ladegeschwindigkeit und perfekte Core Web Vitals — entscheidend, da Unfallgeschädigte die Website oft am Unfallort auf dem Smartphone aufrufen. 2-stufiges Schadensmelde-Formular mit WhatsApp-Option. Echte Schadensgalerie mit realen Fällen. Lokale SEO für alle 9 Hamburger Bezirke. FAQ zur freien Gutachterwahl.',
+    resultText:
+      'Die Kombination aus Astro.js-Performance und strategischer lokaler SEO macht Al Hajji in ganz Hamburg auffindbar. Die echte Schadensgalerie und 24h-Garantie treiben die Conversion-Rate maßgeblich.',
+    metrics: [
+      { value: '85+', label: 'Gutachten erstellt' },
+      { value: '<1s', label: 'Ladezeit (Astro.js)' },
+      { value: '100', label: 'PageSpeed Score' },
+      { value: '9', label: 'Hamburger Bezirke SEO' },
+    ],
+    tags: ['Astro.js', 'Performance', 'Lokale SEO', 'Hamburg', 'Core Web Vitals', 'KFZ-Gutachten', 'Leadgenerierung'],
+    url: 'https://kfzgutachter-alhajji.de',
+    featured: false,
+    cardBg: 'linear-gradient(135deg, #1A0000 0%, #0C0C0F 100%)',
+    cardAccent: '#F87171',
+  },
+  {
+    slug: 'kv-sofort-website',
+    client: 'KV-Sofort',
+    clientKurz: 'KV',
+    industry: 'KFZ & Schadenservice',
+    service: 'Laravel Backend & Bezahlung',
+    serviceType: 'entwicklung',
+    jahr: '2025',
+    tagline: 'Vollständiges Laravel-Backend mit integrierter Bezahlfunktion — von der Anfrage bis zur Abrechnung automatisiert.',
+    description:
+      'KV-Sofort ist eine digitale Plattform für KFZ-Kostenvoranschläge mit vollautomatisierter Auftragsabwicklung. Wir entwickelten ein komplettes Laravel-Backend mit Bezahlfunktion, Nutzerverwaltung und Buchungslogik — von der ersten Anfrage bis zur bezahlten Rechnung.',
+    challenge:
+      'KV-Sofort benötigte mehr als eine Website: eine vollständige Web-Applikation, die den gesamten Prozess vom Kostenvoranschlag über die Auftragsbestätigung bis hin zur Zahlungsabwicklung digital und automatisiert abbildet — sicher, skalierbar und ohne manuelle Eingriffe.',
+    solution:
+      'Entwicklung einer Laravel-Web-Applikation mit vollständigem Backend: Nutzerverwaltung & Authentifizierung, Auftragsmanagement-System, integrierte Bezahlfunktion (Payment-Gateway-Anbindung), automatische Rechnungsgenerierung und E-Mail-Benachrichtigungen. Zusätzlich vollständige API-Anbindung an Lexware für automatische Buchhaltungssynchronisation — Rechnungen, Belege und Zahlungen werden direkt in Lexware übergeben. REST-API-Architektur für zukünftige Erweiterungen.',
+    resultText:
+      'KV-Sofort läuft vollständig automatisiert: Anfragen werden entgegengenommen, verarbeitet, bezahlt und direkt in Lexware verbucht — ohne einen einzigen manuellen Schritt. Das Laravel-Backend mit Lexware-Integration bildet die skalierbare Grundlage für weiteres Wachstum.',
+    metrics: [
+      { value: 'Laravel', label: 'Backend-Framework' },
+      { value: 'Payment', label: 'Bezahl­funktion integriert' },
+      { value: 'Lexware', label: 'Buchhaltungs­anbindung via API' },
+      { value: '100%', label: 'Vollautomatisierte Abwicklung' },
+    ],
+    tags: ['Laravel', 'Backend', 'Bezahlfunktion', 'Lexware API', 'Payment-Gateway', 'REST API', 'Buchhaltung', 'Automatisierung'],
+    url: 'https://kv-sofort.de',
+    featured: false,
+    cardBg: 'linear-gradient(135deg, #001A18 0%, #0C0C0F 100%)',
+    cardAccent: '#2DD4BF',
   },
 ];
 
 export const serviceBadge: Record<ServiceType, { label: string; bg: string; text: string }> = {
-  migration:    { label: 'Migration',              bg: 'bg-accent-50',         text: 'text-accent-600' },
-  shop:         { label: 'Shop erstellt',           bg: 'bg-emerald-50',        text: 'text-emerald-700' },
-  entwicklung:  { label: 'Individuelle Entwicklung', bg: 'bg-violet-50',        text: 'text-violet-700' },
+  migration:    { label: 'Migration',              bg: 'bg-accent-50',    text: 'text-accent-600' },
+  shop:         { label: 'Shop erstellt',           bg: 'bg-emerald-50',   text: 'text-emerald-700' },
+  entwicklung:  { label: 'Individuelle Entwicklung', bg: 'bg-violet-50',   text: 'text-violet-700' },
+  website:      { label: 'Website',                 bg: 'bg-sky-50',       text: 'text-sky-700' },
 };
