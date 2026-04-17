@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel';
+import node from '@astrojs/node';
 
 const SITE_URL = 'https://zulastudios.de';
 
@@ -59,7 +59,7 @@ export default defineConfig({
   ],
 
   output: 'static',
-  adapter: vercel(),
+  adapter: node({ mode: 'standalone' }),
 
   // ── Vite build optimisations ──────────────────────────────────────────────
   vite: {
