@@ -1,0 +1,252 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
+import { careerJobs, CAREERS_DATE_POSTED, CAREERS_VALID_THROUGH } from '@/data/careers';
+
+export function getStaticPaths() {
+  return careerJobs.map((job) => ({
+    params: { slug: job.slug },
+    props: { job },
+  }));
+}
+
+const { job } = Astro.props;
+
+const dateLabel = new Date(CAREERS_DATE_POSTED).toLocaleDateString('de-DE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const description = `${job.title} bei ${SITE.name}: ${job.teaser} Remote in Deutschland. Jetzt bewerben.`;
+
+const jobPostingJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'JobPosting',
+  title: job.title,
+  description: `${job.intro} ${job.responsibilities.join(' ')}`,
+  datePosted: CAREERS_DATE_POSTED,
+  validThrough: CAREERS_VALID_THROUGH,
+  employmentType: 'FULL_TIME',
+  hiringOrganization: {
+    '@type': 'Organization',
+    name: SITE.name,
+    sameAs: SITE.social.linkedin,
+    logo: new URL(SITE.logo, SITE.url).toString(),
+  },
+  jobLocation: {
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.address.street,
+      addressLocality: SITE.address.city,
+      postalCode: SITE.address.zip,
+      addressCountry: SITE.address.country,
+    },
+  },
+  applicantLocationRequirements: { '@type': 'Country', name: 'DE' },
+  jobLocationType: 'TELECOMMUTE',
+  url: `${SITE.url}/karriere/${job.slug}`,
+};
+
+const schema = [
+  jobPostingJsonLd,
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: `${job.title} – Karriere`,
+    description,
+    url: `${SITE.url}/karriere/${job.slug}`,
+    isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+  },
+];
+---
+
+<BaseLayout
+  title={`${job.title} – Karriere`}
+  {description}
+  schema={schema}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Karriere', url: '/karriere' },
+    { name: job.cardTitle, url: `/karriere/${job.slug}` },
+  ]}
+>
+  <article class="bg-white">
+    <!-- Page header -->
+    <header class="border-b border-[#EBEBEF] bg-[#FAFAF8]">
+      <div class="container pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-20 lg:pb-16">
+        <nav class="flex flex-wrap items-center gap-2 text-xs text-[#AEAEB5] mb-10 sm:mb-12 lg:mb-14">
+          <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a>
+          <span>/</span>
+          <a href="/karriere" class="hover:text-[#0C0C0F] transition-colors">Karriere</a>
+          <span>/</span>
+          <span class="text-[#0C0C0F] font-medium truncate max-w-[min(100%,12rem)] sm:max-w-none">{job.cardTitle}</span>
+        </nav>
+
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 lg:gap-14 xl:gap-16">
+          <div class="max-w-3xl">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-600 mb-5 sm:mb-6">{job.tag}</p>
+            <h1 class="font-bold text-[#0C0C0F] tracking-[-0.035em] text-3xl sm:text-4xl lg:text-[2.65rem] leading-[1.08] mb-6 sm:mb-8">
+              {job.title}
+            </h1>
+            <p class="text-[#62626E] text-base lg:text-lg leading-relaxed">{job.intro}</p>
+          </div>
+
+          <aside class="w-full lg:w-[min(100%,320px)] shrink-0">
+            <div class="rounded-2xl border border-[#EBEBEF] bg-white p-6 shadow-sm">
+              <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-[#AEAEB5] mb-4">Überblick</p>
+              <ul class="space-y-3 text-sm">
+                <li class="flex justify-between gap-4 border-b border-[#F0F0F3] pb-3">
+                  <span class="text-[#88888F]">Anstellung</span>
+                  <span class="font-medium text-[#0C0C0F] text-right">Vollzeit</span>
+                </li>
+                <li class="flex justify-between gap-4 border-b border-[#F0F0F3] pb-3">
+                  <span class="text-[#88888F]">Standort</span>
+                  <span class="font-medium text-[#0C0C0F] text-right">Remote · DE</span>
+                </li>
+                <li class="flex justify-between gap-4 border-b border-[#F0F0F3] pb-3">
+                  <span class="text-[#88888F]">Veröffentlicht</span>
+                  <span class="font-medium text-[#0C0C0F] text-right tabular-nums">{dateLabel}</span>
+                </li>
+                <li class="flex justify-between gap-4 pt-1">
+                  <span class="text-[#88888F]">Referenz</span>
+                  <span class="font-mono text-xs text-[#62626E]">{job.slug}</span>
+                </li>
+              </ul>
+              <div class="mt-6 space-y-3">
+                <a
+                  href={`/karriere/bewerben?stelle=${job.slug}`}
+                  class="btn btn-primary w-full justify-center py-3.5 rounded-xl text-[14px] font-semibold"
+                >
+                  Zum Bewerbungsformular
+                </a>
+                <a
+                  href={`mailto:${SITE.email}?subject=${encodeURIComponent('Bewerbung: ' + job.title)}`}
+                  class="block text-center text-sm font-medium text-[#62626E] hover:text-accent-600"
+                >
+                  Stattdessen per E-Mail
+                </a>
+                <a
+                  href={job.leistungHref}
+                  class="block text-center text-sm font-medium text-accent-600 hover:text-accent-700"
+                >
+                  Passende Leistung: {job.leistungLabel} →
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </header>
+
+    <div class="container py-12 lg:py-16">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 lg:gap-16 xl:gap-20">
+        <div class="min-w-0 space-y-14 lg:space-y-16">
+          <section data-reveal>
+            <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-6 flex items-center gap-3">
+              <span class="flex w-9 h-9 rounded-lg bg-[#0C0C0F] items-center justify-center">
+                <Icon name={job.iconName} size={18} class="text-white" strokeWidth={1.6} />
+              </span>
+              Deine Aufgaben
+            </h2>
+            <ul class="space-y-4">
+              {job.responsibilities.map((line) => (
+                <li class="flex gap-4 text-[#44444F] leading-relaxed text-[15px]">
+                  <span class="mt-2 w-1.5 h-1.5 rounded-full bg-accent-500 shrink-0"></span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section data-reveal data-delay="2">
+            <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-6">Das bringst du mit</h2>
+            <ul class="space-y-3">
+              {job.requirements.map((line) => (
+                <li class="flex gap-3 text-[#0C0C0F] leading-relaxed text-[15px]">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="text-accent-600 shrink-0 mt-0.5">
+                    <path d="M4 9l4 4 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section data-reveal data-delay="3">
+            <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-2">Wünschenswert</h2>
+            <p class="text-sm text-[#88888F] mb-6">Kein Muss — aber schön, wenn du mitbringst:</p>
+            <ul class="space-y-3">
+              {job.niceToHave.map((line) => (
+                <li class="flex gap-3 text-[#62626E] leading-relaxed text-[15px]">
+                  <span class="text-[#D4D4D9] font-light mt-0.5">+</span>
+                  {line}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section data-reveal data-delay="4">
+            <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-6">Das bieten wir</h2>
+            <div class="rounded-2xl bg-[#F0F9FF] border border-[#BAE6FD] p-6 lg:p-8">
+              <ul class="space-y-4">
+                {job.weOffer.map((line) => (
+                  <li class="flex gap-3 text-[#0C4A6E] leading-relaxed text-[15px]">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="text-[#0284C7] shrink-0 mt-0.5">
+                      <path d="M4 9l4 4 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <!-- Sticky apply (desktop) -->
+        <aside class="hidden lg:block">
+          <div class="sticky top-28 rounded-2xl border border-[#EBEBEF] bg-[#FAFAF8] p-6">
+            <p class="font-semibold text-[#0C0C0F] mb-2">Bereit?</p>
+            <p class="text-sm text-[#88888F] mb-6 leading-relaxed">
+              Schick uns dein Profil mit CV und kurzer Motivation — gerne mit GitHub oder Portfolio-Link.
+            </p>
+            <a
+              href={`/karriere/bewerben?stelle=${job.slug}`}
+              class="btn btn-primary w-full justify-center py-3.5 rounded-xl text-[14px] font-semibold mb-3"
+            >
+              Bewerbungsformular
+            </a>
+            <a
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent('Bewerbung: ' + job.title)}`}
+              class="block text-center text-sm font-medium text-[#62626E] hover:text-accent-600 mb-4"
+            >
+              Per E-Mail bewerben
+            </a>
+            <a href="/kontakt" class="block text-center text-sm font-medium text-[#62626E] hover:text-accent-600"> Allgemeiner Kontakt → </a>
+            <hr class="my-6 border-[#EBEBEF]" />
+            <a href="/karriere" class="text-sm text-accent-600 font-medium hover:underline"> ← Alle Stellen </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- Mobile sticky CTA -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-white/95 backdrop-blur border-t border-[#EBEBEF] z-40 safe-area-pb">
+      <a
+        href={`/karriere/bewerben?stelle=${job.slug}`}
+        class="btn btn-primary w-full justify-center py-3.5 rounded-xl text-[15px] font-semibold shadow-lg"
+      >
+        Jetzt bewerben
+      </a>
+    </div>
+    <div class="lg:hidden h-24"></div>
+  </article>
+</BaseLayout>
+
+<style>
+  .safe-area-pb {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+</style>

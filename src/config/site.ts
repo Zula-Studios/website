@@ -5,7 +5,7 @@ export const SITE = {
   description:
     'Professionelle Shopify-Entwicklung in Hamburg: Shops erstellen, Migrationen & Custom Apps mit Laravel, Next.js & Astro. 10+ Projekte. Kostenloses Erstgespräch.',
   url: 'https://zulastudios.de',
-  email: 'hallo@zulastudios.de',
+  email: 'hello@zulastudios.com',
   phone: '+49 (0) 176 34 44 74 85',
   twitterHandle: '@zulastudios',
   address: {
@@ -39,5 +39,6 @@ export const NAV_LINKS = [
   },
   { label: 'Blog', href: '/blog' },
   { label: 'Über uns', href: '/ueber-uns' },
+  { label: 'Karriere', href: '/karriere' },
   { label: 'Kontakt', href: '/kontakt' },
 ];

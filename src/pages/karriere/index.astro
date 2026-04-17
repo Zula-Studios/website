@@ -1,0 +1,254 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import Icon from '@/components/Icon.astro';
+import { careerJobs, CAREERS_DATE_POSTED, CAREERS_VALID_THROUGH } from '@/data/careers';
+
+const dateLabel = new Date(CAREERS_DATE_POSTED).toLocaleDateString('de-DE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const jobPostingSchema = careerJobs.map((job) => ({
+  '@type': 'JobPosting',
+  title: job.title,
+  description: `${job.teaser} ${job.intro}`,
+  datePosted: CAREERS_DATE_POSTED,
+  validThrough: CAREERS_VALID_THROUGH,
+  employmentType: 'FULL_TIME',
+  hiringOrganization: {
+    '@type': 'Organization',
+    name: SITE.name,
+    sameAs: SITE.social.linkedin,
+    logo: new URL(SITE.logo, SITE.url).toString(),
+  },
+  jobLocation: {
+    '@type': 'Place',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.address.street,
+      addressLocality: SITE.address.city,
+      postalCode: SITE.address.zip,
+      addressCountry: SITE.address.country,
+    },
+  },
+  applicantLocationRequirements: { '@type': 'Country', name: 'DE' },
+  jobLocationType: 'TELECOMMUTE',
+}));
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Karriere – Zula Studios',
+    description:
+      'Offene Stellen bei Zula Studios: Shopify Entwicklung und individuelle Software-Entwicklung. Remote in Deutschland.',
+    url: `${SITE.url}/karriere`,
+    isPartOf: { '@type': 'WebSite', name: SITE.name, url: SITE.url },
+  },
+  ...jobPostingSchema,
+];
+---
+
+<BaseLayout
+  title="Karriere – Jobs bei Zula Studios"
+  description="Offene Stellen bei Zula Studios: Shopify Entwickler und Entwicklung individueller Lösungen. Remote in Deutschland — jetzt bewerben."
+  schema={schema}
+  darkHero={true}
+  breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Karriere', url: '/karriere' }]}
+>
+  <!-- Hero -->
+  <section class="bg-[#0C0C0F] pt-20 pb-20 lg:pb-28 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 28px 28px;"></div>
+    <div class="absolute top-0 right-0 w-[min(90vw,640px)] h-[min(70vh,520px)]" style="background: radial-gradient(circle at 65% 30%, rgba(56,189,248,0.16), transparent 55%);"></div>
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] opacity-40" style="background: radial-gradient(circle, rgba(2,132,199,0.12), transparent 65%);"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a>
+        <span class="text-[#3E3E4A]">/</span>
+        <span class="text-white font-medium">Karriere</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.22em] uppercase mb-5">Wir suchen Verstärkung</p>
+        <h1 class="font-bold text-white tracking-[-0.04em] leading-[0.95]" style="font-size: clamp(2.35rem, 6.5vw, 4rem);">
+          Dein nächster Schritt:<br />
+          <span class="font-light italic text-white/50">Zula Studios.</span>
+        </h1>
+        <p class="mt-8 text-[#B4B4BC] text-base lg:text-[17px] leading-relaxed max-w-2xl">
+          Schlankes Shopify-Studio mit Fokus auf Qualität und technische Tiefe. Arbeite an echten Shops und Integrationen —
+          mit Teamgeist, ohne Schnellschüsse.
+        </p>
+      </div>
+
+      <!-- Quick facts -->
+      <div class="mt-12 flex flex-wrap gap-3">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.1] text-[13px] text-[#D4D4D9]">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          {careerJobs.length} offene {careerJobs.length === 1 ? 'Stelle' : 'Stellen'}
+        </span>
+        <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.1] text-[13px] text-[#D4D4D9]">
+          Remote · Deutschland
+        </span>
+        <span class="inline-flex items-center px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.1] text-[13px] text-[#9898A0]">
+          Stand: {dateLabel}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Job grid -->
+  <section class="bg-[#F3F3F5] py-16 lg:py-24">
+    <div class="container">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-14">
+        <div>
+          <p class="label mb-2 text-[#62626E]">Offene Positionen</p>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] text-2xl lg:text-3xl">Finde deine Rolle</h2>
+        </div>
+        <p class="text-sm text-[#88888F] max-w-md sm:text-right">
+          Klicke dich in die vollständige Ausschreibung — dort findest du Aufgaben, Anforderungen und Benefits im Detail.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        {careerJobs.map((job, i) => (
+          <article
+            class="group flex flex-col bg-white rounded-2xl border border-[#E4E4EA] shadow-[0_1px_0_rgba(12,12,15,0.04)] overflow-hidden transition-all duration-300 hover:border-[#C8C8D4] hover:shadow-[0_20px_50px_-12px_rgba(12,12,15,0.12)]"
+            data-reveal
+            data-delay={String(i + 1)}
+          >
+            <div class="h-1.5 bg-gradient-to-r from-[#0284C7] via-[#38BDF8] to-[#0EA5E9] opacity-90 group-hover:opacity-100 transition-opacity"></div>
+            <div class="p-8 lg:p-10 flex flex-col flex-1">
+              <div class="flex items-start gap-4 mb-6">
+                <div class="w-14 h-14 rounded-2xl bg-[#0C0C0F] flex items-center justify-center shrink-0 shadow-lg shadow-black/10">
+                  <Icon name={job.iconName} size={26} class="text-white" strokeWidth={1.5} />
+                </div>
+                <div class="min-w-0 pt-0.5">
+                  <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-600 mb-1.5">{job.tag}</p>
+                  <h3 class="font-bold text-[#0C0C0F] text-xl lg:text-[1.35rem] tracking-[-0.02em] leading-snug">
+                    {job.cardTitle}
+                    <span class="text-[#AEAEB5] font-normal text-base lg:text-lg"> (m/w/d)</span>
+                  </h3>
+                </div>
+              </div>
+
+              <p class="text-[#62626E] text-[15px] leading-relaxed mb-8 flex-1">{job.teaser}</p>
+
+              <div class="rounded-xl bg-[#FAFAF8] border border-[#EBEBEF] p-5 mb-8">
+                <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-[#AEAEB5] mb-3">Das erwartet dich</p>
+                <ul class="space-y-2.5">
+                  {job.highlights.map((h) => (
+                    <li class="flex gap-3 text-sm text-[#0C0C0F] leading-snug">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="text-accent-600 shrink-0 mt-0.5">
+                        <path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-3 mt-auto">
+                <a
+                  href={`/karriere/${job.slug}`}
+                  class="btn btn-primary justify-center py-3.5 px-6 text-[14px] font-semibold rounded-xl inline-flex"
+                >
+                  Zur vollen Ausschreibung
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="ml-1">
+                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+                <a
+                  href={`/karriere/bewerben?stelle=${job.slug}`}
+                  class="inline-flex justify-center items-center py-3.5 px-6 text-[14px] font-semibold rounded-xl border border-[#EBEBEF] text-[#44444F] hover:bg-[#FAFAF8] hover:border-[#D4D4D9] transition-colors"
+                >
+                  Zum Formular
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us strip -->
+  <section class="bg-white py-14 lg:py-16 border-y border-[#EBEBEF]">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div class="text-center md:text-left" data-reveal>
+          <div class="inline-flex w-10 h-10 rounded-xl bg-[#F0F9FF] items-center justify-center mb-4 mx-auto md:mx-0">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0284C7" stroke-width="1.5">
+              <path d="M10 2L3 7v11h5v-6h4v6h5V7l-7-5z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-[#0C0C0F] mb-2">Remote in DE</h3>
+          <p class="text-sm text-[#88888F] leading-relaxed">Zusammenarbeit per Slack & Video — Büro in der Region Hamburg möglich nach Absprache.</p>
+        </div>
+        <div class="text-center md:text-left" data-reveal data-delay="2">
+          <div class="inline-flex w-10 h-10 rounded-xl bg-[#F0F9FF] items-center justify-center mb-4 mx-auto md:mx-0">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0284C7" stroke-width="1.5">
+              <path d="M10 12a3 3 0 100-6 3 3 0 000 6z" stroke-linecap="round" />
+              <path d="M2 10s2.5-5 8-5 8 5 8 5-2.5 5-8 5-8-5-8-5z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-[#0C0C0F] mb-2">Kleines Team</h3>
+          <p class="text-sm text-[#88888F] leading-relaxed">Kurze Wege, direkte Kommunikation — du siehst die Wirkung deiner Arbeit beim Kunden.</p>
+        </div>
+        <div class="text-center md:text-left" data-reveal data-delay="3">
+          <div class="inline-flex w-10 h-10 rounded-xl bg-[#F0F9FF] items-center justify-center mb-4 mx-auto md:mx-0">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#0284C7" stroke-width="1.5">
+              <path d="M4 8l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-[#0C0C0F] mb-2">Moderner Stack</h3>
+          <p class="text-sm text-[#88888F] leading-relaxed">Shopify, APIs, Laravel/Node, Astro & Co. — immer mit Blick auf Wartbarkeit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Initiativ -->
+  <section class="bg-[#FAFAF8] py-16 lg:py-20">
+    <div class="container max-w-3xl">
+      <div
+        class="rounded-2xl border border-[#EBEBEF] bg-white p-8 lg:p-12 text-center shadow-[0_2px_24px_rgba(12,12,15,0.04)]"
+        data-reveal
+      >
+        <p class="label mb-3">Nichts Passendes?</p>
+        <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-4">Initiativbewerbung</h2>
+        <p class="text-[#62626E] text-sm lg:text-[15px] leading-relaxed mb-8 max-w-lg mx-auto">
+          Erzähl uns kurz von dir: CV, Tech-Stack und was dich antreibt. Wir melden uns, wenn es passt.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/karriere/bewerben?stelle=initiativ" class="btn btn-primary inline-flex justify-center py-3.5 px-10 rounded-xl text-[15px] font-semibold">
+            Initiativ bewerben
+          </a>
+          <a
+            href="/kontakt"
+            class="inline-flex justify-center items-center py-3.5 px-10 rounded-xl text-[15px] font-semibold border border-[#EBEBEF] text-[#44444F] hover:bg-[#FAFAF8]"
+          >
+            Nur Kontakt
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.14), transparent 55%);"></div>
+    <div class="container relative z-10 text-center max-w-lg mx-auto" data-reveal>
+      <h2 class="font-bold text-white tracking-[-0.03em] text-2xl lg:text-3xl mb-4">Fragen zur Bewerbung?</h2>
+      <p class="text-[#9898A0] mb-8 text-sm lg:text-[15px]">Wir antworten in der Regel innerhalb weniger Werktage.</p>
+      <a href="/kontakt" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 rounded-xl font-semibold text-[15px] inline-flex">
+        Zum Kontaktformular
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="ml-1">
+          <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

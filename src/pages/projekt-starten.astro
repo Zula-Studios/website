@@ -165,7 +165,7 @@ const trust = [
             ))}
           </div>
 
-          <form name="projekt-starten" method="POST" action="/danke" id="project-form" novalidate>
+          <form id="project-form" novalidate>
 
             <!-- STEP 1: Service -->
             <div class="form-step" data-step="1">
@@ -299,6 +299,7 @@ const trust = [
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
+              <p id="form-error" class="hidden mt-3 text-sm text-red-600 text-center leading-relaxed"></p>
               <p class="text-center text-[11px] text-[#D4D4D9] mt-3">Schritt 3 von 3</p>
             </div>
 
@@ -354,6 +355,8 @@ const trust = [
   #submit-btn.loading { opacity: 0.7; pointer-events: none; }
   #submit-btn.loading::after { content: ''; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 0.25rem; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-4px)} 40%,80%{transform:translateX(4px)} }
+  .shake { animation: shake 0.4s ease; }
 </style>
 
 <script>
@@ -452,8 +455,52 @@ const trust = [
     }
   });
 
-  document.getElementById('project-form')?.addEventListener('submit', () => {
-    document.getElementById('submit-btn')?.classList.add('loading');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+  document.getElementById('project-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget as HTMLFormElement;
+
+    const cbInp = document.getElementById('datenschutz') as HTMLInputElement | null;
+    const cbBoxEl = document.querySelector<HTMLElement>('#cb-wrapper .cb-box');
+
+    if (!cbInp?.checked) {
+      cbBoxEl?.parentElement?.classList.add('shake');
+      setTimeout(() => cbBoxEl?.parentElement?.classList.remove('shake'), 500);
+      return;
+    }
+
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((v, k) => { data[k] = v.toString(); });
+    data['datenschutz'] = 'true';
+
+    submitBtn?.classList.add('loading');
+
+    try {
+      const res  = await fetch('/api/projekt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (res.ok && json.ok) {
+        window.location.href = '/danke';
+      } else {
+        throw new Error(json.error ?? 'Unbekannter Fehler');
+      }
+    } catch (err) {
+      submitBtn?.classList.remove('loading');
+      const errMsg = document.getElementById('form-error');
+      if (errMsg) {
+        const fallback =
+          'Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe uns direkt an hallo@zulastudios.de.';
+        errMsg.textContent = err instanceof Error && err.message ? err.message : fallback;
+        errMsg.classList.remove('hidden');
+      }
+    }
   });
 
   updateProgress();

@@ -1,0 +1,406 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import { bewerbungStelleOptions } from '@/data/careers';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Bewerbung – Zula Studios',
+  description:
+    'Online-Bewerbung bei Zula Studios: Stelle wählen, Lebenslauf hochladen, Anschreiben senden. Wir melden uns zeitnah.',
+  url: `${SITE.url}/karriere/bewerben`,
+};
+---
+
+<BaseLayout
+  title="Jetzt bewerben"
+  description="Bewerbungsformular bei Zula Studios: Position wählen, Lebenslauf hochladen, Kontaktdaten und Anschreiben — wir melden uns innerhalb weniger Werktage."
+  schema={schema}
+  darkHero={true}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Karriere', url: '/karriere' },
+    { name: 'Bewerbung', url: '/karriere/bewerben' },
+  ]}
+>
+  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden">
+    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+    <div class="absolute top-0 right-0 w-[500px] h-[420px]" style="background: radial-gradient(circle at 70% 25%, rgba(56,189,248,0.12), transparent 58%);"></div>
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a>
+        <span>/</span>
+        <a href="/karriere" class="hover:text-white transition-colors">Karriere</a>
+        <span>/</span>
+        <span class="text-white font-medium">Bewerbung</span>
+      </nav>
+      <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-5">Karriere</p>
+      <h1 class="font-bold text-white tracking-[-0.04em] max-w-2xl" style="font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 0.98;">
+        Jetzt<br />
+        <span class="font-light italic text-white/45">bewerben.</span>
+      </h1>
+      <p class="mt-6 text-[#B4B4BC] text-sm lg:text-[15px] max-w-xl leading-relaxed">
+        Fülle das Formular aus und lade deinen Lebenslauf (PDF oder Word) hoch — wir bestätigen den Eingang per E-Mail. Weitere Unterlagen kannst du bei Bedarf nachreichen.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-14 lg:py-20">
+    <div class="container max-w-2xl">
+      <form id="bewerbung-form" novalidate enctype="multipart/form-data" class="space-y-4">
+        <div>
+          <label for="stelle" class="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[#62626E] mb-2">Position *</label>
+          <select
+            id="stelle"
+            name="stelle"
+            required
+            class="w-full px-4 py-3.5 bg-[#FAFAF8] border-[1.5px] border-[#EBEBEF] rounded-xl text-sm text-[#0C0C0F] outline-none transition-colors hover:border-[#D4D4D9] focus:border-[#0284C7] focus:bg-white focus:ring-[3px] focus:ring-sky-500/15"
+          >
+            <option value="" disabled selected>Bitte wählen</option>
+            {bewerbungStelleOptions.map((o) => (
+              <option value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="float-group">
+            <input type="text" id="vorname" name="vorname" required placeholder=" " class="float-input" autocomplete="given-name" />
+            <label for="vorname" class="float-label">Vorname *</label>
+          </div>
+          <div class="float-group">
+            <input type="text" id="nachname" name="nachname" required placeholder=" " class="float-input" autocomplete="family-name" />
+            <label for="nachname" class="float-label">Nachname *</label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="float-group">
+            <input type="email" id="email" name="email" required placeholder=" " class="float-input" autocomplete="email" />
+            <label for="email" class="float-label">E-Mail *</label>
+          </div>
+          <div class="float-group">
+            <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
+            <label for="telefon" class="float-label">Telefon (optional)</label>
+          </div>
+        </div>
+
+        <div class="float-group">
+          <input
+            type="url"
+            id="portfolio"
+            name="portfolio"
+            placeholder=" "
+            class="float-input"
+            inputmode="url"
+            autocomplete="url"
+          />
+          <label for="portfolio" class="float-label">LinkedIn / GitHub / Portfolio (optional)</label>
+        </div>
+
+        <div>
+          <label for="lebenslauf" class="block text-[11px] font-semibold uppercase tracking-[0.1em] text-[#62626E] mb-2">Lebenslauf *</label>
+          <input
+            type="file"
+            id="lebenslauf"
+            name="lebenslauf"
+            required
+            accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            class="cv-file-input"
+          />
+          <p class="text-xs text-[#AEAEB5] mt-2">PDF oder Word (.pdf, .doc, .docx), max. 4 MB</p>
+        </div>
+
+        <div class="float-group float-group--textarea">
+          <textarea
+            id="nachricht"
+            name="nachricht"
+            required
+            placeholder=" "
+            rows="8"
+            maxlength="3000"
+            class="float-input float-textarea"
+          ></textarea>
+          <label for="nachricht" class="float-label float-label--textarea">Anschreiben *</label>
+          <div id="char-counter" class="absolute bottom-3 right-3.5 text-[10.5px] text-[#D4D4D9] pointer-events-none tabular-nums">0 / 3000</div>
+        </div>
+
+        <p class="text-xs text-[#AEAEB5] leading-relaxed -mt-1">
+          Tipp: Kurz motivieren, was du mitbringst — der Lebenslauf liegt uns bereits als Datei vor.
+        </p>
+
+        <div class="flex items-start gap-3 pt-2">
+          <div class="custom-cb-wrapper mt-0.5 shrink-0 cursor-pointer" id="cb-wrapper">
+            <input type="checkbox" id="datenschutz" name="datenschutz" required class="sr-only" />
+            <div class="cb-box w-5 h-5 rounded-md border-2 border-[#D4D4D9] flex items-center justify-center transition-all duration-150">
+              <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="cb-check opacity-0 scale-75 transition-all duration-150">
+                <path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </div>
+          </div>
+          <label for="datenschutz" class="text-xs text-[#88888F] leading-relaxed cursor-pointer">
+            Ich habe die <a href="/datenschutz" class="text-accent-600 hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Bewerbungsdaten und des Lebenslaufs zu. *
+          </label>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="btn btn-primary w-full justify-center py-4 text-[15px]" id="submit-btn">
+            Bewerbung absenden
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <p id="form-error" class="hidden mt-3 text-sm text-red-600 text-center leading-relaxed"></p>
+          <p class="text-center text-xs text-[#D4D4D9] mt-3">Kein Spam · Antwort in der Regel innerhalb weniger Werktage</p>
+        </div>
+      </form>
+
+      <p class="mt-10 text-center text-sm text-[#88888F]">
+        Lieber per E-Mail?
+        <a href={`mailto:${SITE.email}?subject=${encodeURIComponent('Bewerbung Zula Studios')}`} class="text-accent-600 font-medium hover:underline ml-1">{SITE.email}</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cv-file-input {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    background: #fafaf8;
+    border: 1.5px solid #ebebef;
+    border-radius: 0.875rem;
+    font-size: 0.8125rem;
+    color: #0c0c0f;
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cv-file-input:hover {
+    border-color: #d4d4d9;
+  }
+  .cv-file-input:focus {
+    border-color: #0284c7;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  }
+  .cv-file-input::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #0c0c0f;
+    color: white;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .cv-file-input:hover::file-selector-button {
+    background: #1c1c25;
+  }
+  .float-group {
+    position: relative;
+  }
+  .float-input {
+    width: 100%;
+    padding: 1.5rem 1rem 0.625rem;
+    background: #fafaf8;
+    border: 1.5px solid #ebebef;
+    border-radius: 0.875rem;
+    font-size: 0.875rem;
+    color: #0c0c0f;
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+  }
+  .float-input:hover {
+    border-color: #d4d4d9;
+  }
+  .float-input:focus {
+    border-color: #0284c7;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  }
+  .float-textarea {
+    resize: vertical;
+    min-height: 10rem;
+    padding-bottom: 2rem;
+  }
+  .float-label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    color: #aeaeb5;
+    pointer-events: none;
+    transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    white-space: nowrap;
+    transform-origin: left center;
+  }
+  .float-label--textarea {
+    top: 1rem;
+    transform: none;
+  }
+  .float-input:focus ~ .float-label,
+  .float-input:not(:placeholder-shown) ~ .float-label {
+    top: 0.45rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #0284c7;
+    transform: none;
+  }
+  .float-textarea:focus ~ .float-label--textarea,
+  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea {
+    top: 0.35rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: #0284c7;
+  }
+  .custom-cb-wrapper:hover .cb-box {
+    border-color: #aeaeb5;
+  }
+  .cb-box.is-checked {
+    background: #0284c7;
+    border-color: #0284c7;
+  }
+  .cb-box.is-checked .cb-check {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+  #submit-btn.loading {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  #submit-btn.loading::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-left: 0.25rem;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-4px);
+    }
+    40%,
+    80% {
+      transform: translateX(4px);
+    }
+  }
+  .shake {
+    animation: shake 0.4s ease;
+  }
+</style>
+
+<script>
+  const cbWrapper = document.getElementById('cb-wrapper');
+  const cbInput = document.getElementById('datenschutz') as HTMLInputElement | null;
+  const cbBox = cbWrapper?.querySelector('.cb-box');
+  cbWrapper?.addEventListener('click', () => {
+    if (!cbInput) return;
+    cbInput.checked = !cbInput.checked;
+    cbBox?.classList.toggle('is-checked', cbInput.checked);
+  });
+  document.querySelector('label[for="datenschutz"]')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    cbWrapper?.click();
+  });
+
+  const stelleSelect = document.getElementById('stelle') as HTMLSelectElement | null;
+  const params = new URLSearchParams(window.location.search);
+  const stelleParam = params.get('stelle');
+  if (stelleSelect && stelleParam) {
+    const opt = Array.from(stelleSelect.options).find((o) => o.value === stelleParam);
+    if (opt) {
+      stelleSelect.value = stelleParam;
+    }
+  }
+
+  const textarea = document.getElementById('nachricht') as HTMLTextAreaElement | null;
+  const counter = document.getElementById('char-counter');
+  textarea?.addEventListener('input', () => {
+    const len = textarea.value.length;
+    if (counter) {
+      counter.textContent = `${len} / 3000`;
+      counter.style.color = len > 2850 ? '#DC2626' : len > 2600 ? '#0284C7' : '#D4D4D9';
+    }
+  });
+
+  const form = document.getElementById('bewerbung-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const lebenslaufInput = document.getElementById('lebenslauf') as HTMLInputElement | null;
+  const MAX_CV_BYTES = 4 * 1024 * 1024;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    const file = lebenslaufInput?.files?.[0];
+    if (!file || file.size === 0) {
+      lebenslaufInput?.setCustomValidity('Bitte einen Lebenslauf auswählen.');
+      lebenslaufInput?.reportValidity();
+      lebenslaufInput?.setCustomValidity('');
+      return;
+    }
+    if (file.size > MAX_CV_BYTES) {
+      lebenslaufInput?.setCustomValidity('Datei zu groß (max. 4 MB).');
+      lebenslaufInput?.reportValidity();
+      lebenslaufInput?.setCustomValidity('');
+      return;
+    }
+    const fd = new FormData(form);
+    fd.delete('datenschutz');
+    fd.append('datenschutz', cbInput?.checked ? 'true' : 'false');
+    if (fd.get('datenschutz') !== 'true') {
+      cbBox?.parentElement?.classList.add('shake');
+      setTimeout(() => cbBox?.parentElement?.classList.remove('shake'), 500);
+      return;
+    }
+    submitBtn?.classList.add('loading');
+    try {
+      const res = await fetch('/api/bewerbung', {
+        method: 'POST',
+        body: fd,
+      });
+      let json: { ok?: boolean; error?: string } = {};
+      try {
+        json = await res.json();
+      } catch {
+        /* ignore */
+      }
+      if (res.ok && json.ok) {
+        window.location.href = '/danke';
+      } else {
+        throw new Error(json.error ?? 'Unbekannter Fehler');
+      }
+    } catch (err) {
+      submitBtn?.classList.remove('loading');
+      const errMsg = document.getElementById('form-error');
+      if (errMsg) {
+        const fallback =
+          'Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder nutze den Link „Lieber per E-Mail“ unten.';
+        errMsg.textContent = err instanceof Error && err.message ? err.message : fallback;
+        errMsg.classList.remove('hidden');
+      }
+    }
+  });
+</script>

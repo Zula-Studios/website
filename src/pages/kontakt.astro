@@ -143,7 +143,7 @@ const schema = {
             <p class="text-[#88888F] text-sm">Allgemeine Anfragen, Feedback oder einfach ein kurzes Hallo – wir lesen alles.</p>
           </div>
 
-          <form name="kontakt" method="POST" action="/danke" id="contact-form" novalidate class="space-y-4">
+          <form id="contact-form" novalidate class="space-y-4">
 
             <!-- Name row -->
             <div class="grid grid-cols-2 gap-4">
@@ -197,6 +197,7 @@ const schema = {
                 Nachricht absenden
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
+              <p id="form-error" class="hidden mt-3 text-sm text-red-600 text-center leading-relaxed"></p>
               <p class="text-center text-xs text-[#D4D4D9] mt-3">Wir antworten innerhalb von 24 Stunden · Kein Spam</p>
             </div>
 
@@ -230,9 +231,12 @@ const schema = {
   #submit-btn.loading { opacity: 0.7; pointer-events: none; }
   #submit-btn.loading::after { content: ''; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 0.25rem; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-4px)} 40%,80%{transform:translateX(4px)} }
+  .shake { animation: shake 0.4s ease; }
 </style>
 
 <script>
+  // ── Checkbox ────────────────────────────────────────────────────────────────
   const cbWrapper = document.getElementById('cb-wrapper');
   const cbInput   = document.getElementById('datenschutz') as HTMLInputElement | null;
   const cbBox     = cbWrapper?.querySelector('.cb-box');
@@ -246,6 +250,7 @@ const schema = {
     cbWrapper?.click();
   });
 
+  // ── Character counter ────────────────────────────────────────────────────────
   const textarea = document.getElementById('nachricht') as HTMLTextAreaElement | null;
   const counter  = document.getElementById('char-counter');
   textarea?.addEventListener('input', () => {
@@ -256,7 +261,53 @@ const schema = {
     }
   });
 
-  document.getElementById('contact-form')?.addEventListener('submit', () => {
-    document.getElementById('submit-btn')?.classList.add('loading');
+  // ── Form submit via fetch ────────────────────────────────────────────────────
+  const form      = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((v, k) => { data[k] = v.toString(); });
+    data['datenschutz'] = (document.getElementById('datenschutz') as HTMLInputElement)?.checked ? 'true' : 'false';
+
+    if (data['datenschutz'] !== 'true') {
+      cbBox?.parentElement?.classList.add('shake');
+      setTimeout(() => cbBox?.parentElement?.classList.remove('shake'), 500);
+      return;
+    }
+
+    submitBtn?.classList.add('loading');
+
+    try {
+      const res  = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (res.ok && json.ok) {
+        window.location.href = '/danke';
+      } else {
+        throw new Error(json.error ?? 'Unbekannter Fehler');
+      }
+    } catch (err) {
+      submitBtn?.classList.remove('loading');
+      const errMsg = document.getElementById('form-error');
+      if (errMsg) {
+        const fallback =
+          'Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe uns direkt an hallo@zulastudios.de.';
+        errMsg.textContent = err instanceof Error && err.message ? err.message : fallback;
+        errMsg.classList.remove('hidden');
+      }
+    }
   });
 </script>
