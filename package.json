@@ -7,7 +7,6 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "serve": "node ./dist/server/entry.mjs",
     "astro": "astro"
   },
   "dependencies": {
