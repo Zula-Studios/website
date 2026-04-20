@@ -58,7 +58,7 @@ export default defineConfig({
     }),
   ],
 
-  output: 'static',
+  output: 'server',
   adapter: node({ mode: 'standalone' }),
 
   // ── Vite build optimisations ──────────────────────────────────────────────

@@ -4,6 +4,8 @@ import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
 import { careerJobs, CAREERS_DATE_POSTED, CAREERS_VALID_THROUGH } from '@/data/careers';
 
+export const prerender = true;
+
 export function getStaticPaths() {
   return careerJobs.map((job) => ({
     params: { slug: job.slug },
