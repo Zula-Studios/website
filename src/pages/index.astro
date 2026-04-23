@@ -18,7 +18,6 @@ const localBusinessSchema = {
     postalCode: SITE.address.zip,
     addressCountry: SITE.address.country,
   },
-  priceRange: '€€',
   serviceType: ['Shopify Development', 'E-Commerce', 'Web Development'],
 };
 
@@ -26,11 +25,6 @@ const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Was kostet ein Shopify Shop?',
-      acceptedAnswer: { '@type': 'Answer', text: 'Ein professioneller Shopify-Shop kostet je nach Umfang zwischen 2.500 € und 50.000 €. Im kostenlosen Erstgespräch erstellen wir ein konkretes Angebot.' },
-    },
     {
       '@type': 'Question',
       name: 'Wie lange dauert eine Shopify Migration?',
@@ -96,10 +90,6 @@ const processSteps = [
 ];
 
 const faqs = [
-  {
-    q: 'Was kostet ein Shopify Shop?',
-    a: 'Je nach Umfang und Anforderungen liegt der Preis zwischen 2.500 € und 50.000 €. Im kostenlosen Erstgespräch erstellen wir ein transparentes, konkretes Angebot für Ihr Projekt.',
-  },
   {
     q: 'Wie lange dauert eine Shopify Migration?',
     a: 'Typischerweise 2–8 Wochen – abhängig von Datenmenge, Komplexität und Quellsystem. Wir garantieren dabei Datensicherheit und minimale Unterbrechung.',

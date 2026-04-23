@@ -11,44 +11,16 @@ const serviceSchema = {
   provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
   serviceType: 'Shopify Development',
   areaServed: { '@type': 'Country', name: 'Germany' },
-  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: '2500', highPrice: '50000' },
 };
 
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
   mainEntity: [
-    { '@type': 'Question', name: 'Wie viel kostet ein Shopify Shop?', acceptedAnswer: { '@type': 'Answer', text: 'Abhängig vom Umfang: Starter ab 2.500 €, Professional ab 7.500 €, Enterprise auf Anfrage. Im kostenlosen Erstgespräch erstellen wir ein konkretes Angebot.' } },
     { '@type': 'Question', name: 'Wie lange dauert die Entwicklung?', acceptedAnswer: { '@type': 'Answer', text: 'Einfache Shops: 2–4 Wochen. Individuelle Custom-Shops: 2–4 Monate. Den genauen Zeitplan legen wir nach dem Briefing fest.' } },
+    { '@type': 'Question', name: 'Welche Shopify-Version brauche ich?', acceptedAnswer: { '@type': 'Answer', text: 'Das hängt von Umsatz und Anforderungen ab. Wir beraten Sie neutral und empfehlen die optimale Lösung für Ihr Business.' } },
   ],
 };
-
-const packages = [
-  {
-    name: 'Starter',
-    price: 'ab 2.500 €',
-    desc: 'Für Einsteiger',
-    features: ['Premium Theme Setup', 'Bis 50 Produkte', 'Zahlungsanbieter', 'Mobile-optimiert', 'SEO Basics', '4 Wochen Support'],
-    cta: 'Starter anfragen',
-    highlight: false,
-  },
-  {
-    name: 'Professional',
-    price: 'ab 7.500 €',
-    desc: 'Für wachsende Shops',
-    features: ['Custom Theme Entwicklung', 'Unbegrenzte Produkte', 'Custom Sections & Blöcke', 'GA4 / GTM Setup', 'SEO-Volloptimierung', 'App-Integrationen', '60 Tage Support'],
-    cta: 'Professional anfragen',
-    highlight: true,
-  },
-  {
-    name: 'Enterprise',
-    price: 'auf Anfrage',
-    desc: 'Für Skalierung',
-    features: ['Shopify Plus', 'Vollständig custom', 'ERP/PIM/WMS Integration', 'Multi-Language/Currency', 'B2B Funktionen', 'Dedizierter PM', 'Retainer-Option'],
-    cta: 'Enterprise anfragen',
-    highlight: false,
-  },
-];
 ---
 
 <BaseLayout
@@ -100,7 +72,7 @@ const packages = [
               Kostenloses Angebot
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-            <a href="#pakete" class="btn btn-ghost py-3.5 px-7 text-[15px]">Pakete ansehen</a>
+            <a href="/referenzen" class="btn btn-ghost py-3.5 px-7 text-[15px]">Referenzen ansehen</a>
           </div>
         </div>
 
@@ -154,61 +126,16 @@ const packages = [
     </div>
   </section>
 
-  <!-- PACKAGES -->
-  <section class="py-20 lg:py-24 bg-[#FAFAF8]" id="pakete">
-    <div class="container">
-      <div class="text-center mb-14" data-reveal>
-        <p class="label mb-3">Transparente Preise</p>
-        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-3" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Pakete für jeden Bedarf</h2>
-        <p class="text-[#88888F] text-sm max-w-md mx-auto">Von der ersten Idee bis zur Enterprise-Lösung — wir finden das richtige Paket.</p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {packages.map((pkg, i) => (
-          <div
-            class:list={[
-              "rounded-2xl p-7 flex flex-col",
-              pkg.highlight ? "bg-[#0C0C0F] ring-1 ring-[#2E2E3A]" : "bg-white border border-[#EBEBEF]"
-            ]}
-            data-reveal data-delay={String(i + 1)}
-          >
-            {pkg.highlight && (
-              <div class="inline-flex items-center gap-1.5 bg-accent-600 text-white text-[10.5px] font-bold tracking-wide uppercase px-2.5 py-1 rounded-full mb-4 self-start">
-                Beliebteste Wahl
-              </div>
-            )}
-            <h3 class:list={["font-bold text-lg mb-0.5 tracking-[-0.01em]", pkg.highlight ? "text-white" : "text-[#0C0C0F]"]}>{pkg.name}</h3>
-            <p class:list={["text-xs mb-4", pkg.highlight ? "text-[#9898A0]" : "text-[#AEAEB5]"]}>{pkg.desc}</p>
-            <div class:list={["font-bold text-2xl tracking-[-0.03em] mb-6", pkg.highlight ? "text-white" : "text-[#0C0C0F]"]}>{pkg.price}</div>
-            <ul class="space-y-2.5 flex-grow mb-7">
-              {pkg.features.map(f => (
-                <li class:list={["flex items-start gap-2.5 text-[13px]", pkg.highlight ? "text-[#AEAEB5]" : "text-[#62626E]"]}>
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class:list={["mt-0.5 shrink-0", pkg.highlight ? "text-[#38BDF8]" : "text-[#10B981]"]}>
-                    <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <a href="/projekt-starten" class:list={["btn justify-center rounded-xl py-3", pkg.highlight ? "bg-white text-[#0C0C0F] hover:bg-[#F5F5F8]" : "btn-primary"]}>
-              {pkg.cta}
-            </a>
-          </div>
-        ))}
-      </div>
-      <p class="text-center text-[#AEAEB5] text-xs mt-6">Alle Preise netto zzgl. MwSt. · Individuelle Angebote auf Anfrage.</p>
-    </div>
-  </section>
-
   <!-- FAQ -->
   <section class="py-20 bg-white">
     <div class="container max-w-2xl">
       <h2 class="font-bold text-[#0C0C0F] tracking-[-0.02em] text-2xl mb-8" data-reveal>Häufige Fragen</h2>
       <div class="space-y-2">
         {[
-          { q: 'Wie viel kostet ein Shopify Shop?', a: 'Abhängig vom Umfang. Starter ab 2.500 €, Professional ab 7.500 €, Enterprise auf Anfrage. Im Erstgespräch erstellen wir ein konkretes Angebot.' },
           { q: 'Wie lange dauert die Entwicklung?', a: 'Einfache Shops: 2–4 Wochen. Individuelle Custom-Shops: 2–4 Monate. Den Zeitplan legen wir nach dem Briefing fest.' },
-          { q: 'Welche Shopify-Version brauche ich?', a: 'Das hängt von Umsatz und Anforderungen ab. Wir beraten Sie neutral und empfehlen das optimale Paket für Ihr Business.' },
+          { q: 'Welche Shopify-Version brauche ich?', a: 'Das hängt von Umsatz und Anforderungen ab. Wir beraten Sie neutral und empfehlen die optimale Lösung für Ihr Business.' },
           { q: 'Kümmert ihr euch auch um den Content?', a: 'Auf Wunsch übernehmen wir das Einpflegen von Produkten, Texten und Bildern — oder wir schulen Ihr Team.' },
+          { q: 'Wie läuft die Zusammenarbeit ab?', a: 'Nach dem Erstgespräch erhalten Sie ein individuelles Angebot. Danach folgen Konzeption, Entwicklung mit wöchentlichen Updates und der gemeinsame Launch.' },
         ].map(item => (
           <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
             <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
