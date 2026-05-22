@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -36,9 +37,8 @@ const faqSchema = {
 >
 
   <!-- HERO -->
-  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden">
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
     <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="absolute top-0 right-0 w-[500px] h-[500px]" style="background: radial-gradient(circle at 80% 20%, rgba(56,189,248,0.2), transparent 60%);"></div>
 
     <div class="container relative z-10">
       <!-- Breadcrumb -->
@@ -102,7 +102,7 @@ const faqSchema = {
   <section class="py-20 lg:py-24 bg-white">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <p class="label mb-3">Warum Shopify</p>
+        <SectionLabel tone="blue" class="mb-3">Warum Shopify</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Die führende E-Commerce Plattform</h2>
       </div>
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
@@ -152,12 +152,11 @@ const faqSchema = {
   </section>
 
   <!-- CTA FINAL -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 120%, rgba(56,189,248,0.22), transparent 60%);"></div>
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
     <div class="container relative z-10 text-center max-w-xl mx-auto">
       <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Bereit für Ihren neuen Shopify Shop?</h2>
       <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Kostenloses Erstgespräch — kein Risiko, kein Verkaufsdruck.</p>
-      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
         Jetzt kostenlos anfragen
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

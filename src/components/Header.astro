@@ -17,6 +17,9 @@ const navLinks = [
 const services = [
   { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen', iconName: 'shop' },
   { label: 'Shopify Migration', href: '/leistungen/shopify-migration', iconName: 'migration' },
+  { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration', iconName: 'globe' },
+  { label: 'Landingpages', href: '/leistungen/landingpages', iconName: 'target' },
+  { label: 'Astro Websites', href: '/leistungen/astro-websites', iconName: 'layers' },
   { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung', iconName: 'code' },
 ];
 ---
@@ -159,6 +162,12 @@ const services = [
   .logo-mark {
     background: #0C0C0F;
     color: white;
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .group:hover .logo-mark {
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.12);
   }
   .logo-text { color: #0C0C0F; }
   .nav-mobile-btn { color: #0C0C0F; }
@@ -185,6 +194,10 @@ const services = [
   #site-header.header-on-dark .logo-mark {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+  }
+  #site-header.header-on-dark .group:hover .logo-mark {
+    border-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.12);
   }
   #site-header.header-on-dark .logo-icon {
     fill: white;

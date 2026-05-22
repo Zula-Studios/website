@@ -1,0 +1,12 @@
+---
+interface Props {
+  tone?: 'blue' | 'violet' | 'emerald' | 'coral' | 'amber';
+  class?: string;
+}
+
+const { tone = 'blue', class: className = '' } = Astro.props;
+---
+
+<p class:list={['section-label', `section-label--${tone}`, className]}>
+  <slot />
+</p>

@@ -44,6 +44,12 @@ export default {
           warm: '#FAFAF8',
           dark: '#0C0C0F',
         },
+        contrast: {
+          coral: '#EA580C',
+          violet: '#7C3AED',
+          emerald: '#059669',
+          amber: '#D97706',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],

@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 
 const localBusinessSchema = {
   '@context': 'https://schema.org',
@@ -58,6 +59,24 @@ const services = [
   },
   {
     num: '03',
+    title: 'WordPress zu Astro',
+    desc: 'Migration zu Astro.js mit Headless CMS — schneller, sicherer, SEO-stabil.',
+    href: '/leistungen/wordpress-astro-migration',
+  },
+  {
+    num: '04',
+    title: 'Landingpages',
+    desc: 'Conversion-starke Seiten mit Astro — ideal für Ads, Launches und Lead-Kampagnen.',
+    href: '/leistungen/landingpages',
+  },
+  {
+    num: '05',
+    title: 'Astro Websites',
+    desc: 'Unternehmenswebsites mit Astro — schnell, SEO-stark, optional mit Headless CMS.',
+    href: '/leistungen/astro-websites',
+  },
+  {
+    num: '06',
     title: 'Individuelle Entwicklung',
     desc: 'Custom Apps und Integrationen — mit Astro.js, Next.js und Laravel für schnelle Frontends und solide APIs.',
     href: '/leistungen/individuelle-entwicklung',
@@ -117,7 +136,7 @@ const faqs = [
   ════════════════════════════════════════════ -->
   <section
     id="hero-section"
-    class="relative min-h-screen bg-[#0C0C0F] flex flex-col justify-end pb-20 lg:pb-24 overflow-hidden"
+    class="relative min-h-screen bg-[#0C0C0F] flex flex-col justify-end pb-20 lg:pb-24 overflow-hidden hero-glow"
   >
     <!-- Subtle dot grid -->
     <div
@@ -127,7 +146,7 @@ const faqs = [
     <!-- Corner glow -->
     <div
       class="absolute top-0 right-0 w-[700px] h-[700px] pointer-events-none"
-      style="background: radial-gradient(circle at 70% 20%, rgba(56,189,248,0.18), transparent 65%);"
+      style="background: radial-gradient(circle at 70% 20%, rgba(56,189,248,0.14), transparent 65%);"
     ></div>
 
     <div class="container relative z-10 pt-32">
@@ -260,7 +279,7 @@ const faqs = [
       <!-- Header row -->
       <div class="flex items-end justify-between mb-12 lg:mb-16" data-reveal>
         <div>
-          <p class="label mb-3">Leistungen</p>
+          <SectionLabel tone="blue" class="mb-3">Leistungen</SectionLabel>
           <h2
             class="font-bold text-[#0C0C0F] tracking-[-0.03em]"
             style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
@@ -314,10 +333,10 @@ const faqs = [
     <div class="container">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-0 border border-[#1C1C25] rounded-2xl overflow-hidden">
         {[
-          { value: '10+', label: 'Shopify Projekte', sub: 'abgeschlossen' },
-          { value: '98%', label: 'Kundenzufrieden-', sub: 'heit' },
-          { value: '10+', label: 'Jahre', sub: 'Erfahrung' },
-          { value: '20+', label: 'Zufriedene', sub: 'Kunden' },
+          { value: '10+', label: 'Shopify Projekte', sub: 'abgeschlossen', tone: 'text-sky-300' },
+          { value: '98%', label: 'Kundenzufrieden-', sub: 'heit', tone: 'text-violet-300' },
+          { value: '10+', label: 'Jahre', sub: 'Erfahrung', tone: 'text-emerald-300' },
+          { value: '20+', label: 'Zufriedene', sub: 'Kunden', tone: 'text-amber-300' },
         ].map((stat, i) => (
           <div
             class:list={[
@@ -330,7 +349,7 @@ const faqs = [
             data-delay={String(i + 1)}
           >
             <div
-              class="font-bold text-white leading-none mb-3 tabular-nums"
+              class:list={["font-bold leading-none mb-3 tabular-nums", stat.tone]}
               style="font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: -0.04em;"
             >
               {stat.value}
@@ -351,7 +370,7 @@ const faqs = [
 
         <!-- Left -->
         <div data-reveal>
-          <p class="label mb-4">Warum Zula Studios</p>
+          <SectionLabel tone="emerald" class="mb-4">Warum Zula Studios</SectionLabel>
           <h2
             class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-6"
             style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
@@ -372,17 +391,19 @@ const faqs = [
         <!-- Right: Feature list -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
-            { iconName: 'target', title: 'Ergebnisorientiert', desc: 'Jede Entscheidung zielt auf messbare Conversion und Umsatz.' },
-            { iconName: 'eye', title: 'Transparent', desc: 'Keine versteckten Kosten. Klare Kommunikation, immer.' },
-            { iconName: 'layers', title: 'Technisch tief', desc: 'Shopify bis in die Tiefe — APIs, Liquid, Headless, Apps.' },
-            { iconName: 'users', title: 'Partnerschaftlich', desc: 'Wir denken mit, hinterfragen und empfehlen ehrlich.' },
+            { iconName: 'target', title: 'Ergebnisorientiert', desc: 'Jede Entscheidung zielt auf messbare Conversion und Umsatz.', chip: 'icon-chip--blue' },
+            { iconName: 'eye', title: 'Transparent', desc: 'Keine versteckten Kosten. Klare Kommunikation, immer.', chip: 'icon-chip--violet' },
+            { iconName: 'layers', title: 'Technisch tief', desc: 'Shopify bis in die Tiefe — APIs, Liquid, Headless, Apps.', chip: 'icon-chip--emerald' },
+            { iconName: 'users', title: 'Partnerschaftlich', desc: 'Wir denken mit, hinterfragen und empfehlen ehrlich.', chip: 'icon-chip--coral' },
           ].map((item, i) => (
             <div
               class="p-6 rounded-2xl border border-[#EBEBEF] bg-[#FAFAF8] hover:border-[#D4D4D9] hover:bg-white transition-all duration-200"
               data-reveal
               data-delay={String(i + 1)}
             >
-              <Icon name={item.iconName} size={20} class="text-[#AEAEB5] mb-4" strokeWidth={1.5} />
+              <div class={`icon-chip ${item.chip} mb-4`}>
+                <Icon name={item.iconName} size={20} strokeWidth={1.5} />
+              </div>
               <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{item.title}</h3>
               <p class="text-[#88888F] text-sm leading-relaxed">{item.desc}</p>
             </div>
@@ -399,7 +420,7 @@ const faqs = [
     <div class="container">
       <div class="flex items-end justify-between mb-12 lg:mb-16" data-reveal>
         <div>
-          <p class="label mb-3">Kundenstimmen</p>
+          <SectionLabel tone="violet" class="mb-3">Kundenstimmen</SectionLabel>
           <h2
             class="font-bold text-[#0C0C0F] tracking-[-0.03em]"
             style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05;"
@@ -442,7 +463,7 @@ const faqs = [
 
         <!-- Left: sticky label -->
         <div data-reveal>
-          <p class="label mb-4">Prozess</p>
+          <SectionLabel tone="amber" class="mb-4">Prozess</SectionLabel>
           <h2
             class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-6"
             style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;"
@@ -465,7 +486,7 @@ const faqs = [
               data-reveal
               data-delay={String(i + 1)}
             >
-              <span class="text-xs font-bold text-[#D4D4D9] tabular-nums shrink-0 mt-1 w-6">{step.n}</span>
+              <span class="text-xs font-bold text-accent-500 tabular-nums shrink-0 mt-1 w-6">{step.n}</span>
               <div>
                 <h3 class="font-semibold text-[#0C0C0F] text-base mb-2">{step.title}</h3>
                 <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
@@ -486,7 +507,7 @@ const faqs = [
 
         <!-- Left -->
         <div data-reveal>
-          <p class="label mb-4">FAQ</p>
+          <SectionLabel tone="coral" class="mb-4">FAQ</SectionLabel>
           <h2
             class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4"
             style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;"
@@ -526,11 +547,7 @@ const faqs = [
   <!-- ════════════════════════════════════════════
        CTA
   ════════════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] py-24 lg:py-32 relative overflow-hidden">
-    <div
-      class="absolute inset-0 pointer-events-none"
-      style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.2), transparent 60%);"
-    ></div>
+  <section class="bg-[#0C0C0F] py-24 lg:py-32 relative overflow-hidden cta-glow">
     <div class="container relative z-10">
       <div class="max-w-2xl mx-auto text-center">
         <h2

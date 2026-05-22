@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 import { careerJobs, CAREERS_DATE_POSTED, CAREERS_VALID_THROUGH } from '@/data/careers';
 
 const dateLabel = new Date(CAREERS_DATE_POSTED).toLocaleDateString('de-DE', {
@@ -59,10 +60,8 @@ const schema = [
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Karriere', url: '/karriere' }]}
 >
   <!-- Hero -->
-  <section class="bg-[#0C0C0F] pt-20 pb-20 lg:pb-28 relative overflow-hidden">
+  <section class="bg-[#0C0C0F] pt-20 pb-20 lg:pb-28 relative overflow-hidden hero-glow">
     <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 28px 28px;"></div>
-    <div class="absolute top-0 right-0 w-[min(90vw,640px)] h-[min(70vh,520px)]" style="background: radial-gradient(circle at 65% 30%, rgba(56,189,248,0.16), transparent 55%);"></div>
-    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] opacity-40" style="background: radial-gradient(circle, rgba(2,132,199,0.12), transparent 65%);"></div>
 
     <div class="container relative z-10">
       <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10">
@@ -104,7 +103,7 @@ const schema = [
     <div class="container">
       <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-14">
         <div>
-          <p class="label mb-2 text-[#62626E]">Offene Positionen</p>
+          <SectionLabel tone="blue" class="mb-2">Offene Positionen</SectionLabel>
           <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] text-2xl lg:text-3xl">Finde deine Rolle</h2>
         </div>
         <p class="text-sm text-[#88888F] max-w-md sm:text-right">
@@ -217,7 +216,7 @@ const schema = [
         class="rounded-2xl border border-[#EBEBEF] bg-white p-8 lg:p-12 text-center shadow-[0_2px_24px_rgba(12,12,15,0.04)]"
         data-reveal
       >
-        <p class="label mb-3">Nichts Passendes?</p>
+        <SectionLabel tone="violet" class="mb-3">Nichts Passendes?</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-4">Initiativbewerbung</h2>
         <p class="text-[#62626E] text-sm lg:text-[15px] leading-relaxed mb-8 max-w-lg mx-auto">
           Erzähl uns kurz von dir: CV, Tech-Stack und was dich antreibt. Wir melden uns, wenn es passt.
@@ -238,12 +237,11 @@ const schema = [
   </section>
 
   <!-- CTA -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.14), transparent 55%);"></div>
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
     <div class="container relative z-10 text-center max-w-lg mx-auto" data-reveal>
       <h2 class="font-bold text-white tracking-[-0.03em] text-2xl lg:text-3xl mb-4">Fragen zur Bewerbung?</h2>
       <p class="text-[#9898A0] mb-8 text-sm lg:text-[15px]">Wir antworten in der Regel innerhalb weniger Werktage.</p>
-      <a href="/kontakt" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 rounded-xl font-semibold text-[15px] inline-flex">
+      <a href="/kontakt" class="btn btn-accent py-3.5 px-8 rounded-xl font-semibold text-[15px] inline-flex">
         Zum Kontaktformular
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="ml-1">
           <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

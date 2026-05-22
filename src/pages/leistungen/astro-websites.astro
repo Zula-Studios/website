@@ -1,0 +1,291 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import SectionLabel from '@/components/SectionLabel.astro';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Astro Websites & Unternehmenswebsites',
+  description:
+    'Schnelle Unternehmenswebsites und Marketing-Sites mit Astro.js — SEO-stark, wartbar und optional mit Headless CMS für Ihr Redaktionsteam.',
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  serviceType: 'Web Design & Development',
+  areaServed: { '@type': 'Country', name: 'Germany' },
+};
+
+const siteTypes = [
+  'Unternehmenswebsite', 'Marketing-Site', 'Dienstleister-Website', 'Agentur-Portfolio',
+  'SaaS-Präsenz', 'Recruiting / Karriere', 'Referenz-Showcase', 'Mehrsprachige Site',
+];
+
+const pageTypes = [
+  'Startseite & Hero', 'Leistungen / Produkte', 'Über uns & Team', 'Referenzen & Cases',
+  'Blog / Ratgeber', 'Kontakt & Standorte', 'Karriere', 'Rechtliches (Impressum, Datenschutz)',
+  'Landingpage-Module', 'Newsletter & Lead-Magnete', 'FAQ & Support', 'Structured Data & SEO',
+];
+
+const cmsOptions = [
+  { name: 'Sanity', desc: 'Flexibles Studio — ideal für Marketing-Teams' },
+  { name: 'Strapi', desc: 'Open Source, skalierbar' },
+  { name: 'Decap CMS', desc: 'Git-basiert, schlank' },
+  { name: 'Markdown / Content Collections', desc: 'Maximale Performance, wenig Overhead' },
+];
+
+const steps = [
+  { n: '01', title: 'Strategie & Sitemap', desc: 'Ziele, Zielgruppen, Seitenstruktur und Content-Plan — bevor Design und Entwicklung starten.' },
+  { n: '02', title: 'Design & Design System', desc: 'Markenkonformes UI mit wiederverwendbaren Komponenten — konsistent über alle Seiten.' },
+  { n: '03', title: 'Astro-Entwicklung', desc: 'Schnelles Frontend mit Astro.js: Static, SSR oder Hybrid — je nach Anforderung.' },
+  { n: '04', title: 'CMS & Redaktion', desc: 'Headless CMS oder Content Collections — damit Ihr Team Inhalte selbst pflegen kann.' },
+  { n: '05', title: 'SEO & Performance', desc: 'Meta, Schema.org, Sitemap, Core Web Vitals und technisches SEO von Anfang an.' },
+  { n: '06', title: 'Launch & Betreuung', desc: 'Go-Live, DNS, Tracking — optional mit Wartungs-Retainer für Updates und neue Seiten.' },
+];
+
+const benefits = [
+  { title: 'Extrem schnell', desc: 'Astro liefert Top-Ladezeiten — besser für SEO, Ads und Nutzererlebnis.', chip: 'icon-chip--blue' },
+  { title: 'SEO-ready', desc: 'Saubere Struktur, Schema, Sitemap und performante Core Web Vitals.', chip: 'icon-chip--emerald' },
+  { title: 'Wartbar & skalierbar', desc: 'Komponenten-Architektur — neue Seiten und Module ohne Neubau.', chip: 'icon-chip--violet' },
+  { title: 'Shopify-kompatibel', desc: 'Marketing-Site und Shop aus einer Hand — optional headless verbunden.', chip: 'icon-chip--coral' },
+];
+---
+
+<BaseLayout
+  title="Astro Websites – Schnelle Unternehmenswebsites & Marketing-Sites"
+  description="Unternehmenswebsites mit Astro.js: schnell, SEO-stark, wartbar. Optional mit Headless CMS. Von Zula Studios — Shopify & Astro aus einer Hand."
+  schema={serviceSchema}
+  darkHero={true}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Leistungen', url: '/leistungen' },
+    { name: 'Astro Websites', url: '/leistungen/astro-websites' },
+  ]}
+>
+
+  <!-- HERO -->
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
+    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
+        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
+        <span class="text-[#AEAEB5]">Astro Websites</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+          Astro · Unternehmenswebsites
+        </div>
+        <h1
+          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
+          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
+        >
+          Websites,<br/>
+          <span class="font-light italic text-white/55">die schnell laden</span><br/>
+          und überzeugen.
+        </h1>
+        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
+          Wir entwickeln Unternehmenswebsites und Marketing-Sites mit Astro.js — performant, SEO-stark und optional mit Headless CMS für Ihr Team.
+        </p>
+        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
+          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
+            Website-Projekt anfragen
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="/referenzen" class="btn btn-ghost py-3.5 px-7 text-[15px]">Referenzen ansehen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SITE TYPES -->
+  <section class="py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container">
+      <div class="flex justify-center mb-6">
+        <SectionLabel tone="blue">Typische Projekte</SectionLabel>
+      </div>
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        {siteTypes.map(s => (
+          <div class="flex items-center gap-2 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-2.5 text-sm font-medium text-[#44444F]">
+            {s}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="emerald" class="mb-3">Warum Astro?</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Mehr als WordPress — ohne Plugin-Chaos
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {benefits.map((b, i) => (
+          <div class="p-6 bg-white rounded-2xl border border-[#EBEBEF]" data-reveal data-delay={String(i + 1)}>
+            <div class={`icon-chip ${b.chip} mb-4`}>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 10l4 4 8-8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{b.title}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed">{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE TYPES -->
+  <section class="py-20 lg:py-24 bg-white">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="violet" class="mb-3">Was wir bauen</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Von der Startseite bis zum Blog
+        </h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {pageTypes.map((item, i) => (
+          <div class="flex items-center gap-3 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 4) + 1)}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 shrink-0">
+              <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-sm font-medium text-[#44444F]">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CMS -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="amber" class="mb-3">Content-Pflege</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-3" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Headless CMS — wenn Sie Inhalte selbst pflegen möchten
+        </h2>
+        <p class="text-[#62626E] text-sm lg:text-[15px] max-w-2xl leading-relaxed">
+          Für reine Marketing-Sites reicht oft Markdown. Größere Teams bekommen ein Headless CMS — Astro bleibt das schnelle Frontend.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cmsOptions.map((cms, i) => (
+          <div class="bg-white border border-[#EBEBEF] rounded-2xl p-6 hover:border-[#D4D4D9] transition-colors" data-reveal data-delay={String(i + 1)}>
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{cms.name}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed">{cms.desc}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-8 text-sm text-[#88888F]" data-reveal>
+        Bereits WordPress im Einsatz? → <a href="/leistungen/wordpress-astro-migration" class="text-accent-600 font-medium hover:underline">WordPress zu Astro Migration</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="py-20 lg:py-24 bg-white" id="prozess">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+        <div data-reveal>
+          <SectionLabel tone="blue" class="mb-4">In 6 Schritten</SectionLabel>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Von der Idee zur live Website
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed">
+            Typischerweise 4–8 Wochen — abhängig von Seitenumfang, Design-Aufwand und CMS-Anbindung.
+          </p>
+        </div>
+        <div class="space-y-0 border-t border-[#EBEBEF]">
+          {steps.map((step, i) => (
+            <div class="flex gap-7 py-6 border-b border-[#EBEBEF]" data-reveal data-delay={String((i % 3) + 1)}>
+              <span class="text-xs font-bold text-accent-500 tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
+              <div>
+                <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
+                <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED -->
+  <section class="py-16 bg-[#FAFAF8] border-y border-[#EBEBEF]">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl">
+        <a href="/leistungen/landingpages" class="group p-6 bg-white rounded-2xl border border-[#EBEBEF] hover:border-accent-200 transition-colors">
+          <p class="text-xs font-semibold text-accent-600 mb-2">Ergänzung</p>
+          <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1 group-hover:text-accent-600 transition-colors">Landingpages</h3>
+          <p class="text-[#88888F] text-sm">Einzelne Kampagnen-Seiten für Ads & Launches.</p>
+        </a>
+        <a href="/leistungen/shopify-shop-erstellen" class="group p-6 bg-white rounded-2xl border border-[#EBEBEF] hover:border-accent-200 transition-colors">
+          <p class="text-xs font-semibold text-accent-600 mb-2">E-Commerce</p>
+          <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1 group-hover:text-accent-600 transition-colors">Shopify Shop</h3>
+          <p class="text-[#88888F] text-sm">Marketing-Site und Shop — aus einer Hand.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-white">
+    <div class="container max-w-2xl">
+      <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
+      <div class="space-y-2">
+        {[
+          {
+            q: 'Astro oder WordPress — was ist besser für uns?',
+            a: 'Für reine Präsenz, Performance und SEO ist Astro oft die bessere Wahl. WordPress lohnt sich vor allem, wenn ihr bereits tief im WP-Ökosystem steckt — dann migrieren wir schrittweise.',
+          },
+          {
+            q: 'Wie viele Seiten sind typisch?',
+            a: 'Zwischen 5 und 15 Seiten für KMU-Websites, plus Blog. Größere Sites planen wir modular — neue Bereiche lassen sich später ergänzen.',
+          },
+          {
+            q: 'Können wir Inhalte selbst pflegen?',
+            a: 'Ja. Entweder über Headless CMS (Sanity, Strapi) oder Content Collections/Markdown — je nach Team und Update-Frequenz.',
+          },
+          {
+            q: 'Was kostet eine Astro-Website?',
+            a: 'Abhängig von Umfang und Design — nach dem kostenlosen Erstgespräch erhalten Sie ein fixes Angebot. Als Richtwert: deutlich weniger Wartungsaufwand als WordPress langfristig.',
+          },
+        ].map(item => (
+          <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
+              {item.q}
+              <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform">
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+            </summary>
+            <div class="px-5 pb-4 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-3.5">{item.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
+    <div class="container relative z-10 text-center max-w-xl mx-auto">
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Website-Projekt geplant?</h2>
+      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">
+        Wir beraten Sie kostenlos — und zeigen, ob Astro, CMS oder Migration der richtige Weg ist.
+      </p>
+      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+        Website-Projekt anfragen
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  </style>
+</BaseLayout>

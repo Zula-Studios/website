@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 
 const schema = {
   '@context': 'https://schema.org',
@@ -19,6 +20,9 @@ const schema = {
 const services = [
   { value: 'shopify-shop',             label: 'Shopify Shop',       desc: 'Neuer Shop von Grund auf',  iconName: 'shop'      },
   { value: 'shopify-migration',        label: 'Migration',          desc: 'Wechsel zu Shopify',        iconName: 'migration' },
+  { value: 'wordpress-astro-migration', label: 'WordPress → Astro', desc: 'Migration & Headless CMS',  iconName: 'globe'     },
+  { value: 'landingpages',             label: 'Landingpage',        desc: 'Ads & Lead-Kampagnen',      iconName: 'target'    },
+  { value: 'astro-websites',           label: 'Astro Website',      desc: 'Unternehmenswebsite',       iconName: 'layers'    },
   { value: 'individuelle-entwicklung', label: 'Custom App',         desc: 'Apps & Integrationen',      iconName: 'code'      },
   { value: 'optimierung',              label: 'Optimierung',        desc: 'Performance & Conversion',  iconName: 'zap'       },
   { value: 'beratung',                 label: 'Beratung / Audit',   desc: 'Strategie & Analyse',       iconName: 'eye'       },
@@ -57,9 +61,8 @@ const trust = [
 >
 
   <!-- HERO -->
-  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden">
+  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden hero-glow">
     <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[500px]" style="background: radial-gradient(circle at 75% 20%, rgba(56,189,248,0.15), transparent 60%);"></div>
     <div class="container relative z-10">
       <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12">
         <a href="/" class="hover:text-white transition-colors">Startseite</a>
@@ -85,7 +88,7 @@ const trust = [
         <!-- Sidebar -->
         <aside class="lg:sticky lg:top-28 space-y-6" data-reveal>
           <div>
-            <p class="label mb-5">Direkter Kontakt</p>
+            <SectionLabel tone="blue" class="mb-5">Direkter Kontakt</SectionLabel>
             <div class="space-y-3">
               <a href={`mailto:${SITE.email}`} class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-xl bg-[#F5F5F8] group-hover:bg-accent-50 flex items-center justify-center transition-colors shrink-0">
@@ -113,7 +116,7 @@ const trust = [
           </div>
 
           <div class="rounded-2xl bg-[#FAFAF8] border border-[#EBEBEF] p-5">
-            <p class="text-[10px] label mb-3">Erreichbarkeit</p>
+            <SectionLabel tone="violet" class="mb-3">Erreichbarkeit</SectionLabel>
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-[#62626E]">Mo – Fr</span>

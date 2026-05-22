@@ -42,9 +42,8 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
   <!-- ═══════════════════════════════════════
        HERO
   ═══════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] pt-20 pb-0 relative overflow-hidden">
+  <section class="bg-[#0C0C0F] pt-20 pb-0 relative overflow-hidden hero-glow">
     <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[600px]" style="background: radial-gradient(circle at 75% 15%, rgba(56,189,248,0.16), transparent 60%);"></div>
 
     <div class="container relative z-10">
       <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12 flex-wrap">
@@ -317,8 +316,7 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
   <!-- ═══════════════════════════════════════
        CTA
   ═══════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] py-24 relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.18), transparent 55%);"></div>
+  <section class="bg-[#0C0C0F] py-24 relative overflow-hidden cta-glow">
     <div class="container relative z-10" data-reveal>
       <div class="max-w-xl mx-auto text-center">
         <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4">
@@ -327,7 +325,7 @@ const allServices: { key: ServiceType | 'all'; label: string }[] = [
         <p class="text-[#9898A0] mb-8 leading-relaxed">
           Lassen Sie uns in einem kostenlosen Erstgespräch herausfinden, wie wir Ihren Shop auf das nächste Level bringen.
         </p>
-        <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold">
+        <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold">
           Kostenloses Erstgespräch
           <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

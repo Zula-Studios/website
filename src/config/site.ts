@@ -17,8 +17,9 @@ export const SITE = {
   },
   social: {
     linkedin: 'https://www.linkedin.com/company/zulastudios/',
-    github: 'https://github.com/zula-studios',
+    github: 'https://github.com/Zula-Studios',
   },
+  githubRepo: 'https://github.com/Zula-Studios/website',
   logo: '/images/logo.svg',
   ogImage: '/images/og-default.jpg',
   founded: '2020',
@@ -34,6 +35,9 @@ export const NAV_LINKS = [
     children: [
       { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen' },
       { label: 'Shopify Migration', href: '/leistungen/shopify-migration' },
+      { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration' },
+      { label: 'Landingpages', href: '/leistungen/landingpages' },
+      { label: 'Astro Websites', href: '/leistungen/astro-websites' },
       { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung' },
     ],
   },

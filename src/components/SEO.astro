@@ -78,7 +78,7 @@ const organizationSchema = {
     postalCode: SITE.address.zip,
     addressCountry: SITE.address.country,
   },
-  sameAs: Object.values(SITE.social).filter(Boolean),
+  sameAs: [...Object.values(SITE.social).filter(Boolean), SITE.githubRepo].filter(Boolean),
 };
 
 // WebSite with SearchAction (sitewide)

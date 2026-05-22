@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -22,7 +23,7 @@ const rest = posts.filter(p => !p.data.featured);
         <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
         <span class="text-[#0C0C0F] font-medium">Blog</span>
       </nav>
-      <p class="label mb-4">Blog</p>
+      <SectionLabel tone="blue" class="mb-4">Blog</SectionLabel>
       <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-4" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
         Insights & Wissen
       </h1>
@@ -34,7 +35,7 @@ const rest = posts.filter(p => !p.data.featured);
   {featured.length > 0 && (
     <section class="py-16 bg-white border-b border-[#EBEBEF]">
       <div class="container">
-        <p class="label mb-8">Empfohlene Artikel</p>
+        <SectionLabel tone="violet" class="mb-8">Empfohlene Artikel</SectionLabel>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           {featured.map((post, i) => (
             <a
@@ -61,7 +62,7 @@ const rest = posts.filter(p => !p.data.featured);
   <!-- All posts -->
   <section class="py-16 bg-white">
     <div class="container">
-      {rest.length > 0 && <p class="label mb-8">Alle Artikel</p>}
+      {rest.length > 0 && <SectionLabel tone="emerald" class="mb-8">Alle Artikel</SectionLabel>}
       <div class="border-t border-[#EBEBEF]">
         {posts.map((post, i) => (
           <a

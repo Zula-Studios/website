@@ -1,0 +1,273 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import SectionLabel from '@/components/SectionLabel.astro';
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'WordPress zu Astro Migration',
+  description:
+    'Migration von WordPress zu Astro.js mit Headless CMS — schneller, sicherer, SEO-stabil. Inhalte, Medien und URLs werden sauber übernommen.',
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  serviceType: 'Website Migration',
+  areaServed: { '@type': 'Country', name: 'Germany' },
+};
+
+const wordpressSetups = [
+  'WordPress Classic', 'Elementor', 'Divi', 'Gutenberg', 'WooCommerce (Content)', 'Multisite',
+];
+
+const headlessCms = [
+  { name: 'Sanity', desc: 'Flexibles Studio, ideal für Marketing-Teams' },
+  { name: 'Strapi', desc: 'Open Source, Self-hosted oder Cloud' },
+  { name: 'Contentful', desc: 'Enterprise-ready, skalierbar' },
+  { name: 'Decap CMS', desc: 'Git-basiert, schlank & wartungsarm' },
+  { name: 'WordPress (Headless)', desc: 'Schrittweise Entkopplung möglich' },
+];
+
+const migratedData = [
+  'Seiten & Beiträge', 'Medien & Bilder', 'SEO-Titel & Meta', 'URL-Struktur & Redirects',
+  'Kategorien & Tags', 'Formulare & CTAs', 'Navigation & Footer', 'Structured Data',
+  'Mehrsprachigkeit', 'Autoren & Redaktions-Workflow', 'Blog-Archive', 'Analytics & Tracking',
+];
+
+const steps = [
+  { n: '01', title: 'Audit & Migrationsplan', desc: 'WordPress-Setup, Plugins, Themes, SEO-Situation und Content-Struktur — wir definieren Zielarchitektur und Headless CMS.' },
+  { n: '02', title: 'Astro-Frontend & Design', desc: 'Neues Frontend in Astro.js: schnell, barrierefrei, komponentenbasiert — passend zu Ihrer Marke.' },
+  { n: '03', title: 'Headless CMS Setup', desc: 'Content-Modelle, Redaktions-Oberfläche und Workflows — damit Ihr Team ohne Entwickler pflegen kann.' },
+  { n: '04', title: 'Content-Migration', desc: 'Automatisierte und manuelle Übernahme von Inhalten, Medien und Metadaten — inklusive Qualitätscheck.' },
+  { n: '05', title: 'SEO & Redirects', desc: '301-Weiterleitungen, Sitemap, Schema.org und Core Web Vitals — Rankings bleiben stabil.' },
+  { n: '06', title: 'Go-Live & Übergabe', desc: 'Kontrollierter Launch, DNS-Umstellung, Schulung und optionaler Wartungs-Retainer.' },
+];
+
+const benefits = [
+  { title: 'Deutlich schneller', desc: 'Static/SSR mit Astro — Ladezeiten oft 3–5× besser als klassisches WordPress.', chip: 'icon-chip--blue' },
+  { title: 'Weniger Wartungsaufwand', desc: 'Kein Plugin-Chaos, weniger Sicherheitsupdates — stabiler Betrieb.', chip: 'icon-chip--emerald' },
+  { title: 'Redaktion bleibt einfach', desc: 'Headless CMS mit klarer Oberfläche — Content-Team arbeitet weiter produktiv.', chip: 'icon-chip--violet' },
+  { title: 'SEO & Performance', desc: 'Saubere URLs, schnelle Core Web Vitals und technisches SEO out of the box.', chip: 'icon-chip--amber' },
+];
+---
+
+<BaseLayout
+  title="WordPress zu Astro Migration – Headless CMS & Performance"
+  description="WordPress zu Astro.js migrieren: schnellere Website, Headless CMS, SEO-sichere Redirects und moderne Architektur. Kostenlose Migrations-Analyse von Zula Studios."
+  schema={serviceSchema}
+  darkHero={true}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Leistungen', url: '/leistungen' },
+    { name: 'WordPress zu Astro', url: '/leistungen/wordpress-astro-migration' },
+  ]}
+>
+
+  <!-- HERO -->
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
+    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+
+    <div class="container relative z-10">
+      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
+        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
+        <span class="text-[#AEAEB5]">WordPress zu Astro</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
+          WordPress → Astro · Headless CMS
+        </div>
+        <h1
+          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
+          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
+        >
+          Weg von WordPress —<br/>
+          <span class="font-light italic text-white/55">hin zu Astro,</span><br/>
+          schnell & wartbar.
+        </h1>
+        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
+          Wir migrieren Ihre WordPress-Website zu einem blitzschnellen Astro-Frontend mit Headless CMS — inklusive Content-Übernahme, SEO-Redirects und Redaktions-Workflow.
+        </p>
+        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
+          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
+            Kostenlose Migrations-Analyse
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#prozess" class="btn btn-ghost py-3.5 px-7 text-[15px]">Prozess ansehen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORDPRESS SETUPS -->
+  <section class="py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container">
+      <div class="flex justify-center mb-6">
+        <SectionLabel tone="blue">Typische WordPress-Ausgangssysteme</SectionLabel>
+      </div>
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        {wordpressSetups.map(s => (
+          <div class="flex items-center gap-2 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-2.5 text-sm font-medium text-[#44444F]">
+            {s}
+          </div>
+        ))}
+        <div class="flex items-center gap-2 bg-violet-50 border border-violet-100 rounded-xl px-4 py-2.5 text-sm font-medium text-violet-700">
+          + individuelle Setups
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HEADLESS CMS -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="violet" class="mb-3">Headless CMS</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-3" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Content pflegen — ohne WordPress-Backend
+        </h2>
+        <p class="text-[#62626E] text-sm lg:text-[15px] max-w-2xl leading-relaxed">
+          Wir empfehlen das CMS passend zu Team, Budget und Workflow. Astro bleibt das schnelle Frontend — Inhalte kommen per API oder Git.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {headlessCms.map((cms, i) => (
+          <div class="bg-white border border-[#EBEBEF] rounded-2xl p-6 hover:border-[#D4D4D9] transition-colors" data-reveal data-delay={String((i % 3) + 1)}>
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{cms.name}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed">{cms.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="py-20 lg:py-24 bg-white">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="emerald" class="mb-3">Warum migrieren?</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Mehr Performance, weniger technischer Ballast
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {benefits.map((b, i) => (
+          <div class="p-6 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF]" data-reveal data-delay={String(i + 1)}>
+            <div class={`icon-chip ${b.chip} mb-4`}>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 10l4 4 8-8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{b.title}</h3>
+            <p class="text-[#88888F] text-sm leading-relaxed">{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT GETS MIGRATED -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="amber" class="mb-3">Was wir übernehmen</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Inhalte & SEO — nichts geht verloren
+        </h2>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {migratedData.map((item, i) => (
+          <div class="flex items-center gap-3 bg-white border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 4) + 1)}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 shrink-0">
+              <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-sm font-medium text-[#44444F]">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="py-20 lg:py-24 bg-white" id="prozess">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+        <div data-reveal>
+          <SectionLabel tone="blue" class="mb-4">In 6 Schritten</SectionLabel>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Ihr Weg zu Astro
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed">
+            Strukturiert, SEO-sicher und mit klarem Redaktions-Setup — so sieht eine professionelle WordPress-Migration aus.
+          </p>
+        </div>
+        <div class="space-y-0 border-t border-[#EBEBEF]">
+          {steps.map((step, i) => (
+            <div class="flex gap-7 py-6 border-b border-[#EBEBEF]" data-reveal data-delay={String((i % 3) + 1)}>
+              <span class="text-xs font-bold text-accent-500 tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
+              <div>
+                <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
+                <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-[#FAFAF8]">
+    <div class="container max-w-2xl">
+      <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
+      <div class="space-y-2">
+        {[
+          {
+            q: 'Verliere ich meine Google-Rankings?',
+            a: 'Nein — wir migrieren URLs sauber, richten 301-Redirects ein und prüfen Sitemap sowie Structured Data. Rankings bleiben in der Regel stabil.',
+          },
+          {
+            q: 'Kann mein Team Inhalte weiterhin selbst pflegen?',
+            a: 'Ja. Mit Headless CMS (z. B. Sanity oder Strapi) pflegt Ihr Redaktionsteam Texte und Medien in einer modernen Oberfläche — ohne WordPress-Backend.',
+          },
+          {
+            q: 'Wie lange dauert die Migration?',
+            a: 'Je nach Umfang typischerweise 3–10 Wochen: kleine Marketing-Sites schneller, größere Sites mit vielen Inhalten und Sprachen entsprechend länger.',
+          },
+          {
+            q: 'Was passiert mit WooCommerce?',
+            a: 'WooCommerce-Shops migrieren wir separat zu Shopify. Reine WordPress-Inhalte (Blog, Seiten) übernehmen wir in Astro + Headless CMS — gerne als kombiniertes Projekt.',
+          },
+        ].map(item => (
+          <details class="group bg-white rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
+              {item.q}
+              <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform">
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+            </summary>
+            <div class="px-5 pb-4 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-3.5">{item.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
+    <div class="container relative z-10 text-center max-w-xl mx-auto">
+      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Bereit für Astro statt WordPress?</h2>
+      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">
+        Wir analysieren Ihre Website kostenlos — und zeigen den sinnvollsten Weg inkl. Headless CMS.
+      </p>
+      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+        Kostenlose Migrations-Analyse
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  </style>
+</BaseLayout>

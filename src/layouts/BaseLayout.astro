@@ -71,6 +71,10 @@ const { darkHero = false, ...props } = Astro.props;
         --border: #EBEBEF;
         --accent: #0284C7;
         --accent-light: #F0F9FF;
+        --contrast-violet: #7C3AED;
+        --contrast-emerald: #059669;
+        --contrast-coral: #EA580C;
+        --contrast-amber: #D97706;
         --radius: 0.75rem;
         --transition: cubic-bezier(0.22, 1, 0.36, 1);
       }
@@ -133,6 +137,94 @@ const { darkHero = false, ...props } = Astro.props;
         color: var(--ink-subtle);
       }
 
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+      .section-label::before {
+        content: '';
+        width: 1.25rem;
+        height: 1px;
+        flex-shrink: 0;
+        opacity: 0.65;
+      }
+      .section-label--blue { color: #0284C7; }
+      .section-label--blue::before { background: #0284C7; }
+      .section-label--violet { color: #7C3AED; }
+      .section-label--violet::before { background: #7C3AED; }
+      .section-label--emerald { color: #059669; }
+      .section-label--emerald::before { background: #059669; }
+      .section-label--coral { color: #EA580C; }
+      .section-label--coral::before { background: #EA580C; }
+      .section-label--amber { color: #D97706; }
+      .section-label--amber::before { background: #D97706; }
+
+      /* ── Subtle ambient glows ── */
+      .hero-glow::before,
+      .hero-glow::after,
+      .cta-glow::before {
+        content: '';
+        position: absolute;
+        pointer-events: none;
+      }
+      .hero-glow::before {
+        top: 0;
+        right: 0;
+        width: min(500px, 70vw);
+        height: min(500px, 70vw);
+        background: radial-gradient(circle at 75% 20%, rgba(56,189,248,0.11), transparent 62%);
+      }
+      .hero-glow::after {
+        bottom: 0;
+        left: 0;
+        width: min(360px, 55vw);
+        height: min(360px, 55vw);
+        background: radial-gradient(circle at 20% 80%, rgba(124,58,237,0.07), transparent 65%);
+      }
+      .cta-glow::before {
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.14), transparent 58%);
+      }
+
+      /* ── Icon chips & stat accents ── */
+      .icon-chip {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+      }
+      .icon-chip--blue { background: #F0F9FF; border-color: #E0F2FE; color: #0284C7; }
+      .icon-chip--violet { background: #F5F3FF; border-color: #EDE9FE; color: #7C3AED; }
+      .icon-chip--emerald { background: #ECFDF5; border-color: #D1FAE5; color: #059669; }
+      .icon-chip--coral { background: #FFF7ED; border-color: #FFEDD5; color: #EA580C; }
+      .icon-chip--amber { background: #FFFBEB; border-color: #FEF3C7; color: #D97706; }
+
+      .stat-accent {
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-accent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        opacity: 0.55;
+      }
+      .stat-accent--blue::before { background: #0EA5E9; }
+      .stat-accent--violet::before { background: #8B5CF6; }
+      .stat-accent--emerald::before { background: #10B981; }
+      .stat-accent--amber::before { background: #F59E0B; }
+
       /* ── Scroll Progress Bar ── */
       #scroll-progress {
         position: fixed;
@@ -140,7 +232,7 @@ const { darkHero = false, ...props } = Astro.props;
         left: 0;
         height: 2px;
         width: 0%;
-        background: var(--accent);
+        background: linear-gradient(90deg, #0284C7 0%, #7C3AED 50%, #059669 100%);
         z-index: 9999;
         transition: width 80ms linear;
         pointer-events: none;

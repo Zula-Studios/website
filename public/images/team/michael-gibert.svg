@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" fill="none" role="img" aria-label="Platzhalter Profilbild">
+  <rect width="128" height="128" rx="24" fill="#F5F5F8"/>
+  <rect x="1" y="1" width="126" height="126" rx="23" stroke="#EBEBEF" stroke-width="2"/>
+  <circle cx="64" cy="46" r="20" fill="#C8C8D0"/>
+  <path d="M28 108c8-20 24-32 36-32s28 12 36 32" fill="#C8C8D0"/>
+</svg>

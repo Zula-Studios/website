@@ -9,6 +9,9 @@ const TO_EMAIL = 'hallo@zulastudios.de';
 const SERVICE_LABELS: Record<string, string> = {
   'shopify-shop':             'Shopify Shop',
   'shopify-migration':        'Migration zu Shopify',
+  'wordpress-astro-migration': 'WordPress zu Astro Migration',
+  'landingpages':             'Landingpage (Astro)',
+  'astro-websites':           'Astro Website / Unternehmenswebsite',
   'individuelle-entwicklung': 'Custom App / Integration',
   'optimierung':              'Performance & Conversion',
   'beratung':                 'Beratung / Audit',

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionLabel from '@/components/SectionLabel.astro';
 
 const services = [
   {
@@ -20,6 +21,30 @@ const services = [
   },
   {
     num: '03',
+    title: 'WordPress zu Astro Migration',
+    desc: 'WordPress-Website zu blitzschnellem Astro-Frontend mit Headless CMS — inklusive Content-Übernahme, SEO-Redirects und Redaktions-Workflow.',
+    href: '/leistungen/wordpress-astro-migration',
+    cta: 'Migration anfragen',
+    features: ['Astro.js Frontend', 'Headless CMS (Sanity, Strapi & Co.)', 'Content- & Medienmigration', '301-Redirects & SEO', 'Core Web Vitals Optimierung', 'Redaktions-Schulung'],
+  },
+  {
+    num: '04',
+    title: 'Landingpages',
+    desc: 'Conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und perfekt für Ads, Produkt-Launches und Lead-Kampagnen.',
+    href: '/leistungen/landingpages',
+    cta: 'Landingpage anfragen',
+    features: ['Astro.js Performance', 'Conversion-Design', 'Formulare & Lead-Capture', 'GA4 & Meta Pixel', 'Core Web Vitals optimiert', 'Launch in 2–3 Wochen'],
+  },
+  {
+    num: '05',
+    title: 'Astro Websites',
+    desc: 'Unternehmenswebsites und Marketing-Sites mit Astro.js — schnell, SEO-stark, optional mit Headless CMS für Ihr Redaktionsteam.',
+    href: '/leistungen/astro-websites',
+    cta: 'Website anfragen',
+    features: ['5–15+ Seiten', 'Design System & Komponenten', 'Blog & Referenzen', 'Headless CMS optional', 'Core Web Vitals & SEO', 'Shopify-Anbindung möglich'],
+  },
+  {
+    num: '06',
     title: 'Individuelle Entwicklung',
     desc: 'Custom Apps, Liquid-Entwicklung und API-Integrationen — mit Astro.js, Next.js und Laravel dort, wo es technisch Sinn macht. Maßgeschneidert, wenn Standard nicht ausreicht.',
     href: '/leistungen/individuelle-entwicklung',
@@ -31,7 +56,7 @@ const services = [
 
 <BaseLayout
   title="Leistungen"
-  description="Shopify Shop erstellen, Migration zu Shopify und individuelle E-Commerce-Entwicklung — Zula Studios ist Ihr Experte für alle Shopify-Anforderungen."
+  description="Shopify Shops, Astro Landingpages, WordPress-Migrationen und individuelle Entwicklung — Zula Studios ist Ihr Partner für E-Commerce und moderne Webprojekte."
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Leistungen', url: '/leistungen' }]}
 >
   <!-- Header -->
@@ -41,9 +66,9 @@ const services = [
         <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
         <span class="text-[#0C0C0F] font-medium">Leistungen</span>
       </nav>
-      <p class="label mb-4">Unsere Leistungen</p>
+      <SectionLabel tone="blue" class="mb-4">Unsere Leistungen</SectionLabel>
       <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-5 max-w-2xl" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
-        Shopify-Expertise für ambitionierte Unternehmen
+        Shopify & Astro — Expertise für ambitionierte Unternehmen
       </h1>
       <p class="text-[#62626E] text-lg max-w-xl leading-relaxed">
         Über 100 Projekte. Tiefe Shopify-Expertise. Ergebnisorientiertes Arbeiten.
@@ -83,12 +108,11 @@ const services = [
   </section>
 
   <!-- CTA -->
-  <section class="py-20 bg-[#0C0C0F] relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.18), transparent 55%);"></div>
+  <section class="py-20 bg-[#0C0C0F] relative overflow-hidden cta-glow">
     <div class="container relative z-10 text-center max-w-xl mx-auto" data-reveal>
       <h2 class="font-bold text-white tracking-[-0.03em] text-3xl mb-4">Welche Leistung passt zu Ihnen?</h2>
       <p class="text-[#62626E] mb-8">Im kostenlosen Erstgespräch finden wir gemeinsam die optimale Lösung.</p>
-      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 rounded-xl font-semibold text-[15px]">
+      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 rounded-xl font-semibold text-[15px]">
         Kostenloses Beratungsgespräch
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

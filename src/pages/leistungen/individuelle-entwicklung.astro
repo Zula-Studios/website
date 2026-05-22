@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
+import SectionLabel from '@/components/SectionLabel.astro';
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -69,9 +70,8 @@ const useCases = [
 >
 
   <!-- HERO -->
-  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden">
+  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
     <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="absolute top-0 right-0 w-[600px] h-[500px]" style="background: radial-gradient(circle at 75% 20%, rgba(124,58,237,0.2), transparent 60%);"></div>
 
     <div class="container relative z-10">
       <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
@@ -109,7 +109,7 @@ const useCases = [
   <section class="py-20 lg:py-24 bg-white">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <p class="label mb-3">Kernkompetenzen</p>
+        <SectionLabel tone="blue" class="mb-3">Kernkompetenzen</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Was wir entwickeln</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -137,7 +137,7 @@ const useCases = [
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-24">
 
         <div data-reveal>
-          <p class="label mb-4">Warum maßgeschneidert?</p>
+          <SectionLabel tone="violet" class="mb-4">Warum maßgeschneidert?</SectionLabel>
           <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-5" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
             Volle Kontrolle.<br/>Kein Kompromiss.
           </h2>
@@ -181,12 +181,11 @@ const useCases = [
   </section>
 
   <!-- CTA -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 120%, rgba(124,58,237,0.2), transparent 60%);"></div>
+  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
     <div class="container relative z-10 text-center max-w-xl mx-auto">
       <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Haben Sie ein Projekt im Kopf?</h2>
       <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Schildern Sie uns Ihre Anforderungen — wir antworten innerhalb von 24 Stunden.</p>
-      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
         Projekt anfragen
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
