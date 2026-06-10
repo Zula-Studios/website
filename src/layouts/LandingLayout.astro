@@ -26,7 +26,10 @@ const props = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0C0C0F" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
@@ -83,13 +86,16 @@ const props = Astro.props;
     <!-- Minimal conversion header -->
     <header class="sticky top-0 z-50 bg-white/94 backdrop-blur-md border-b border-[#EBEBEF]">
       <div class="container flex items-center justify-between h-[60px]">
-        <a href="/" class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-[#0C0C0F] flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-              <path d="M3 4h14L10 16 3 4z" fill="white"/>
-            </svg>
-          </div>
-          <span class="font-semibold text-[14px] text-[#0C0C0F] tracking-[-0.01em]">{SITE.name}</span>
+        <a href="/" class="inline-flex items-center" aria-label={`${SITE.name} – Startseite`}>
+          <img
+            src="/images/logo.png"
+            alt={SITE.name}
+            width="367"
+            height="344"
+            class="h-10 w-auto"
+            style="filter: invert(1);"
+            decoding="async"
+          />
         </a>
         <div class="flex items-center gap-3">
           <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} class="hidden sm:flex items-center gap-2 text-[13px] font-medium text-[#62626E] hover:text-[#0C0C0F] transition-colors">

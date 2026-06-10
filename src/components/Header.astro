@@ -35,13 +35,15 @@ const services = [
     <div class="flex items-center justify-between h-[64px]">
 
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2.5 shrink-0 group" aria-label="Zula Studios – Startseite">
-        <div class="logo-mark w-8 h-8 rounded-lg flex items-center justify-center transition-all">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M3 4h14L10 16 3 4z" fill="currentColor" class="logo-icon"/>
-          </svg>
-        </div>
-        <span class="logo-text font-semibold text-[15px] tracking-[-0.01em] transition-colors">Zula Studios</span>
+      <a href="/" class="flex items-center shrink-0 group" aria-label="Zula Studios – Startseite">
+        <img
+          src="/images/logo.png"
+          alt="Zula Studios"
+          width="367"
+          height="344"
+          class="site-logo h-12 w-auto"
+          decoding="async"
+        />
       </a>
 
       <!-- Desktop Nav -->
@@ -239,6 +241,24 @@ const services = [
 
   /* ── Logo icon ── */
   .logo-icon { fill: white; }
+
+  /* ── Site logo (image) ──
+     The logo PNG is white-on-transparent. On light header states it is
+     inverted to appear dark; on the dark hero it stays white.
+  */
+  .site-logo {
+    filter: invert(1);
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  #site-header.header-on-dark .site-logo {
+    filter: invert(0);
+  }
+  #site-header.header-scrolled .site-logo {
+    filter: invert(1);
+  }
+  .group:hover .site-logo {
+    opacity: 0.85;
+  }
 </style>
 
 <script>

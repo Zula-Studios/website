@@ -20,7 +20,7 @@ export const SITE = {
     github: 'https://github.com/Zula-Studios',
   },
   githubRepo: 'https://github.com/Zula-Studios/website',
-  logo: '/images/logo.svg',
+  logo: '/images/logo.png',
   ogImage: '/images/og-default.jpg',
   founded: '2020',
   locale: 'de_DE',
