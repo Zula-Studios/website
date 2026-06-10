@@ -1,13 +1,19 @@
+import { SITE } from '@/config/site';
+
 /** Minimal escaping for user-supplied text in HTML mail bodies */
 export function escapeHtmlText(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// White-on-transparent logo, hosted on the production site. Shown on the
+// dark header so it stays visible. Alt text covers blocked remote images.
+const LOGO_URL = new URL(SITE.logo, SITE.url).toString();
+
 const WRAPPER_OPEN = `
 <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; color: #0C0C0F;">
-  <div style="background: #0C0C0F; padding: 28px 32px; border-radius: 12px 12px 0 0;">
-    <p style="color: #38BDF8; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 8px;">Bestätigung</p>
-    <h1 style="color: white; font-size: 22px; font-weight: 700; margin: 0;">Zula Studios</h1>
+  <div style="background: #0C0C0F; padding: 28px 32px; border-radius: 12px 12px 0 0; text-align: center;">
+    <img src="${LOGO_URL}" alt="Zula Studios" width="96" style="display: block; margin: 0 auto 12px; width: 96px; height: auto; border: 0;" />
+    <p style="color: #38BDF8; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 0;">Bestätigung</p>
   </div>
   <div style="background: #FAFAF8; padding: 32px; border: 1px solid #EBEBEF; border-top: none; border-radius: 0 0 12px 12px;">`;
 
@@ -15,8 +21,8 @@ const WRAPPER_CLOSE = `
   </div>
 </div>`;
 
-export function contactConfirmationHtml(vorname: string): string {
-  const safe = escapeHtmlText(vorname);
+export function contactConfirmationHtml(name: string): string {
+  const safe = escapeHtmlText(name);
   return `${WRAPPER_OPEN}
     <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #0C0C0F;">Hallo ${safe},</p>
     <p style="margin: 0 0 16px; font-size: 15px; line-height: 1.65; color: #3F3F46;">
@@ -33,14 +39,12 @@ ${WRAPPER_CLOSE}`;
 }
 
 export function projektConfirmationHtml(
-  vorname: string,
+  name: string,
   serviceLabel: string,
-  budgetLabel: string,
   timelineLabel: string
 ): string {
-  const v = escapeHtmlText(vorname);
+  const v = escapeHtmlText(name);
   const s = escapeHtmlText(serviceLabel);
-  const b = escapeHtmlText(budgetLabel);
   const t = escapeHtmlText(timelineLabel);
   return `${WRAPPER_OPEN}
     <p style="margin: 0 0 16px; font-size: 16px; line-height: 1.6; color: #0C0C0F;">Hallo ${v},</p>
@@ -51,7 +55,6 @@ export function projektConfirmationHtml(
       <p style="margin: 0 0 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #88888F;">Ihre Angaben in Kürze</p>
       <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #0C0C0F;">
         <strong>Leistung:</strong> ${s}<br/>
-        <strong>Budget:</strong> ${b}<br/>
         <strong>Zeitplan:</strong> ${t}
       </p>
     </div>

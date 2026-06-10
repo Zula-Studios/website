@@ -20,6 +20,10 @@ export const SITE = {
     github: 'https://github.com/Zula-Studios',
   },
   githubRepo: 'https://github.com/Zula-Studios/website',
+  // Cal-Link für die Terminbuchung (cal.eu-Instanz): Pfad + Origin getrennt,
+  // da das Inline-Embed beides braucht. Buchungs-URL: `${calcomOrigin}/${calcom}`
+  calcom: 'zula-studios/30min',
+  calcomOrigin: 'https://cal.eu',
   logo: '/images/logo.png',
   ogImage: '/images/og-default.jpg',
   founded: '2020',

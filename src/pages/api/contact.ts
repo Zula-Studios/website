@@ -1,10 +1,11 @@
 import type { APIRoute } from 'astro';
 import { contactConfirmationHtml } from '@/lib/email-confirmation-templates';
 import { getSmtpConfig, responseWhenSmtpNotConfigured, sendSmtpMail } from '@/lib/smtp-mail';
+import { SITE } from '@/config/site';
 
 export const prerender = false;
 
-const TO_EMAIL = 'sahbazoglu@tecpert.com';
+const TO_EMAIL = SITE.email;
 
 export const POST: APIRoute = async ({ request }) => {
   if (!getSmtpConfig()) {
@@ -21,9 +22,9 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const { vorname, nachname, email, telefon, nachricht, datenschutz } = body;
+  const { name, email, telefon, nachricht, datenschutz } = body;
 
-  if (!vorname || !nachname || !email || !nachricht || datenschutz !== 'true') {
+  if (!name || !email || !nachricht || datenschutz !== 'true') {
     return new Response(JSON.stringify({ error: 'Pflichtfelder fehlen' }), {
       status: 400,
       headers: { 'Content-Type': 'application/json' },
@@ -40,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; width: 130px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Name</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F; font-weight: 500;">${vorname} ${nachname}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F; font-weight: 500;">${name}</td>
           </tr>
           <tr>
             <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">E-Mail</td>
@@ -68,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const incoming = await sendSmtpMail({
     to: TO_EMAIL,
-    subject: `Neue Kontaktanfrage von ${vorname} ${nachname}`,
+    subject: `Neue Kontaktanfrage von ${name}`,
     html,
     replyTo: email,
   });
@@ -83,7 +84,7 @@ export const POST: APIRoute = async ({ request }) => {
   const confirmation = await sendSmtpMail({
     to: email,
     subject: 'Ihre Nachricht ist bei uns eingegangen – Zula Studios',
-    html: contactConfirmationHtml(vorname),
+    html: contactConfirmationHtml(name),
     replyTo: TO_EMAIL,
   });
 

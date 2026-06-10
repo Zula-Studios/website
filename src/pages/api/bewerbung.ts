@@ -2,10 +2,11 @@ import type { APIRoute } from 'astro';
 import { applicationConfirmationHtml } from '@/lib/email-confirmation-templates';
 import { getStelleLabel } from '@/data/careers';
 import { getSmtpConfig, responseWhenSmtpNotConfigured, sendSmtpMail } from '@/lib/smtp-mail';
+import { SITE } from '@/config/site';
 
 export const prerender = false;
 
-const TO_EMAIL = 'sahbazoglu@tecpert.com';
+const TO_EMAIL = SITE.email;
 
 /** Vercel Request-Body oft ≤ 4,5 MB — Puffer für multipart. */
 const MAX_CV_BYTES = 4 * 1024 * 1024;

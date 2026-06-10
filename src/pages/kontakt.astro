@@ -162,28 +162,22 @@ const schema = {
 
           <form id="contact-form" novalidate class="space-y-4">
 
-            <!-- Name row -->
-            <div class="grid grid-cols-2 gap-4">
-              <div class="float-group">
-                <input type="text" id="vorname" name="vorname" required placeholder=" " class="float-input" autocomplete="given-name" />
-                <label for="vorname" class="float-label">Vorname *</label>
-              </div>
-              <div class="float-group">
-                <input type="text" id="nachname" name="nachname" required placeholder=" " class="float-input" autocomplete="family-name" />
-                <label for="nachname" class="float-label">Nachname *</label>
-              </div>
-            </div>
-
-            <!-- Email + Phone -->
+            <!-- Name + Email -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="float-group">
+                <input type="text" id="name" name="name" required placeholder=" " class="float-input" autocomplete="name" />
+                <label for="name" class="float-label">Name *</label>
+              </div>
               <div class="float-group">
                 <input type="email" id="email" name="email" required placeholder=" " class="float-input" autocomplete="email" />
                 <label for="email" class="float-label">E-Mail *</label>
               </div>
-              <div class="float-group">
-                <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
-                <label for="telefon" class="float-label">Telefon (optional)</label>
-              </div>
+            </div>
+
+            <!-- Phone (optional) -->
+            <div class="float-group">
+              <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
+              <label for="telefon" class="float-label">Telefon (optional)</label>
             </div>
 
             <!-- Message -->
@@ -312,7 +306,8 @@ const schema = {
       const json = await res.json();
 
       if (res.ok && json.ok) {
-        window.location.href = '/danke';
+        const params = new URLSearchParams({ name: data['name'] ?? '', email: data['email'] ?? '' });
+        window.location.href = `/danke?${params.toString()}`;
       } else {
         throw new Error(json.error ?? 'Unbekannter Fehler');
       }
@@ -321,7 +316,7 @@ const schema = {
       const errMsg = document.getElementById('form-error');
       if (errMsg) {
         const fallback =
-          'Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe uns direkt an hallo@zulastudios.de.';
+          'Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreibe uns direkt an hello@zulastudios.com.';
         errMsg.textContent = err instanceof Error && err.message ? err.message : fallback;
         errMsg.classList.remove('hidden');
       }
