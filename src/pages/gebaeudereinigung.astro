@@ -1,0 +1,1164 @@
+---
+/**
+ * Landingpage: Webseiten für Gebäudereinigungsfirmen
+ * URL: /gebaeudereinigung
+ * Traffic-Quelle: Meta Ads (Facebook / Instagram) – Mobile First.
+ * Eigene kompakte Anker-Navigation + Footer (bewusst ohne Site-Header,
+ * um Ablenkung zu minimieren), Corporate Design von Zula Studios.
+ */
+import SEO from '@/components/SEO.astro';
+import Icon from '@/components/Icon.astro';
+import ConsentBanner from '@/components/ConsentBanner.astro';
+import { SITE } from '@/config/site';
+
+const probleme = [
+  { title: 'Ihre Qualität bleibt unsichtbar.', desc: 'Die Webseite wirkt schwächer als die Arbeit, die Sie täglich leisten.' },
+  { title: 'Mobile Besucher verlieren die Geduld.', desc: 'Ist die Bedienung mühsam, wird die Anfrage schnell vertagt.' },
+  { title: 'Ihre Leistungen werden nicht verstanden.', desc: 'Interessenten müssen suchen, statt sofort das passende Angebot zu finden.' },
+  { title: 'Der Weg zur Anfrage ist zu lang.', desc: 'Jeder unnötige Schritt macht die Kontaktaufnahme schwerer.' },
+  { title: 'Die Konkurrenz wird zuerst gefunden.', desc: 'Ohne lokale Sichtbarkeit bleiben Sie bei der Suche außen vor.' },
+];
+
+const vorteile = [
+  { icon: 'sparkles', title: 'Professioneller erster Eindruck',    desc: 'Ihr Unternehmen wirkt online so gepflegt wie die Objekte, die Sie reinigen.' },
+  { icon: 'message',  title: 'Einfachere Anfragen',                desc: 'Klare Wege und kurze Formulare machen die Kontaktaufnahme leicht.' },
+  { icon: 'layers',   title: 'Leistungen sofort verständlich',     desc: 'Interessenten sehen auf einen Blick, was Sie anbieten.' },
+  { icon: 'mobile',   title: 'Für Smartphones entwickelt',         desc: 'Ihre Seite funktioniert dort, wo die meisten Kunden suchen.' },
+  { icon: 'pin',      title: 'Lokal bei Google auffindbar',        desc: 'Saubere SEO-Grundlagen helfen, dass Sie in Ihrer Region gefunden werden.' },
+];
+
+const leistungen = [
+  { n: '01', title: 'Individuelles Webdesign',     desc: 'Gestaltung passend zu Ihrem Unternehmen, Ihrem Logo und Ihren Leistungen.' },
+  { n: '02', title: 'Lokale Auffindbarkeit',       desc: 'Technische Grundlagen und regionale Inhalte für Google.' },
+  { n: '03', title: 'Anfrage- und Karriereseiten', desc: 'Kurze Formulare für Interessenten und Bewerber.' },
+  { n: '04', title: 'Technische Betreuung',        desc: 'Updates, Sicherheit und Anpassungen auf Wunsch.' },
+];
+
+const ablauf = [
+  { n: '01', title: 'Kostenloses Erstgespräch', desc: 'Wir klären Ihre Situation und was für Ihr Unternehmen sinnvoll ist.' },
+  { n: '02', title: 'Konzept & Umsetzung',      desc: 'Sie erhalten ein klares Angebot. Wir gestalten und entwickeln Ihre Webseite.' },
+  { n: '03', title: 'Veröffentlichung',         desc: 'Nach Ihrem Feedback geht die Seite online. Betreuung ist auf Wunsch möglich.' },
+];
+
+const branchenLeistungen = [
+  { icon: 'building', label: 'Büroreinigung' },
+  { icon: 'sparkles', label: 'Unterhaltsreinigung' },
+  { icon: 'monitor',  label: 'Glasreinigung' },
+  { icon: 'shield',   label: 'Praxisreinigung' },
+  { icon: 'layers',   label: 'Treppenhausreinigung' },
+  { icon: 'grid',     label: 'Industriereinigung' },
+  { icon: 'wrench',   label: 'Bauendreinigung' },
+  { icon: 'users',    label: 'Hausmeisterservice' },
+];
+
+const vertrauen = [
+  { icon: 'users',    title: 'Persönlicher Ansprechpartner', desc: 'Sie sprechen immer mit demselben Menschen – kein Ticketsystem, keine Warteschleife.' },
+  { icon: 'eye',      title: 'Transparenter Projektablauf',  desc: 'Sie wissen jederzeit, woran wir arbeiten und was als Nächstes passiert.' },
+  { icon: 'grid',     title: 'Individuelles Design',         desc: 'Keine austauschbaren Vorlagen – Ihre Webseite ist auf Ihr Unternehmen zugeschnitten.' },
+  { icon: 'shield',   title: 'Datenschutzorientiert',        desc: 'DSGVO-konforme Umsetzung: Formulare, Einwilligungen und Hosting werden sauber aufgesetzt.' },
+];
+
+const faqs = [
+  { q: 'Was kostet eine professionelle Webseite?',
+    a: 'Das hängt vom Umfang ab. Nach dem kostenlosen Erstgespräch erhalten Sie ein transparentes Festpreisangebot.' },
+  { q: 'Wie lange dauert die Erstellung?',
+    a: 'Eine typische Webseite ist in wenigen Wochen fertig. Den genauen Zeitplan vereinbaren wir vor Projektstart.' },
+  { q: 'Kann meine bestehende Webseite überarbeitet werden?',
+    a: 'Ja. Wir prüfen, was erhaltenswert ist, und empfehlen eine Überarbeitung oder einen Neuaufbau.' },
+  { q: 'Unterstützt Zula Studios auch bei Google?',
+    a: 'Ja. Jede Webseite erhält eine saubere technische Grundlage und passende lokale Inhalte.' },
+  { q: 'Kann ich später Inhalte ändern lassen?',
+    a: 'Ja. Neue Leistungen, Fotos oder Stellenanzeigen können wir jederzeit ergänzen.' },
+];
+
+const bookingUrl = `${SITE.calcomOrigin}/${SITE.calcom}`;
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Webdesign für Gebäudereinigungsfirmen',
+  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  areaServed: 'DE',
+  description:
+    'Professionelle Webseiten speziell für Gebäudereinigungsfirmen: individuelles Webdesign, mobile Optimierung, lokale SEO und Anfrage-Formulare.',
+};
+
+const navLinks = [
+  { label: 'Vorteile',   href: '#vorteile'   },
+  { label: 'Ablauf',     href: '#ablauf'     },
+  { label: 'Referenzen', href: '#referenzen' },
+  { label: 'FAQ',        href: '#faq'        },
+];
+---
+
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0C0C0F" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      />
+    </noscript>
+
+    <SEO
+      title="Webseiten für Gebäudereinigungsfirmen – mehr Anfragen & Aufträge"
+      description="Wir erstellen professionelle Webseiten speziell für Gebäudereinigungsfirmen: modern, mobil optimiert und auf Kundenanfragen ausgerichtet. Jetzt kostenloses Erstgespräch sichern."
+      keywords={[
+        'Webseite für Gebäudereinigung',
+        'Webdesign für Reinigungsfirmen',
+        'Gebäudereinigung Webseite erstellen lassen',
+        'Mehr Anfragen für Reinigungsunternehmen',
+      ]}
+      schema={[faqSchema, serviceSchema]}
+    />
+
+    <!-- ── META PIXEL (Platzhalter) ─────────────────────────────────────────
+         Wird erst nach Einwilligung über das Consent-Banner geladen.
+         YOUR_PIXEL_ID ersetzen und den Block im <script> unten aktivieren.
+    ──────────────────────────────────────────────────────────────────── -->
+
+    <style is:global>
+      :root {
+        --ink: #0C0C0F; --ink-muted: #62626E; --ink-subtle: #AEAEB5;
+        --surface-warm: #FAFAF8; --border: #EBEBEF;
+        --accent: #0284C7; --accent-bright: #38BDF8; --accent-light: #F0F9FF;
+        --space-section: clamp(3.5rem, 7vw, 6rem);
+        --space-heading: 1rem;
+        --space-intro: clamp(2rem, 4vw, 3rem);
+        --radius: 0.625rem;
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { font-feature-settings: 'cv11' on, 'ss01' on; }
+      body { margin: 0; font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+      ::selection { background: #BAE6FD; color: #0C4A6E; }
+      :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+      .container { width: 100%; max-width: 1120px; margin: 0 auto; padding-inline: 1.125rem; }
+      @media (min-width: 640px)  { .container { padding: 0 2rem; } }
+      @media (min-width: 1024px) { .container { padding: 0 2.5rem; } }
+      .section-space { padding-block: var(--space-section); }
+      .section-intro { max-width: 40rem; margin-bottom: var(--space-intro); }
+      .section-intro h2 { margin: 0 0 var(--space-heading); font-size: clamp(1.65rem, 3.2vw, 2.4rem); line-height: 1.16; letter-spacing: -0.025em; }
+      .section-intro p { margin: 0; max-width: 36rem; line-height: 1.65; }
+      .label { display: inline-block; margin-bottom: 0.75rem; font-size: 0.6875rem; line-height: 1.5; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-subtle); }
+      p, li { line-height: 1.6; }
+      h1, h2, h3 { text-wrap: balance; }
+      a, button { overflow-wrap: normal; }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ══════════════════════════════════════════════════════════
+         1. NAVIGATION
+    ══════════════════════════════════════════════════════════ -->
+    <header class="sticky top-0 z-50 bg-white border-b border-[#EBEBEF]">
+      <div class="container flex items-center justify-between h-[60px]">
+        <a href="/" class="inline-flex items-center" aria-label={`${SITE.name} – Startseite`}>
+          <img
+            src="/images/logo.png"
+            alt="Zula Studios"
+            width="367"
+            height="344"
+            class="h-9 w-auto"
+            style="filter: invert(1);"
+            decoding="async"
+          />
+        </a>
+
+        <nav aria-label="Seitennavigation" class="hidden md:flex items-center gap-7">
+          {navLinks.map(link => (
+            <a href={link.href} class="py-2 text-[13.5px] font-medium text-[#44444F] hover:text-[#0284C7] transition-colors">
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <a href="#kontakt" class="lp-cta-btn header-cta text-[13px] py-2.5 px-3 sm:px-5">
+          <span class="sm:hidden">Erstgespräch</span>
+          <span class="hidden sm:inline">Kostenloses Erstgespräch</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+
+      <!-- ══════════════════════════════════════════════════════════
+           2. HERO
+      ══════════════════════════════════════════════════════════ -->
+      <section class="hero-section bg-[#0C0C0F]">
+        <div class="container">
+          <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_500px] gap-12 lg:gap-12 items-center">
+
+            <!-- Left: copy -->
+            <div>
+              <p class="text-[12px] leading-6 font-semibold text-[#9898A0] tracking-[0.1em] uppercase mb-4">
+                Webseiten für Gebäudereinigungsfirmen
+              </p>
+
+              <h1 class="hero-title font-bold text-white tracking-[-0.035em] mb-5">
+                <span class="hero-title-line">Mehr Anfragen für Ihre</span>
+                <span class="hero-title-line">Gebäudereinigung.</span>
+              </h1>
+
+              <p class="text-[#9898A0] text-[15px] sm:text-base leading-[1.65] mb-7 max-w-[500px]">
+                Zula Studios entwickelt professionelle Webseiten für Reinigungsfirmen –
+                klar, modern und auf neue Kundenanfragen ausgerichtet.
+              </p>
+
+              <div>
+                <a href="#kontakt" class="lp-cta-btn hero-cta justify-center px-7 py-4 text-[15px]">
+                  Kostenloses Erstgespräch sichern
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+
+              <p class="text-[#777781] text-[12.5px] leading-5 mt-5">
+                Unverbindlich · Persönlich · Ohne Verkaufsdruck
+              </p>
+            </div>
+
+            <!-- Authentisches Branchenmotiv statt abstraktem Website-Mockup -->
+            <figure class="m-0 mx-auto w-full max-w-[500px]">
+              <img
+                src="/images/gebaeudereinigung-hero.jpg"
+                alt="Inhaber und Team einer Gebäudereinigung in einem gepflegten Bürogebäude"
+                width="1024"
+                height="683"
+                class="block w-full rounded-lg border border-[#2E2E3A] object-cover"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+              <figcaption class="mt-3 border-l-2 border-[#0284C7] pl-3 text-[12px] leading-[1.5] text-[#88888F]">
+                Gute Arbeit verdient einen professionellen ersten Eindruck.
+              </figcaption>
+            </figure>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           3. PROBLEMSEKTION
+      ══════════════════════════════════════════════════════════ -->
+      <section class="section-space bg-white">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label">Kommt Ihnen das bekannt vor?</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              Gute Arbeit – aber online kommt sie nicht an?
+            </h2>
+            <p class="text-[#62626E] text-[15px] leading-relaxed">
+              Der erste Eindruck entscheidet, ob ein Interessent bleibt, vertraut und Kontakt aufnimmt.
+            </p>
+          </div>
+
+          <ul class="problem-list max-w-3xl" role="list">
+            {probleme.map((problem, index) => (
+              <li>
+                <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{problem.title}</h3>
+                  <p>{problem.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           4. LÖSUNGSSEKTION
+      ══════════════════════════════════════════════════════════ -->
+      <section id="vorteile" class="section-space bg-[#0C0C0F] scroll-mt-16">
+        <div class="container">
+          <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-10 lg:gap-20">
+            <div class="section-intro lg:sticky lg:top-28 lg:self-start lg:mb-0">
+              <p class="label text-[#9898A0]">Die Lösung</p>
+              <h2 class="font-bold text-white">
+              Eine Webseite, die für Sie arbeitet.
+            </h2>
+              <p class="text-[#9898A0] text-[15px] leading-relaxed">
+                Sie erklärt Ihre Leistungen, schafft Vertrauen und führt Interessenten direkt zur Anfrage.
+              </p>
+            </div>
+
+            <div class="benefit-list">
+              {vorteile.map(v => (
+                <div class="benefit-row">
+                  <Icon name={v.icon} size={18} class="text-[#38BDF8] shrink-0 mt-1" strokeWidth={1.75} />
+                  <div>
+                    <h3>{v.title}</h3>
+                    <p>{v.desc}</p>
+                  </div>
+                </div>
+              ))}
+
+              <a href="#kontakt" class="lp-cta-btn mt-7 px-7 py-4 text-[15px]">
+                Kostenloses Erstgespräch sichern
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           5. LEISTUNGEN
+      ══════════════════════════════════════════════════════════ -->
+      <section class="section-space bg-white">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label">Was Sie bekommen</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              Das Wesentliche, sauber umgesetzt.
+            </h2>
+          </div>
+
+          <div class="service-list">
+            {leistungen.map(l => (
+              <div class="service-row">
+                <span>{l.n}</span>
+                <div>
+                  <h3>{l.title}</h3>
+                  <p>{l.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           6. VORHER / NACHHER
+      ══════════════════════════════════════════════════════════ -->
+      <section class="section-space bg-[#FAFAF8] border-y border-[#EBEBEF]">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label">Der Unterschied</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              Vorher / Nachher
+            </h2>
+            <p class="text-[#88888F] text-[12px]">
+              Beispielkonzept zur Veranschaulichung – keine echten Kundenprojekte
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-4xl">
+
+            <!-- VORHER -->
+            <div class="rounded-lg border border-[#EBEBEF] bg-white overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-3.5 border-b border-[#EBEBEF]">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-[#A05252]">Vorher: typische veraltete Seite</span>
+                <span class="w-2 h-2 rounded-full bg-red-400" aria-hidden="true"></span>
+              </div>
+              <!-- Mockup: cluttered old site -->
+              <div class="p-5 bg-[#F1F0EC]" aria-hidden="true">
+                <div class="bg-white border border-[#D8D6CE] p-3">
+                  <div class="flex items-center justify-between mb-2 pb-2 border-b border-[#D8D6CE]">
+                    <div class="h-3 w-24 bg-[#8A8578]"></div>
+                    <div class="flex gap-1">
+                      {[1,2,3,4,5].map(() => <div class="h-2 w-8 bg-[#C9C6BB]"></div>)}
+                    </div>
+                  </div>
+                  <div class="h-14 bg-[#C9C6BB] mb-2 flex items-center justify-center">
+                    <div class="h-2 w-32 bg-[#8A8578]"></div>
+                  </div>
+                  <div class="space-y-1 mb-2">
+                    {[1,2,3,4,5,6].map(() => <div class="h-1.5 w-full bg-[#DEDCD3]"></div>)}
+                  </div>
+                  <div class="grid grid-cols-2 gap-1.5">
+                    <div class="h-8 bg-[#DEDCD3]"></div>
+                    <div class="h-8 bg-[#DEDCD3]"></div>
+                  </div>
+                </div>
+              </div>
+              <ul class="p-5 space-y-2.5" role="list">
+                {[
+                  'Unübersichtlich und überladen',
+                  'Auf Mobilgeräten schlecht lesbar',
+                  'Keine klare Handlungsaufforderung',
+                  'Wenig Vertrauen auf den ersten Blick',
+                ].map(item => (
+                  <li class="flex items-center gap-2.5 text-[13px] text-[#62626E]">
+                    <span class="w-5 h-5 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0" aria-hidden="true">
+                      <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- NACHHER -->
+            <div class="rounded-lg border border-[#BAE6FD] bg-white overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-3.5 border-b border-[#EBEBEF]">
+                <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-[#0369A1]">Nachher: Webseite von Zula Studios</span>
+                <span class="w-2 h-2 rounded-full bg-[#38BDF8]" aria-hidden="true"></span>
+              </div>
+              <!-- Mockup: modern site -->
+              <div class="p-5 bg-[#FAFAF8]" aria-hidden="true">
+                <div class="bg-white rounded-xl border border-[#EBEBEF] p-3 shadow-sm">
+                  <div class="flex items-center justify-between mb-2.5">
+                    <div class="flex items-center gap-1">
+                      <div class="w-3 h-3 rounded bg-[#0284C7]"></div>
+                      <div class="h-2 w-14 rounded-full bg-[#0C0C0F]"></div>
+                    </div>
+                    <div class="h-4 w-14 rounded-md bg-[#0284C7]"></div>
+                  </div>
+                  <div class="rounded-md bg-[#F0F9FF] p-3 mb-2">
+                    <div class="h-2 w-2/3 rounded-full bg-[#0C0C0F] mb-1"></div>
+                    <div class="h-1.5 w-1/2 rounded-full bg-[#AEAEB5]/60 mb-2"></div>
+                    <div class="h-4 w-20 rounded-md bg-[#0284C7]"></div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-1.5">
+                    {[1,2,3].map(() => (
+                      <div class="rounded-md border border-[#EBEBEF] p-1.5">
+                        <div class="w-3 h-3 rounded bg-[#F0F9FF] mb-1"></div>
+                        <div class="h-1 w-full rounded-full bg-[#EBEBEF]"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <ul class="p-5 space-y-2.5" role="list">
+                {[
+                  'Modern, professionell und aufgeräumt',
+                  'Mobil optimiert – für Suchende unterwegs',
+                  'Klare Kontaktmöglichkeiten an jeder Stelle',
+                  'Leistungen sofort verständlich',
+                  'Konsequent auf Anfragen ausgerichtet',
+                ].map(item => (
+                  <li class="flex items-center gap-2.5 text-[13px] text-[#0C0C0F] font-medium">
+                    <span class="w-5 h-5 rounded-full bg-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-center shrink-0" aria-hidden="true">
+                      <Icon name="check" size={10} class="text-[#0284C7]" strokeWidth={2.5} />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           7. ABLAUF
+      ══════════════════════════════════════════════════════════ -->
+      <section id="ablauf" class="section-space bg-white scroll-mt-16">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label">Transparent & unkompliziert</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              In drei Schritten zur neuen Webseite
+            </h2>
+          </div>
+
+          <ol class="process-list">
+            {ablauf.map((s, i) => (
+              <li>
+                <span aria-hidden="true">{s.n}</span>
+                <h3>{s.title}</h3>
+                <p>{s.desc}</p>
+              </li>
+            ))}
+          </ol>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           8. BRANCHEN-BEISPIEL (Vorschau einer Kundenwebseite)
+      ══════════════════════════════════════════════════════════ -->
+      <section class="section-space bg-[#0C0C0F]">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label text-[#9898A0]">So könnte es aussehen</p>
+            <h2 class="font-bold text-white">
+              Ihre Reinigungsleistungen – klar präsentiert
+            </h2>
+            <p class="text-[#9898A0] text-[15px] leading-relaxed">
+              Jede Leistung verständlich erklärt und mit direkter Anfrage-Möglichkeit.
+            </p>
+          </div>
+
+          <!-- Browser frame with service grid -->
+          <div class="max-w-3xl rounded-lg border border-[#2E2E3A] bg-[#161618] overflow-hidden">
+            <div class="flex items-center gap-1.5 px-4 py-3 border-b border-[#2E2E3A]">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#3E3E4A]" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#3E3E4A]" aria-hidden="true"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#3E3E4A]" aria-hidden="true"></span>
+              <div class="ml-3 flex-1 h-5 rounded-md bg-[#0C0C0F] flex items-center px-3">
+                <span class="text-[9px] text-[#62626E]">ihre-gebaeudereinigung.de/leistungen</span>
+              </div>
+              <span class="hidden sm:inline text-[9px] font-semibold uppercase tracking-[0.1em] text-[#777781]">Beispielkonzept</span>
+            </div>
+            <div class="bg-white p-6 sm:p-8">
+              <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0284C7] mb-1.5">Unsere Leistungen</p>
+              <p class="font-bold text-[#0C0C0F] text-lg tracking-[-0.02em] mb-5">Sauberkeit für jedes Objekt</p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {branchenLeistungen.map(b => (
+                  <div class="rounded-md border border-[#EBEBEF] p-3.5">
+                    <div class="mb-2.5">
+                      <Icon name={b.icon} size={14} class="text-[#0284C7]" strokeWidth={1.75} />
+                    </div>
+                    <p class="font-semibold text-[#0C0C0F] text-[12px] leading-tight mb-1">{b.label}</p>
+                    <p class="text-[10px] text-[#0284C7] font-medium">Mehr erfahren →</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           9. VERTRAUEN + REFERENZEN (vorbereitet)
+      ══════════════════════════════════════════════════════════ -->
+      <section id="referenzen" class="section-space bg-white scroll-mt-16">
+        <div class="container">
+          <div class="section-intro">
+            <p class="label">Warum Zula Studios</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              Worauf Sie sich verlassen können
+            </h2>
+          </div>
+
+          <div class="trust-list">
+            {vertrauen.map(v => (
+              <div class="trust-row">
+                <Icon name={v.icon} size={17} class="text-[#0284C7] shrink-0 mt-1" strokeWidth={1.75} />
+                <div>
+                  <h3>{v.title}</h3>
+                  <p>{v.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <!-- Vorbereitete Referenz-Komponente (Platzhalter, klar gekennzeichnet).
+               Sobald echte Referenzen/Kundenstimmen vorliegen ([REFERENZEN]),
+               diesen Block mit echten Inhalten füllen und das Platzhalter-Badge entfernen. -->
+          <div class="max-w-2xl border-l-2 border-[#BAE6FD] pl-5 mt-10">
+            <p class="text-[#62626E] text-[13px] leading-relaxed m-0">
+              Wir zeigen ausschließlich echte Kundenprojekte. Fragen Sie im Erstgespräch gern nach aktuellen Arbeitsbeispielen.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           10. ANGEBOT / CTA-SEKTION (Webseiten-Analyse)
+      ══════════════════════════════════════════════════════════ -->
+      <section class="section-space bg-[#F0F9FF] border-y border-[#BAE6FD]">
+        <div class="container">
+          <div class="max-w-2xl">
+            <p class="label text-[#0369A1]">Kostenlose Einschätzung</p>
+            <h2 class="font-bold text-[#0C0C0F] tracking-[-0.025em] mb-4" style="font-size: clamp(1.65rem, 3.2vw, 2.4rem); line-height: 1.16;">
+              Wie professionell wirkt Ihre Gebäudereinigung online?
+            </h2>
+            <p class="text-[#44444F] text-[15px] leading-relaxed mb-7 max-w-xl">
+              Sie erhalten eine ehrliche Einschätzung und konkrete Ideen für Ihren Online-Auftritt.
+            </p>
+            <a href="#kontakt" data-analyse class="lp-cta-btn px-8 py-4 text-[15px]">
+              Kostenlose Webseiten-Analyse anfragen
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           11. KONTAKTFORMULAR
+      ══════════════════════════════════════════════════════════ -->
+      <section id="kontakt" class="section-space bg-[#0C0C0F] scroll-mt-16">
+        <div class="container">
+          <div class="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-12 lg:gap-16 items-center">
+
+            <!-- Left copy -->
+            <div>
+              <p class="label text-[#9898A0]">Jetzt starten</p>
+              <h2 class="font-bold text-white tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 4vw, 3rem); line-height: 1.16;">
+                Ihre neue Webseite<br/>
+                <span class="text-[#38BDF8]">beginnt mit einem Gespräch.</span>
+              </h2>
+              <p class="text-[#9898A0] text-[15px] leading-[1.65] mb-7 max-w-md">
+                Wir melden uns persönlich und besprechen unverbindlich, was für Ihr Unternehmen sinnvoll ist.
+              </p>
+              <div class="space-y-3.5 mb-8">
+                {[
+                  'Kostenlos & unverbindlich',
+                  'Antwort innerhalb von 24 Stunden',
+                  'Persönliche Beratung statt Callcenter',
+                ].map(item => (
+                  <div class="flex items-center gap-3 text-[13.5px] text-[#9898A0]">
+                    <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(56,189,248,0.12);">
+                      <Icon name="check" size={12} class="text-[#38BDF8]" strokeWidth={2.5} />
+                    </div>
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <!-- Alternative: direkt Termin buchen -->
+              <div class="border-l-2 border-[#2E2E3A] pl-5 max-w-md">
+                <p class="text-white text-[14px] font-semibold mb-1">Lieber direkt einen Termin?</p>
+                <p class="text-[#9898A0] text-[12.5px] mb-3.5">Buchen Sie Ihr kostenloses Kennenlerngespräch (30 Min) direkt im Kalender.</p>
+                <a
+                  href={bookingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 text-white text-[13px] font-semibold py-2 underline underline-offset-4 hover:text-[#38BDF8] transition-colors"
+                >
+                  <Icon name="calendar" size={13} strokeWidth={1.75} />
+                  Termin online buchen
+                </a>
+              </div>
+            </div>
+
+            <!-- Right: form -->
+            <div>
+              <div class="h-1 bg-[#0284C7]"></div>
+              <div class="bg-white rounded-b-lg px-5 pt-7 pb-7 sm:px-8">
+
+                <h3 class="font-bold text-[#0C0C0F] text-[17px] tracking-[-0.02em] mb-1">Kostenloses Erstgespräch anfragen</h3>
+                <p class="text-[#AEAEB5] text-xs mb-6">Dauert unter 1 Minute · Antwort in 24 Std. · Kein Spam</p>
+
+                <form id="lead-form" novalidate class="space-y-3">
+
+                  <!-- Webseiten-Status -->
+                  <fieldset class="mb-1">
+                    <legend class="sr-only">Haben Sie bereits eine Webseite?</legend>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {[
+                        { value: 'hat-webseite',    label: 'Ich habe bereits eine Webseite' },
+                        { value: 'braucht-webseite', label: 'Ich benötige eine neue Webseite' },
+                      ].map((o, i) => (
+                        <label class="status-option h-full cursor-pointer">
+                          <input type="radio" name="status" value={o.value} class="sr-only" checked={i === 1} />
+                          <span class="status-pill flex h-full min-h-[60px] items-center justify-center rounded-md border border-[#EBEBEF] px-3 py-3 text-center text-[11.5px] font-semibold text-[#62626E] leading-[1.45] transition-colors duration-150 hover:border-[#D4D4D9]">
+                            {o.label}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="lp-field">
+                      <input type="text" id="lead-name" name="name" placeholder=" " required autocomplete="name" class="lp-input" />
+                      <label for="lead-name" class="lp-label">Vor- und Nachname *</label>
+                    </div>
+                    <div class="lp-field">
+                      <input type="text" id="lead-firma" name="firma" placeholder=" " required autocomplete="organization" class="lp-input" />
+                      <label for="lead-firma" class="lp-label">Firmenname *</label>
+                    </div>
+                  </div>
+
+                  <div class="lp-field">
+                    <input type="email" id="lead-email" name="email" placeholder=" " required autocomplete="email" class="lp-input" />
+                    <label for="lead-email" class="lp-label">E-Mail-Adresse *</label>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="lp-field">
+                      <input type="tel" id="lead-telefon" name="telefon" placeholder=" " required autocomplete="tel" inputmode="tel" class="lp-input" />
+                      <label for="lead-telefon" class="lp-label">Telefonnummer *</label>
+                    </div>
+                    <div class="lp-field" id="website-field">
+                      <input type="url" id="lead-website" name="website" placeholder=" " inputmode="url" class="lp-input" />
+                      <label for="lead-website" class="lp-label">Ihre Webseite (optional)</label>
+                    </div>
+                  </div>
+
+                  <div class="lp-field">
+                    <textarea id="lead-nachricht" name="nachricht" placeholder=" " rows="3" maxlength="500" class="lp-input resize-none"></textarea>
+                    <label for="lead-nachricht" class="lp-label">Nachricht (optional)</label>
+                  </div>
+
+                  <div class="flex items-start gap-2.5 pt-1">
+                    <input type="checkbox" id="lead-datenschutz" name="datenschutz" required class="mt-0.5 w-4 h-4 rounded border-[#D4D4D9] text-[#0284C7] accent-[#0284C7] shrink-0 cursor-pointer" />
+                    <label for="lead-datenschutz" class="text-[11.5px] text-[#88888F] leading-relaxed cursor-pointer">
+                      Ich habe die <a href="/datenschutz" class="text-[#0284C7] hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *
+                    </label>
+                  </div>
+
+                  <button type="submit" id="lead-submit" class="lp-cta-btn w-full mt-1 py-4">
+                    Kostenloses Erstgespräch anfragen
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+
+                  <p id="lead-error" class="hidden text-[12.5px] text-red-600 text-center leading-relaxed" role="alert"></p>
+                  <p class="text-center text-[10.5px] text-[#D4D4D9]">Unverbindlich · DSGVO-konform · Keine Weitergabe Ihrer Daten</p>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           12. FAQ
+      ══════════════════════════════════════════════════════════ -->
+      <section id="faq" class="section-space bg-[#FAFAF8] border-t border-[#EBEBEF] scroll-mt-16">
+        <div class="container max-w-3xl">
+          <div class="section-intro">
+            <p class="label">Häufige Fragen</p>
+            <h2 class="font-bold text-[#0C0C0F]">
+              Kurz beantwortet
+            </h2>
+          </div>
+
+          <div class="faq-list">
+            {faqs.map(faq => (
+              <details class="faq-item border-t border-[#D4D4D9]">
+                <summary class="flex items-center justify-between gap-4 py-5 cursor-pointer select-none">
+                  <span class="font-semibold text-[#0C0C0F] text-[14.5px] leading-[1.5]">{faq.q}</span>
+                  <span class="flex items-center justify-center shrink-0" aria-hidden="true">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="faq-chevron transition-transform duration-200">
+                      <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="pb-5">
+                  <p class="text-[#62626E] text-sm leading-[1.65] max-w-xl m-0">{faq.a}</p>
+                </div>
+              </details>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════════
+         13. FOOTER
+    ══════════════════════════════════════════════════════════ -->
+    <footer class="bg-[#0C0C0F] py-10 sm:py-12">
+      <div class="container">
+        <div class="flex flex-col sm:flex-row items-start justify-between gap-8 pb-8 border-b border-[#1C1C25]">
+          <div class="max-w-xs">
+            <a href="/" class="inline-flex items-center mb-4" aria-label={`${SITE.name} – Startseite`}>
+              <img src="/images/logo.png" alt="Zula Studios" width="367" height="344" class="h-10 w-auto" decoding="async" loading="lazy" />
+            </a>
+            <p class="text-[#62626E] text-[13px] leading-relaxed">
+              Wir entwickeln professionelle Webseiten für Gebäudereinigungsfirmen –
+              modern, mobil optimiert und auf Anfragen ausgerichtet.
+            </p>
+          </div>
+          <div class="text-[13px] text-[#62626E] space-y-2">
+            <p class="text-white font-semibold text-[13px] mb-3">Kontakt</p>
+            <a href={`mailto:${SITE.email}`} class="block hover:text-white transition-colors">{SITE.email}</a>
+          </div>
+          <div class="text-[13px] text-[#62626E] space-y-2">
+            <p class="text-white font-semibold text-[13px] mb-3">Rechtliches</p>
+            <a href="/impressum" class="block hover:text-white transition-colors">Impressum</a>
+            <a href="/datenschutz" class="block hover:text-white transition-colors">Datenschutz</a>
+          </div>
+          <div class="text-[13px] text-[#62626E] space-y-2">
+            <p class="text-white font-semibold text-[13px] mb-3">Social Media</p>
+            {SITE.social.linkedin && (
+              <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" class="block hover:text-white transition-colors">LinkedIn</a>
+            )}
+            {SITE.social.github && (
+              <a href={SITE.social.github} target="_blank" rel="noopener noreferrer" class="block hover:text-white transition-colors">GitHub</a>
+            )}
+          </div>
+        </div>
+        <p class="pt-6 text-[12px] text-[#62626E]">© {new Date().getFullYear()} {SITE.name}. Alle Rechte vorbehalten.</p>
+      </div>
+    </footer>
+
+    <!-- Sticky Mobile CTA -->
+    <div id="mobile-cta" class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white border-t border-[#EBEBEF] p-3 transition-transform duration-300 translate-y-full">
+      <a href="#kontakt" class="lp-cta-btn w-full justify-center py-3.5 text-[14px]">
+        Kostenloses Erstgespräch sichern
+      </a>
+    </div>
+
+    <ConsentBanner />
+
+  </body>
+</html>
+
+<style>
+  .lp-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.875rem 1.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: #0284C7;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .lp-cta-btn:hover { background: #0369A1; }
+  .lp-cta-btn:active { background: #075985; }
+  .lp-cta-btn.is-loading { opacity: 0.75; pointer-events: none; }
+  .lp-cta-btn.is-loading svg { display: none; }
+  .lp-cta-btn.is-loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.55s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status-option input:checked ~ .status-pill {
+    border-color: #0284C7;
+    background: #F0F9FF;
+    color: #0369A1;
+  }
+  .status-option input:focus-visible ~ .status-pill {
+    outline: 2px solid #0284C7;
+    outline-offset: 2px;
+  }
+
+  .lp-field { position: relative; }
+  .lp-input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 1.4rem 0.9rem 0.55rem;
+    border: 1.5px solid #EBEBEF;
+    border-radius: 0.5rem;
+    background: #FAFAF8;
+    color: #0C0C0F;
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    outline: none;
+    transition: border-color 0.14s ease, background 0.14s ease;
+  }
+  .lp-input:hover { border-color: #D4D4D9; }
+  .lp-input:focus { border-color: #0284C7; background: #fff; }
+  .lp-input.is-invalid { border-color: #FDA4AF; }
+  .lp-label {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #AEAEB5;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    pointer-events: none;
+    transition: top 0.13s ease, font-size 0.13s ease, color 0.13s ease, transform 0.13s ease;
+  }
+  textarea.lp-input ~ .lp-label { top: 1.1rem; }
+  .lp-input:focus ~ .lp-label,
+  .lp-input:not(:placeholder-shown) ~ .lp-label {
+    top: 0.42rem;
+    transform: none;
+    color: #0369A1;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .faq-item summary { list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item[open] .faq-chevron { transform: rotate(180deg); }
+
+  .problem-list,
+  .process-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .problem-list li {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-top: 1px solid #DCDCE2;
+  }
+  .problem-list li > span,
+  .service-row > span,
+  .process-list li > span {
+    color: #0284C7;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    font-weight: 700;
+  }
+  .problem-list h3 {
+    margin: 0 0 0.25rem;
+    color: #17171C;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+  }
+  .problem-list p {
+    margin: 0;
+    color: #62626E;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  .benefit-row p,
+  .service-row p,
+  .process-list p,
+  .trust-row p {
+    margin: 0;
+    color: #62626E;
+    font-size: 0.84375rem;
+    line-height: 1.6;
+  }
+  .benefit-list { border-top: 1px solid #2E2E3A; }
+  .benefit-row {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid #2E2E3A;
+  }
+  .benefit-row h3,
+  .service-row h3,
+  .process-list h3,
+  .trust-row h3 {
+    margin: 0 0 0.35rem;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .benefit-row h3 { color: #fff; }
+  .benefit-row p { color: #9898A0; }
+  .service-list,
+  .trust-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 48rem;
+    border-top: 1px solid #EBEBEF;
+  }
+  .service-row,
+  .trust-row {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.5rem 1.5rem 1.5rem 0;
+    border-bottom: 1px solid #EBEBEF;
+  }
+  .trust-row { grid-template-columns: 1.5rem minmax(0, 1fr); }
+  .service-row:nth-child(odd),
+  .trust-row:nth-child(odd) { border-right: 1px solid #EBEBEF; }
+  .service-row:nth-child(even),
+  .trust-row:nth-child(even) { padding-left: 1.5rem; }
+  .process-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+  .process-list li {
+    padding-top: 1.25rem;
+    border-top: 1px solid #D4D4D9;
+  }
+  .process-list h3 { margin-top: 0.75rem; }
+
+  @media (max-width: 639px) {
+    .hero-cta { width: 100%; }
+    .service-list,
+    .process-list,
+    .trust-list { grid-template-columns: 1fr; }
+    .service-row,
+    .service-row:nth-child(even),
+    .trust-row,
+    .trust-row:nth-child(even) { padding-inline: 0; }
+    .service-row:nth-child(odd),
+    .trust-row:nth-child(odd) { border-right: 0; }
+    .process-list { gap: 1.75rem; }
+  }
+
+  @media (max-width: 359px) {
+    .container { padding-inline: 1rem; }
+    .header-cta { padding-inline: 0.75rem; font-size: 0.75rem; }
+    .lp-cta-btn { white-space: normal; }
+    .hero-cta { padding-inline: 1rem; }
+    .hero-cta svg { display: none; }
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 3.5vw, 2.875rem);
+    line-height: 1.14;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+  .hero-title-line { display: block; }
+
+  @media (min-width: 1024px) {
+    .hero-title-line { white-space: nowrap; }
+  }
+
+  .hero-section {
+    padding-block: clamp(3.75rem, 7vw, 6rem);
+  }
+
+  @media (max-width: 389px) {
+    .hero-cta { font-size: 0.875rem; }
+    .hero-cta svg { display: none; }
+  }
+
+  @media (max-width: 359px) {
+    .hero-title { font-size: 1.875rem; line-height: 1.16; }
+  }
+</style>
+
+<script>
+  // ── Sticky Mobile-CTA: erst nach dem Hero einblenden, beim Formular ausblenden ──
+  const mobileCta = document.getElementById('mobile-cta');
+  const heroSection = document.querySelector('main section');
+  const kontaktSection = document.getElementById('kontakt');
+  let heroVisible = true;
+  let kontaktVisible = false;
+
+  function updateMobileCta() {
+    const show = !heroVisible && !kontaktVisible;
+    mobileCta?.classList.toggle('translate-y-full', !show);
+  }
+  if (heroSection) {
+    new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; updateMobileCta(); }, { threshold: 0.15 }).observe(heroSection);
+  }
+  if (kontaktSection) {
+    new IntersectionObserver(es => { kontaktVisible = es[0].isIntersecting; updateMobileCta(); }, { threshold: 0.1 }).observe(kontaktSection);
+  }
+
+  // ── "Webseiten-Analyse"-CTA: Status auf "hat-webseite" vorauswählen ────
+  document.querySelectorAll('a[data-analyse]').forEach(a => {
+    a.addEventListener('click', () => {
+      const radio = document.querySelector<HTMLInputElement>('input[name="status"][value="hat-webseite"]');
+      if (radio) radio.checked = true;
+    });
+  });
+
+  // ── Formular-Submit ────────────────────────────────────────────────────
+  const form = document.getElementById('lead-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('lead-submit') as HTMLButtonElement | null;
+  const errorEl = document.getElementById('lead-error');
+
+  function showError(msg: string) {
+    if (!errorEl) return;
+    errorEl.textContent = msg;
+    errorEl.classList.remove('hidden');
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl?.classList.add('hidden');
+
+    // Validierung mit sichtbarem Feedback
+    let valid = true;
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('.lp-input').forEach(el => {
+      el.classList.remove('is-invalid');
+      if (!el.checkValidity()) {
+        el.classList.add('is-invalid');
+        valid = false;
+      }
+    });
+    const cb = document.getElementById('lead-datenschutz') as HTMLInputElement | null;
+    if (!cb?.checked) valid = false;
+
+    if (!valid) {
+      showError('Bitte füllen Sie alle Pflichtfelder aus und akzeptieren Sie die Datenschutzerklärung.');
+      form.querySelector<HTMLElement>('.is-invalid')?.focus();
+      return;
+    }
+
+    const fd = new FormData(form);
+    const data: Record<string, string> = {};
+    fd.forEach((v, k) => { data[k] = v.toString(); });
+    data['datenschutz'] = 'true';
+
+    submitBtn?.classList.add('is-loading');
+    submitBtn?.setAttribute('aria-busy', 'true');
+
+    try {
+      const res = await fetch('/api/gebaeudereinigung', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (res.ok && json.ok) {
+        // Meta Pixel Lead-Event (nur wenn Pixel aktiv + Einwilligung erteilt)
+        // @ts-expect-error fbq wird ggf. extern geladen
+        if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+        const params = new URLSearchParams({ name: data['name'] ?? '', email: data['email'] ?? '' });
+        window.location.href = `/danke?${params.toString()}`;
+      } else {
+        throw new Error(json.error ?? 'Unbekannter Fehler');
+      }
+    } catch (err) {
+      submitBtn?.classList.remove('is-loading');
+      submitBtn?.removeAttribute('aria-busy');
+      showError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an hello@zulastudios.com.'
+      );
+    }
+  });
+
+  // ── META PIXEL (Platzhalter, DSGVO-konform) ────────────────────────────
+  // Aktivieren: YOUR_PIXEL_ID ersetzen und den Block einkommentieren.
+  // Der Code lädt erst NACH Einwilligung über das Consent-Banner.
+  //
+  // document.addEventListener('zula:consent', (e) => {
+  //   if ((e as CustomEvent).detail !== 'accepted') return;
+  //   if (typeof fbq !== 'undefined') return; // bereits geladen
+  //   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  //   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  //   n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  //   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  //   document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  //   fbq('init', 'YOUR_PIXEL_ID');
+  //   fbq('track', 'PageView');
+  // });
+</script>

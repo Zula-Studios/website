@@ -1,0 +1,68 @@
+---
+/**
+ * DSGVO-Consent-Banner für Tracking (Meta Pixel etc.).
+ *
+ * Verhalten:
+ * - Ohne Entscheidung: Banner sichtbar, KEIN Tracking-Script wird geladen.
+ * - "Akzeptieren": Auswahl wird in localStorage gespeichert und das Event
+ *   `zula:consent` (detail: 'accepted') gefeuert – Tracking-Code kann darauf
+ *   lauschen (siehe Pixel-Platzhalter auf der Landingpage).
+ * - "Ablehnen": Auswahl wird gespeichert, kein Tracking.
+ */
+---
+
+<div
+  id="consent-banner"
+  class="hidden fixed bottom-0 inset-x-0 z-[60] p-3 sm:p-4"
+  role="dialog"
+  aria-label="Cookie-Hinweis"
+  aria-live="polite"
+>
+  <div class="max-w-xl mx-auto bg-[#0C0C0F] text-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.35)] border border-white/10 p-5">
+    <p class="text-[13px] leading-relaxed text-[#D4D4D9] mb-4">
+      Wir möchten Cookies für anonyme Statistik und Werbemessung (z.&nbsp;B. Meta Pixel) einsetzen –
+      aber nur mit Ihrer Einwilligung. Details in der
+      <a href="/datenschutz" class="underline underline-offset-2 hover:text-white transition-colors">Datenschutzerklärung</a>.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-2.5">
+      <button
+        id="consent-accept"
+        type="button"
+        class="flex-1 bg-white text-[#0C0C0F] text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors"
+      >
+        Akzeptieren
+      </button>
+      <button
+        id="consent-decline"
+        type="button"
+        class="flex-1 bg-transparent border border-white/20 text-[#D4D4D9] text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:border-white/40 hover:text-white transition-colors"
+      >
+        Nur notwendige
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'zula-consent';
+  const banner = document.getElementById('consent-banner');
+
+  function setConsent(value: 'accepted' | 'declined') {
+    try { localStorage.setItem(KEY, value); } catch { /* ignore */ }
+    banner?.classList.add('hidden');
+    document.dispatchEvent(new CustomEvent('zula:consent', { detail: value }));
+  }
+
+  let stored: string | null = null;
+  try { stored = localStorage.getItem(KEY); } catch { /* ignore */ }
+
+  if (stored === 'accepted') {
+    // Frühere Einwilligung erneut signalisieren, damit Tracking-Code laden kann.
+    document.dispatchEvent(new CustomEvent('zula:consent', { detail: 'accepted' }));
+  } else if (!stored) {
+    banner?.classList.remove('hidden');
+  }
+
+  document.getElementById('consent-accept')?.addEventListener('click', () => setConsent('accepted'));
+  document.getElementById('consent-decline')?.addEventListener('click', () => setConsent('declined'));
+</script>
