@@ -1,0 +1,491 @@
+---
+import SEO from '@/components/SEO.astro';
+import Icon from '@/components/Icon.astro';
+import ConsentBanner from '@/components/ConsentBanner.astro';
+import { SITE } from '@/config/site';
+
+const packages = [
+  {
+    name: 'Start',
+    price: '69',
+    setup: '0 € Einrichtung',
+    setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
+    description: 'Für neue und kleine Barbershops.',
+    features: [
+      'Professioneller Onepager',
+      'Leistungen und Preise',
+      'Kontakt- und WhatsApp-Button',
+      'Mobile Optimierung',
+      'Hosting, Updates und Sicherheit',
+      'Technische SEO-Grundlage',
+    ],
+  },
+  {
+    name: 'Wachstum',
+    price: '119',
+    setup: '0 € Einrichtung',
+    setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
+    description: 'Alles, was ein aktiver Salon normalerweise benötigt.',
+    recommended: true,
+    features: [
+      'Bis zu fünf individuelle Seiten',
+      'Online-Terminbuchung',
+      'Galerie und Teamvorstellung',
+      'Lokale Google-Optimierung',
+      'Kontakt- und Bewerbungsformular',
+      'Kleine Änderungen inklusive',
+      'Hosting, Updates und Sicherheit',
+    ],
+  },
+  {
+    name: 'Premium',
+    price: '199',
+    setup: '0 € Einrichtung',
+    setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
+    description: 'Für größere Salons und mehrere Standorte.',
+    features: [
+      'Bis zu acht individuelle Seiten',
+      'Standort- und Karriereseiten',
+      'Erweiterte lokale SEO-Struktur',
+      'Individuelle Funktionen',
+      'Monatliche Inhaltsänderungen',
+      'Bevorzugter Support',
+      'Hosting, Updates und Sicherheit',
+    ],
+  },
+];
+
+const faqs = [
+  {
+    q: 'Muss ich eine Laufzeit von 24 Monaten wählen?',
+    a: 'Nein. Bei 24 Monaten entfällt die Einrichtungsgebühr vollständig. Ohne diese Laufzeit berechnen wir einmalig 299 € für die Einrichtung.',
+  },
+  {
+    q: 'Sind Hosting und technische Pflege enthalten?',
+    a: 'Ja. Hosting, Sicherheitsupdates und technische Wartung sind in jedem Paket enthalten.',
+  },
+  {
+    q: 'Kann mein Terminbuchungssystem eingebunden werden?',
+    a: 'Im Wachstum- und Premium-Paket binden wir gängige Buchungssysteme direkt in die Webseite ein.',
+  },
+  {
+    q: 'Was passiert nach den 24 Monaten?',
+    a: 'Danach läuft das Paket weiter und kann mit der vereinbarten Frist gekündigt werden. Die Details stehen transparent im Angebot.',
+  },
+  {
+    q: 'Kann ich später das Paket wechseln?',
+    a: 'Ein Wechsel in ein größeres Paket ist möglich, wenn Ihr Salon oder Ihre Anforderungen wachsen.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(faq => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: { '@type': 'Answer', text: faq.a },
+  })),
+};
+---
+
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0C0C0F" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+
+    <SEO
+      title="Barbershop-Webseite ab 69 € monatlich – Zula Studios"
+      description="Professionelle Webseiten für Barbershops und Friseursalons ab 69 € monatlich – inklusive Hosting, Updates und persönlicher Betreuung."
+      keywords={['Barbershop Webseite Preis', 'Webseite für Barbershop monatlich', 'Friseur Webseite Kosten', 'Barbershop Webdesign']}
+      schema={faqSchema}
+    />
+
+    <style is:global>
+      :root {
+        --ink: #0C0C0F;
+        --muted: #62626E;
+        --border: #E4E4E9;
+        --warm: #FAFAF8;
+        --accent: #0284C7;
+        --section: clamp(3.75rem, 7vw, 6rem);
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: #fff; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+      ::selection { color: #0C4A6E; background: #BAE6FD; }
+      :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+      .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 1.125rem; }
+      .section { padding-block: var(--section); }
+      .section-intro { max-width: 42rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+      .section-intro h2 { margin: 0 0 1rem; font-size: clamp(1.7rem, 3.2vw, 2.5rem); line-height: 1.16; letter-spacing: -.025em; text-wrap: balance; }
+      .section-intro p { max-width: 38rem; margin: 0; color: var(--muted); font-size: .9375rem; line-height: 1.65; }
+      .eyebrow { margin: 0 0 .75rem; color: #9898A0; font-size: .6875rem; font-weight: 600; line-height: 1.5; letter-spacing: .12em; text-transform: uppercase; }
+      @media (min-width: 640px) { .container { padding-inline: 2rem; } }
+      @media (min-width: 1024px) { .container { padding-inline: 2.5rem; } }
+    </style>
+  </head>
+
+  <body>
+    <header class="sticky top-0 z-50 border-b border-[#EBEBEF] bg-white">
+      <div class="container flex h-[60px] items-center justify-between">
+        <a href="/" class="inline-flex items-center" aria-label={`${SITE.name} – Startseite`}>
+          <img src="/images/logo.png" alt="Zula Studios" width="367" height="344" class="h-9 w-auto" style="filter:invert(1);" />
+        </a>
+        <nav class="hidden md:flex items-center gap-7" aria-label="Seitennavigation">
+          <a href="#pakete">Pakete</a>
+          <a href="#enthalten">Enthalten</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <a href="#kontakt" class="cta header-cta">
+          <span class="sm:hidden">Anfragen</span>
+          <span class="hidden sm:inline">Kostenloses Erstgespräch</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <div>
+              <p class="eyebrow text-[#A1A1AA]">Webseiten für Barbershops & Friseure</p>
+              <h1>Professioneller Auftritt.<br/><span>Planbarer Monatspreis.</span></h1>
+              <p class="hero-copy">
+                Ihre neue Salon-Webseite ab 69 € monatlich – inklusive Hosting,
+                Updates und persönlicher Betreuung.
+              </p>
+              <a href="#pakete" class="cta hero-cta">Pakete vergleichen</a>
+              <p class="hero-note">0 € Einrichtung bei 24 Monaten · sonst einmalig 299 € · Preise netto</p>
+            </div>
+            <figure class="hero-photo">
+              <img
+                src="/images/barbershop-hero.jpg"
+                alt="Barber bei einem präzisen Haarschnitt in einem modernen Salon"
+                width="1024"
+                height="683"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+              <figcaption>Ihr Handwerk verdient einen ebenso professionellen Online-Auftritt.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preise -->
+      <section id="pakete" class="section scroll-mt-16">
+        <div class="container">
+          <div class="section-intro">
+            <p class="eyebrow">Drei klare Pakete</p>
+            <h2>Wählen Sie, was zu Ihrem Salon passt.</h2>
+            <p>Keine versteckten Technik-Kosten. Sie erhalten Webseite, Hosting und Betreuung aus einer Hand.</p>
+          </div>
+
+          <div class="pricing-grid">
+            {packages.map(item => (
+              <article class:list={['price-card', { featured: item.recommended }]}>
+                {item.recommended && <p class="recommendation">Unsere Empfehlung</p>}
+                <div class="price-card__head">
+                  <h3>{item.name}</h3>
+                  <p>{item.description}</p>
+                </div>
+                <p class="price"><strong>{item.price} €</strong><span>/ Monat</span></p>
+                <p class="setup"><strong>{item.setup}</strong><span>{item.setupNote}</span></p>
+                <a href="#kontakt" class:list={['package-cta', { primary: item.recommended }]} data-package={item.name}>
+                  {item.name} anfragen
+                </a>
+                <ul>
+                  {item.features.map(feature => (
+                    <li><Icon name="check" size={14} strokeWidth={2.25} /> <span>{feature}</span></li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+
+          <p class="pricing-note">
+            Bei einer Laufzeit von 24 Monaten entfällt die Einrichtungsgebühr. Ohne diese Laufzeit fällt einmalig eine Einrichtungsgebühr von 299 € an.
+            Alle Preise verstehen sich netto zzgl. gesetzlicher Umsatzsteuer.
+            Der konkrete Leistungsumfang wird vor Vertragsabschluss schriftlich festgehalten.
+          </p>
+        </div>
+      </section>
+
+      <!-- Enthalten -->
+      <section id="enthalten" class="section border-y border-[#E4E4E9] bg-[#FAFAF8] scroll-mt-16">
+        <div class="container">
+          <div class="included-layout">
+            <div class="section-intro">
+              <p class="eyebrow">In jedem Paket</p>
+              <h2>Wir kümmern uns auch nach dem Start.</h2>
+              <p>Ihre Webseite bleibt technisch gepflegt, sicher und erreichbar. Sie brauchen sich nicht um Updates oder Hosting zu kümmern.</p>
+            </div>
+            <div class="included-list">
+              <p><b>Persönlicher Ansprechpartner</b><span>Direkter Kontakt statt Ticketsystem.</span></p>
+              <p><b>Hosting & Sicherheit</b><span>Technischer Betrieb und regelmäßige Updates.</span></p>
+              <p><b>Mobile Optimierung</b><span>Saubere Darstellung auf Smartphone, Tablet und Desktop.</span></p>
+              <p><b>DSGVO-Grundlagen</b><span>Formulare und Einwilligungen werden sauber umgesetzt.</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ablauf -->
+      <section class="section">
+        <div class="container">
+          <div class="section-intro">
+            <p class="eyebrow">Einfach starten</p>
+            <h2>In drei Schritten zu Ihrer Webseite.</h2>
+          </div>
+          <ol class="process">
+            <li><span>01</span><h3>Kostenlos sprechen</h3><p>Wir klären, welches Paket und welcher Umfang sinnvoll sind.</p></li>
+            <li><span>02</span><h3>Webseite gestalten</h3><p>Wir entwickeln den Auftritt passend zu Ihrem Salon.</p></li>
+            <li><span>03</span><h3>Online gehen</h3><p>Nach Ihrer Freigabe veröffentlichen und betreuen wir die Seite.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="section border-y border-[#E4E4E9] bg-[#FAFAF8] scroll-mt-16">
+        <div class="container max-w-3xl">
+          <div class="section-intro"><p class="eyebrow">Häufige Fragen</p><h2>Kurz beantwortet.</h2></div>
+          {faqs.map(faq => (
+            <details class="faq-item">
+              <summary><span>{faq.q}</span><span aria-hidden="true">+</span></summary>
+              <p>{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <!-- Kontakt -->
+      <section id="kontakt" class="section bg-[#0C0C0F] scroll-mt-16">
+        <div class="container">
+          <div class="contact-layout">
+            <div>
+              <p class="eyebrow">Unverbindlich anfragen</p>
+              <h2>Welches Paket passt zu Ihrem Salon?</h2>
+              <p>Wir melden uns persönlich, beantworten Ihre Fragen und empfehlen nur den Umfang, den Sie wirklich benötigen.</p>
+            </div>
+            <div class="form-shell">
+              <h3>Kostenloses Erstgespräch anfragen</h3>
+              <p>Persönliche Antwort · Kein Verkaufsdruck</p>
+              <form id="lead-form" novalidate>
+                <input type="hidden" name="status" value="braucht-webseite" />
+                <input type="hidden" name="paket" id="selected-package" value="Wachstum" />
+                <div class="field-grid">
+                  <label><span>Name *</span><input type="text" name="name" required autocomplete="name" /></label>
+                  <label><span>Salonname *</span><input type="text" name="firma" required autocomplete="organization" /></label>
+                </div>
+                <label><span>E-Mail-Adresse *</span><input type="email" name="email" required autocomplete="email" /></label>
+                <label><span>Telefonnummer *</span><input type="tel" name="telefon" required autocomplete="tel" inputmode="tel" /></label>
+                <label><span>Nachricht (optional)</span><textarea name="nachricht" rows="3" maxlength="500"></textarea></label>
+                <label class="privacy">
+                  <input type="checkbox" name="datenschutz" required />
+                  <span>Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
+                </label>
+                <button id="lead-submit" type="submit" class="cta">Kostenloses Erstgespräch anfragen</button>
+                <p id="lead-error" class="form-error" role="alert"></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <a href="/" aria-label={`${SITE.name} – Startseite`}>
+          <img src="/images/logo.png" alt="Zula Studios" width="367" height="344" loading="lazy" />
+        </a>
+        <div>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <a href="/impressum">Impressum</a>
+          <a href="/datenschutz">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
+
+    <ConsentBanner />
+  </body>
+</html>
+
+<style>
+  header nav a { color: #44444F; font-size: .84375rem; font-weight: 500; text-decoration: none; transition: color .15s ease; }
+  header nav a:hover { color: #0284C7; }
+  .cta { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; padding: .875rem 1.5rem; border: 0; border-radius: .5rem; background: #0284C7; color: #fff; font-family: inherit; font-size: .875rem; font-weight: 600; line-height: 1.4; text-align: center; text-decoration: none; cursor: pointer; transition: background .15s ease; }
+  .cta:hover { background: #0369A1; }
+  .cta.is-loading { opacity: .7; pointer-events: none; }
+  .header-cta { min-height: 2.75rem; padding-block: .65rem; }
+
+  .hero { padding-block: clamp(3.75rem,7vw,6rem); background: #0C0C0F; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 3rem; align-items: center; }
+  .hero h1 { margin: 0 0 1.25rem; color: #fff; font-size: clamp(2rem,4vw,3.35rem); line-height: 1.12; letter-spacing: -.035em; }
+  .hero h1 span { color: #38BDF8; }
+  .hero-copy { max-width: 31rem; margin: 0 0 1.75rem; color: #A1A1AA; font-size: 1rem; line-height: 1.65; }
+  .hero-note { margin: 1.25rem 0 0; color: #777781; font-size: .75rem; line-height: 1.55; }
+  .hero-photo { width: 100%; max-width: 480px; margin: 0 auto; }
+  .hero-photo img { display: block; width: 100%; height: auto; border: 1px solid #2E2E3A; border-radius: .625rem; }
+  .hero-photo figcaption { margin-top: .75rem; padding-left: .75rem; border-left: 2px solid #0284C7; color: #88888F; font-size: .75rem; line-height: 1.55; }
+
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; align-items: stretch; }
+  .price-card { position: relative; display: flex; min-width: 0; flex-direction: column; padding: 1.75rem; border: 1px solid #DCDCE2; border-radius: .625rem; background: #fff; }
+  .price-card.featured { border: 2px solid #0284C7; padding: calc(1.75rem - 1px); }
+  .recommendation { position: absolute; top: 0; right: 1.25rem; margin: 0; padding: .45rem .7rem; background: #0284C7; color: #fff; font-size: .625rem; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; }
+  .price-card__head { min-height: 7.5rem; padding-top: .25rem; }
+  .price-card__head h3 { margin: 0 0 .6rem; font-size: 1.25rem; line-height: 1.35; }
+  .price-card__head p { margin: 0; color: #62626E; font-size: .8125rem; line-height: 1.6; }
+  .price { display: flex; align-items: baseline; gap: .35rem; margin: 0; }
+  .price strong { font-size: clamp(2.2rem,4vw,3rem); line-height: 1.1; letter-spacing: -.045em; }
+  .price span { color: #62626E; font-size: .75rem; }
+  .setup { display: flex; flex-direction: column; gap: .15rem; margin: .5rem 0 1.25rem; color: #62626E; font-size: .7rem; line-height: 1.5; }
+  .setup strong { color: #0284C7; font-size: .8125rem; }
+  .package-cta { display: flex; min-height: 2.75rem; align-items: center; justify-content: center; padding: .7rem 1rem; border: 1px solid #D4D4D9; border-radius: .5rem; color: #0C0C0F; font-size: .8125rem; font-weight: 600; text-decoration: none; }
+  .package-cta.primary { border-color: #0284C7; background: #0284C7; color: #fff; }
+  .price-card ul { display: flex; flex-direction: column; gap: .75rem; margin: 1.5rem 0 0; padding: 1.5rem 0 0; border-top: 1px solid #E4E4E9; list-style: none; }
+  .price-card li { display: grid; grid-template-columns: 1rem minmax(0,1fr); gap: .6rem; align-items: start; color: #44444F; font-size: .8125rem; line-height: 1.5; }
+  .price-card li :global(svg) { margin-top: .15rem; color: #0284C7; }
+  .pricing-note { max-width: 50rem; margin: 1.5rem 0 0; color: #777781; font-size: .71875rem; line-height: 1.6; }
+
+  .included-layout, .contact-layout { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
+  .included-layout .section-intro { margin-bottom: 0; }
+  .included-list { border-top: 1px solid #DCDCE2; }
+  .included-list p { display: flex; flex-direction: column; gap: .25rem; margin: 0; padding: 1.2rem 0; border-bottom: 1px solid #DCDCE2; }
+  .included-list b { font-size: .9375rem; line-height: 1.45; }
+  .included-list span { color: #62626E; font-size: .8125rem; line-height: 1.6; }
+
+  .process { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(1.5rem,4vw,3rem); margin: 0; padding: 0; list-style: none; }
+  .process li { padding-top: 1.25rem; border-top: 1px solid #D4D4D9; }
+  .process li > span { color: #0284C7; font-size: .75rem; font-weight: 700; }
+  .process h3 { margin: .75rem 0 .3rem; font-size: .9375rem; line-height: 1.45; }
+  .process p { margin: 0; color: #62626E; font-size: .8125rem; line-height: 1.6; }
+
+  .faq-item { border-top: 1px solid #D4D4D9; }
+  .faq-item summary { display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; list-style: none; cursor: pointer; font-size: .9375rem; font-weight: 600; line-height: 1.5; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary span:last-child { color: #0284C7; font-size: 1.25rem; transition: transform .15s ease; }
+  .faq-item[open] summary span:last-child { transform: rotate(45deg); }
+  .faq-item > p { max-width: 36rem; margin: 0; padding: 0 0 1.25rem; color: #62626E; font-size: .875rem; line-height: 1.65; }
+
+  .contact-layout > div:first-child h2 { max-width: 30rem; margin: 0 0 1rem; color: #fff; font-size: clamp(1.8rem,4vw,3rem); line-height: 1.15; letter-spacing: -.03em; }
+  .contact-layout > div:first-child > p:last-child { max-width: 30rem; margin: 0; color: #9898A0; font-size: .9375rem; line-height: 1.65; }
+  .form-shell { padding: 1.75rem; border-top: 4px solid #0284C7; border-radius: 0 0 .625rem .625rem; background: #fff; }
+  .form-shell > h3 { margin: 0 0 .3rem; font-size: 1.0625rem; line-height: 1.45; }
+  .form-shell > p { margin: 0 0 1.5rem; color: #88888F; font-size: .75rem; line-height: 1.5; }
+  .form-shell form { display: flex; flex-direction: column; gap: .9rem; }
+  .field-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .9rem; }
+  .form-shell label:not(.privacy) { display: flex; flex-direction: column; gap: .4rem; color: #62626E; font-size: .6875rem; font-weight: 600; line-height: 1.45; letter-spacing: .04em; text-transform: uppercase; }
+  .form-shell input:not([type='checkbox']):not([type='hidden']), .form-shell textarea { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #E4E4E9; border-radius: .5rem; background: #FAFAF8; color: #0C0C0F; font-family: inherit; font-size: .875rem; line-height: 1.5; outline: none; resize: vertical; }
+  .form-shell input:focus, .form-shell textarea:focus { border-color: #0284C7; background: #fff; }
+  .form-shell .is-invalid { border-color: #FDA4AF !important; }
+  .privacy { display: flex; align-items: flex-start; gap: .65rem; color: #88888F; font-size: .71875rem; line-height: 1.55; cursor: pointer; }
+  .privacy input { width: 1rem; height: 1rem; margin-top: .1rem; flex-shrink: 0; accent-color: #0284C7; }
+  .privacy a { color: #0284C7; }
+  .form-error { display: none; margin: 0; color: #DC2626; font-size: .75rem; line-height: 1.5; text-align: center; }
+  .form-error.visible { display: block; }
+
+  footer { padding-block: 2.5rem; border-top: 1px solid #1C1C25; background: #0C0C0F; }
+  footer .container { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  footer img { display: block; width: auto; height: 2rem; }
+  footer .container > div { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
+  footer a { color: #62626E; font-size: .8125rem; text-decoration: none; }
+  footer a:hover { color: #fff; }
+
+  @media (min-width: 900px) {
+    .hero-grid { grid-template-columns: minmax(0,1fr) 450px; gap: 2.5rem; }
+    .included-layout { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 5rem; }
+    .contact-layout { grid-template-columns: minmax(0,1fr) 480px; gap: 4rem; align-items: center; }
+  }
+
+  @media (max-width: 850px) {
+    .pricing-grid { grid-template-columns: 1fr; max-width: 34rem; }
+    .price-card.featured { order: -1; }
+    .price-card__head { min-height: 0; margin-bottom: 1.5rem; padding-right: 6rem; }
+  }
+
+  @media (max-width: 639px) {
+    .hero-cta { width: 100%; }
+    .process, .field-grid { grid-template-columns: 1fr; }
+    .process { gap: 1.75rem; }
+    footer .container { align-items: flex-start; flex-direction: column; }
+  }
+</style>
+
+<script>
+  const selectedPackage = document.getElementById('selected-package') as HTMLInputElement | null;
+  document.querySelectorAll<HTMLElement>('[data-package]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (selectedPackage) selectedPackage.value = link.dataset.package ?? 'Wachstum';
+    });
+  });
+
+  const form = document.getElementById('lead-form') as HTMLFormElement | null;
+  const submit = document.getElementById('lead-submit') as HTMLButtonElement | null;
+  const error = document.getElementById('lead-error');
+
+  const showError = (message: string) => {
+    if (!error) return;
+    error.textContent = message;
+    error.classList.add('visible');
+  };
+
+  form?.addEventListener('submit', async event => {
+    event.preventDefault();
+    error?.classList.remove('visible');
+    let valid = true;
+
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea').forEach(field => {
+      field.classList.remove('is-invalid');
+      if (!field.checkValidity()) {
+        field.classList.add('is-invalid');
+        valid = false;
+      }
+    });
+
+    if (!valid) {
+      showError('Bitte füllen Sie alle Pflichtfelder aus und akzeptieren Sie die Datenschutzerklärung.');
+      form.querySelector<HTMLElement>('.is-invalid')?.focus();
+      return;
+    }
+
+    const data: Record<string, string> = {};
+    new FormData(form).forEach((value, key) => { data[key] = value.toString(); });
+    data.datenschutz = 'true';
+    if (data.paket) data.nachricht = `Gewünschtes Paket: ${data.paket}${data.nachricht ? `\n\n${data.nachricht}` : ''}`;
+
+    submit?.classList.add('is-loading');
+    submit?.setAttribute('aria-busy', 'true');
+
+    try {
+      const response = await fetch('/api/barbershops', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error ?? 'Unbekannter Fehler');
+      const params = new URLSearchParams({ name: data.name ?? '', email: data.email ?? '' });
+      window.location.href = `/danke?${params.toString()}`;
+    } catch (cause) {
+      submit?.classList.remove('is-loading');
+      submit?.removeAttribute('aria-busy');
+      showError(cause instanceof Error ? cause.message : 'Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
+    }
+  });
+</script>
