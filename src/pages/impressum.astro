@@ -1,18 +1,26 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import DarkHero from '@/components/DarkHero.astro';
 import { SITE } from '@/config/site';
 ---
 
 <BaseLayout
   title="Impressum"
-  description="Impressum und rechtliche Angaben von Zula Studios, Henstedt-Ulzburg."
-  noindex={true}
->
-  <section class="py-20 lg:py-28 bg-white">
-    <div class="container max-w-3xl">
+  description="Impressum und rechtliche Angaben von Zula Studios, Hamburg."
 
-      <h1 class="font-bold text-[#0C0C0F] text-3xl lg:text-4xl tracking-[-0.03em] mb-2">Impressum</h1>
-      <p class="text-[#88888F] text-sm mb-12">Angaben gemäß § 5 TMG</p>
+>
+  <DarkHero
+    title="Impressum"
+    accent="und Anbieter."
+    image="/images/heroes/hero-apply.png"
+    imageWidth={684}
+    imageHeight={776}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Impressum' }]}
+  >
+    <p>Angaben gemäß § 5 TMG.</p>
+  </DarkHero>
+  <section class="py-16 lg:py-24 bg-white">
+    <div class="container max-w-3xl">
 
       <div class="prose prose-sm max-w-none space-y-10 text-[#44444F] leading-relaxed">
 

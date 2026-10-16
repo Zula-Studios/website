@@ -1,34 +1,59 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
-import Icon from '@/components/Icon.astro';
+import { serviceSchema, faqPageSchema } from '@/lib/schema';
+import { projekte } from '@/data/projekte';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
+import { iso, processIcons } from '@/data/visuals';
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Shopify Shop erstellen',
-  description: 'Professionelle Shopify Shop Entwicklung – von der Konzeption bis zum Launch. Custom Themes, Performance-Optimierung, SEO-Setup.',
-  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-  serviceType: 'Shopify Development',
-  areaServed: { '@type': 'Country', name: 'Germany' },
-};
+const pageUrl = `${SITE.url}/leistungen/shopify-shop-erstellen`;
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    { '@type': 'Question', name: 'Wie lange dauert die Entwicklung?', acceptedAnswer: { '@type': 'Answer', text: 'Einfache Shops: 2–4 Wochen. Individuelle Custom-Shops: 2–4 Monate. Den genauen Zeitplan legen wir nach dem Briefing fest.' } },
-    { '@type': 'Question', name: 'Welche Shopify-Version brauche ich?', acceptedAnswer: { '@type': 'Answer', text: 'Das hängt von Umsatz und Anforderungen ab. Wir beraten Sie neutral und empfehlen die optimale Lösung für Ihr Business.' } },
-  ],
-};
+const caseTeasers = [...projekte]
+  .filter(p => p.serviceType === 'shop' || p.techStack.some(t => t.includes('Shopify')))
+  .sort((a, b) => Number(b.featured) - Number(a.featured))
+  .slice(0, 2);
+
+const deliverables = [
+  'Shopify-Konzept & UX/UI', 'Custom Theme (Liquid)', 'Produkt- & Kollektions-Setup',
+  'Checkout & Zahlungsanbieter', 'Versand & Steuern (DE/EU)', 'SEO-Grundsetup & Schema',
+  'GA4, GTM & Pixel', 'Schulung & Dokumentation', 'Launch & DNS', '60 Tage Post-Launch-Support',
+];
+
+const steps = [
+  { n: '01', title: 'Briefing & Strategie', desc: 'Zielgruppe, Sortiment, Markenauftritt und technische Anforderungen — Grundlage für Konzept und Angebot.' },
+  { n: '02', title: 'Design & UX', desc: 'Wireframes, UI-Design und mobile-first Prototypen — abgestimmt auf Conversion und Ihre Marke.' },
+  { n: '03', title: 'Theme-Entwicklung', desc: 'Custom Sections, Blöcke und Templates in Liquid — performant und wartbar.' },
+  { n: '04', title: 'Inhalte & Integrationen', desc: 'Produkte, Apps, ERP/PIM-Anbindungen und Zahlungs- sowie Versandsetup.' },
+  { n: '05', title: 'QA & Performance', desc: 'Checkout-Tests, Core Web Vitals, SEO-Check und Tracking vor dem Go-Live.' },
+  { n: '06', title: 'Launch & Betreuung', desc: 'Go-Live, Schulung Ihres Teams und Support in den ersten Wochen nach dem Start.' },
+];
+
+const faqs = [
+  { q: 'Wie lange dauert die Entwicklung eines Shopify Shops?', a: 'Einfache Shops: 2–4 Wochen. Individuelle Custom-Shops: 2–4 Monate. Nach dem Briefing in Hamburg oder per Video erhalten Sie einen festen Zeitplan.' },
+  { q: 'Welchen Shopify-Plan brauche ich?', a: 'Das hängt von Umsatz, B2B-Anforderungen und Apps ab. Wir beraten Sie neutral — ohne Vendor-Lock-in über unnötige Add-ons.' },
+  { q: 'Kümmert ihr euch auch um Produkte und Texte?', a: 'Ja — auf Wunsch übernehmen wir Content und Bilder. Alternativ schulen wir Ihr Team für die Pflege im Shopify Admin.' },
+  { q: 'Arbeitet ihr nur in Hamburg?', a: 'Unser Studio sitzt in Hamburg — Projekte betreuen wir deutschlandweit remote mit festen Ansprechpartnern und wöchentlichen Updates.' },
+];
+
+const schemas = [
+  serviceSchema({
+    name: 'Shopify Shop erstellen',
+    description:
+      'Shopify Shop Entwicklung in Hamburg: Custom Theme, SEO, Performance und Launch — für Unternehmen in HH und bundesweit remote.',
+    serviceType: 'Shopify Development',
+    url: pageUrl,
+  }),
+  faqPageSchema(faqs),
+];
 ---
 
 <BaseLayout
-  title="Shopify Shop erstellen lassen – Professionell & Conversion-optimiert"
-  description="Professionellen Shopify Shop erstellen lassen: Custom Theme, SEO-Setup, Performance-Optimierung. 10+ Projekte. Jetzt kostenloses Angebot anfragen."
-  schema={[serviceSchema, faqSchema]}
-  darkHero={true}
+  title="Shopify Shop erstellen Hamburg – Custom Theme"
+  description="Shopify Shop in Hamburg erstellen lassen: Custom Theme, SEO & Performance. Shopify Agentur für HH & bundesweit remote. Jetzt kostenloses Angebot anfragen."
+  schema={schemas}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Leistungen', url: '/leistungen' },
@@ -36,87 +61,50 @@ const faqSchema = {
   ]}
 >
 
-  <!-- HERO -->
-  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-
-    <div class="container relative z-10">
-      <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap" aria-label="Breadcrumb">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a>
-        <span>/</span>
-        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a>
-        <span>/</span>
-        <span class="text-[#AEAEB5]">Shopify Shop erstellen</span>
-      </nav>
-
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-start">
-        <div>
-          <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#38BDF8]"></span>
-            Shopify Shop Entwicklung
-          </div>
-          <h1
-            class="font-bold text-white mb-5 tracking-[-0.04em] leading-[0.93]"
-            style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
-          >
-            Shopify Shops,<br/>
-            <span class="font-light italic text-white/55">die wirklich</span><br/>
-            verkaufen.
-          </h1>
-          <p class="text-[#AEAEB5] text-base lg:text-lg max-w-lg leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
-            Wir entwickeln performante, conversion-optimierte Shopify-Shops — vom ersten Gespräch bis zum erfolgreichen Launch.
-          </p>
-          <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
-            <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
-              Kostenloses Angebot
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <a href="/referenzen" class="btn btn-ghost py-3.5 px-7 text-[15px]">Referenzen ansehen</a>
-          </div>
-        </div>
-
-        <!-- Trust signals panel -->
-        <div class="hidden lg:block" style="animation: fadeUp 0.75s cubic-bezier(0.22,1,0.36,1) 0.25s both">
-          <div class="border border-[#1C1C25] rounded-2xl overflow-hidden min-w-[200px]">
-            {[
-              'Shopify Partner',
-              'Custom Development',
-              'SEO-Optimierung',
-              '60 Tage Support',
-              'DSGVO-konform',
-            ].map((text, i) => (
-              <div class:list={["flex items-center gap-3 px-5 py-3.5 text-[13px] text-[#AEAEB5]", i < 4 ? "border-b border-[#1C1C25]" : ""]}>
-                <Icon name="check" size={13} class="text-[#0284C7] shrink-0" strokeWidth={2.5} />
-                {text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+  <DarkHero
+    title="Shopify Shops,"
+    accent="die verkaufen."
+    image="/images/heroes/hero-shopify.png"
+    imageWidth={684}
+    imageHeight={744}
+    seo="Shopify Shop erstellen in Hamburg — "
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen', href: '/leistungen' }, { label: 'Shopify Shop erstellen' }]}
+  >
+    <p>Wir entwickeln performante, conversion-optimierte Shopify-Shops — vom ersten Gespräch bis zum erfolgreichen Launch.</p>
+    <div class="hero-actions">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Kostenloses Angebot</a>
+      <a href="/referenzen" class="btn btn-ghost py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Referenzen ansehen</a>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 h-px bg-[#1C1C25]"></div>
+  </DarkHero>
+
+  <!-- GEO -->
+  <section class="py-12 lg:py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container max-w-3xl">
+      <p class="text-[#62626E] text-base lg:text-lg leading-relaxed" data-reveal>
+        <strong class="text-[#0C0C0F] font-semibold">Shopify Agentur in Hamburg, bundesweit remote:</strong> Wir planen, designen und entwickeln Shopify-Shops für Marken in der Metropolregion — und begleiten E-Commerce-Teams in ganz Deutschland per Video, Slack und festen Meilensteinen.
+      </p>
+    </div>
   </section>
 
   <!-- WHY SHOPIFY — horizontal scroll features -->
   <section class="py-20 lg:py-24 bg-white">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <SectionLabel tone="blue" class="mb-3">Warum Shopify</SectionLabel>
+        <SectionLabel tone="emerald" class="mb-3">Warum Shopify</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Die führende E-Commerce Plattform</h2>
       </div>
-      <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { iconName: 'zap', title: 'Schnell & skalierbar', desc: 'Globales CDN inklusive — von 0 auf Millionen Bestellungen.' },
-          { iconName: 'shield', title: 'Sicher & verlässlich', desc: '99,99% Uptime, PCI-DSS, kostenloses SSL, kein Hosting-Stress.' },
-          { iconName: 'mobile', title: 'Mobile-first', desc: 'Alle Themes vollständig mobiloptimiert. Core Web Vitals included.' },
-          { iconName: 'globe', title: 'International', desc: 'Multi-Sprache, Multi-Währung und lokale Zahlungsanbieter out of the box.' },
-          { iconName: 'grid', title: '8.000+ Apps', desc: 'Der größte App Store im E-Commerce. Jede Integration verfügbar.' },
-          { iconName: 'chart', title: 'Analytics', desc: 'GA4, GTM, Shopify Audiences — datengetriebenes Wachstum.' },
+          { icon: iso.launch, title: 'Schnell & skalierbar', desc: 'Globales CDN inklusive — von 0 auf Millionen Bestellungen.' },
+          { icon: iso.shield, title: 'Sicher & verlässlich', desc: '99,99% Uptime, PCI-DSS, kostenloses SSL, kein Hosting-Stress.' },
+          { icon: iso.mobile, title: 'Mobile-first', desc: 'Alle Themes vollständig mobiloptimiert. Core Web Vitals included.' },
+          { icon: iso.pin, title: 'International', desc: 'Multi-Sprache, Multi-Währung und lokale Zahlungsanbieter out of the box.' },
+          { icon: iso.code, title: '8.000+ Apps', desc: 'Der größte App Store im E-Commerce. Jede Integration verfügbar.' },
+          { icon: iso.chart, title: 'Analytics', desc: 'GA4, GTM, Shopify Audiences — datengetriebenes Wachstum.' },
         ].map((item, i) => (
           <div class="p-6 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF] hover:bg-white hover:border-[#D4D4D9] transition-all" data-reveal data-delay={String((i % 3) + 1)}>
-            <div class="w-9 h-9 rounded-xl bg-[#0C0C0F] text-white flex items-center justify-center mb-4">
-              <Icon name={item.iconName} size={16} strokeWidth={1.75} />
+            <div class="mb-4">
+              <IsoIcon src={item.icon} />
             </div>
             <h3 class="font-semibold text-[#0C0C0F] text-[14.5px] mb-1.5">{item.title}</h3>
             <p class="text-[#88888F] text-xs leading-relaxed">{item.desc}</p>
@@ -126,17 +114,103 @@ const faqSchema = {
     </div>
   </section>
 
+  <!-- DELIVERABLES -->
+  <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+    <div class="container">
+      <div class="mb-12" data-reveal>
+        <SectionLabel tone="emerald" class="mb-3">Leistungsumfang</SectionLabel>
+        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+          Was beim Shopify Shop dabei ist
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-5 gap-3">
+        {deliverables.map((item, i) => (
+          <div class="flex items-center gap-3 bg-white border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 5) + 1)}>
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-accent-500 shrink-0">
+              <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-sm font-medium text-[#44444F]">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="py-20 lg:py-24 bg-white" id="prozess">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+        <div data-reveal>
+          <SectionLabel tone="emerald" class="mb-4">In 6 Schritten</SectionLabel>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Von der Idee zum live Shop
+          </h2>
+          <p class="text-[#88888F] text-sm leading-relaxed">Transparent, iterativ und launch-sicher — so entstehen Shopify-Shops, die verkaufen.</p>
+        </div>
+        <div class="space-y-0 border-t border-[#EBEBEF]">
+          {steps.map((step, i) => (
+            <div class="flex gap-4 sm:gap-6 py-6 border-b border-[#EBEBEF]" data-reveal data-delay={String((i % 3) + 1)}>
+              <IsoIcon src={processIcons[i]} size="sm" />
+              <span class="text-xs font-bold text-[#00F573] tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
+              <div>
+                <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
+                <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  {caseTeasers.length > 0 && (
+    <section class="py-20 lg:py-24 bg-[#F4F5F7]">
+      <div class="container">
+        <div class="mb-10 lg:mb-12" data-reveal>
+          <SectionLabel tone="emerald" class="mb-3">Referenzen</SectionLabel>
+          <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Shopify-Projekte aus der Praxis
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+          {caseTeasers.map((p, i) => (
+            <a
+              href={`/referenzen/${p.slug}`}
+              class="group flex flex-col rounded-2xl overflow-hidden border border-[#E4E6EB] bg-[#F4F5F7] hover:border-[#00F573]/50 transition-all min-h-[220px]"
+              data-reveal
+              data-delay={String(i + 1)}
+            >
+              <div class="flex-1 p-6 lg:p-7 flex flex-col">
+                <p class="text-[11px] font-bold uppercase tracking-[0.12em] text-[#00C45C] mb-3">
+                  {p.service} · {p.jahr}
+                </p>
+                <h3 class="font-bold text-[#0A0A0C] text-xl tracking-[-0.02em] mb-2 group-hover:text-[#00C45C] transition-colors">
+                  {p.client}
+                </h3>
+                <p class="text-[#62626E] text-[14px] leading-snug max-w-sm mb-auto line-clamp-2">
+                  {p.tagline}
+                </p>
+              </div>
+              <div class="flex items-center justify-between px-6 lg:px-7 py-3.5 bg-[#00F573] text-[#1D273D]">
+                <span class="text-[12px] font-extrabold uppercase tracking-[0.14em]">Ansehen</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- FAQ -->
   <section class="py-20 bg-white">
     <div class="container max-w-2xl">
       <h2 class="font-bold text-[#0C0C0F] tracking-[-0.02em] text-2xl mb-8" data-reveal>Häufige Fragen</h2>
       <div class="space-y-2">
-        {[
-          { q: 'Wie lange dauert die Entwicklung?', a: 'Einfache Shops: 2–4 Wochen. Individuelle Custom-Shops: 2–4 Monate. Den Zeitplan legen wir nach dem Briefing fest.' },
-          { q: 'Welche Shopify-Version brauche ich?', a: 'Das hängt von Umsatz und Anforderungen ab. Wir beraten Sie neutral und empfehlen die optimale Lösung für Ihr Business.' },
-          { q: 'Kümmert ihr euch auch um den Content?', a: 'Auf Wunsch übernehmen wir das Einpflegen von Produkten, Texten und Bildern — oder wir schulen Ihr Team.' },
-          { q: 'Wie läuft die Zusammenarbeit ab?', a: 'Nach dem Erstgespräch erhalten Sie ein individuelles Angebot. Danach folgen Konzeption, Entwicklung mit wöchentlichen Updates und der gemeinsame Launch.' },
-        ].map(item => (
+        {faqs.map(item => (
           <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
             <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
               {item.q}
@@ -152,11 +226,11 @@ const faqSchema = {
   </section>
 
   <!-- CTA FINAL -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 border-t border-[#E4E6EB]">
     <div class="container relative z-10 text-center max-w-xl mx-auto">
-      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Bereit für Ihren neuen Shopify Shop?</h2>
-      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Kostenloses Erstgespräch — kein Risiko, kein Verkaufsdruck.</p>
-      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+      <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Bereit für Ihren neuen Shopify Shop?</h2>
+      <p class="text-[#62626E] mb-8" data-reveal data-delay="1">Kostenloses Erstgespräch — kein Risiko, kein Verkaufsdruck.</p>
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[14px] uppercase tracking-[0.06em]" data-reveal data-delay="2">
         Jetzt kostenlos anfragen
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

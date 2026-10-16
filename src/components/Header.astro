@@ -1,93 +1,95 @@
 ---
 import { SITE } from '@/config/site';
-import Icon from '@/components/Icon.astro';
+import { iso } from '@/data/visuals';
 
 const pathname = Astro.url.pathname;
-const isHome = pathname === '/';
+const phoneHref = SITE.phone.replace(/\s/g, '');
 
 const navLinks = [
-  { label: 'Leistungen', href: '/leistungen' },
-  { label: 'Referenzen', href: '/referenzen' },
-  { label: 'Blog', href: '/blog' },
   { label: 'Über uns', href: '/ueber-uns' },
   { label: 'Karriere', href: '/karriere' },
   { label: 'Kontakt', href: '/kontakt' },
 ];
 
 const services = [
-  { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen', iconName: 'shop' },
-  { label: 'Shopify Migration', href: '/leistungen/shopify-migration', iconName: 'migration' },
-  { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration', iconName: 'globe' },
-  { label: 'Landingpages', href: '/leistungen/landingpages', iconName: 'target' },
-  { label: 'Astro Websites', href: '/leistungen/astro-websites', iconName: 'layers' },
-  { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung', iconName: 'code' },
+  { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen', icon: iso.shopify },
+  { label: 'Shopify Migration', href: '/leistungen/shopify-migration', icon: iso.migration },
+  { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration', icon: iso.astro },
+  { label: 'Landingpages', href: '/leistungen/landingpages', icon: iso.landing },
+  { label: 'Astro Websites', href: '/leistungen/astro-websites', icon: iso.astro },
+  { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung', icon: iso.laravel },
 ];
+const servicesOpen = pathname.startsWith('/leistungen');
 ---
 
-<header
-  id="site-header"
-  class:list={[
-    'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-    isHome ? 'header-on-dark' : 'header-scrolled',
-  ]}
->
-  <nav class="container">
-    <div class="flex items-center justify-between h-[64px]">
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <nav class="container" aria-label="Hauptnavigation">
+    <div class="flex items-center justify-between h-[68px] gap-4">
 
-      <!-- Logo -->
       <a href="/" class="flex items-center shrink-0 group" aria-label="Zula Studios – Startseite">
         <img
           src="/images/logo.png"
-          alt="Zula Studios"
+          alt=""
           width="367"
           height="344"
-          class="site-logo h-12 w-auto"
+          class="site-logo h-9 w-auto"
           decoding="async"
         />
+        <span class="sr-only">{SITE.name}</span>
       </a>
 
-      <!-- Desktop Nav -->
-      <ul class="hidden lg:flex items-center gap-1" role="list">
-        <!-- Leistungen Dropdown -->
+      <ul class="hidden lg:flex items-center gap-0.5" role="list">
+        <li>
+          <a
+            href="/referenzen"
+            class:list={[
+              'nav-link px-3.5 py-2 rounded-full text-[13px] font-semibold uppercase tracking-[0.06em] transition-all block',
+              pathname.startsWith('/referenzen') ? 'nav-link-active' : '',
+            ]}
+          >
+            Cases
+          </a>
+        </li>
+
         <li class="relative group/nav">
           <button
-            class="nav-link flex items-center gap-1 px-3.5 py-2 rounded-lg text-[14px] font-medium transition-all"
+            class:list={[
+              'nav-link flex items-center gap-1 px-3.5 py-2 rounded-full text-[13px] font-semibold uppercase tracking-[0.06em] transition-all',
+              servicesOpen ? 'nav-link-active' : '',
+            ]}
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Leistungen
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="transition-transform duration-200 group-hover/nav:rotate-180">
+            Services
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="transition-transform duration-200 group-hover/nav:rotate-180 group-focus-within/nav:rotate-180" aria-hidden="true">
               <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
 
-          <!-- Dropdown -->
-          <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible transition-all duration-200">
-            <div class="w-64 bg-white rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-[#EBEBEF] p-2 overflow-hidden">
+          <div class="nav-panel absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible group-focus-within/nav:opacity-100 group-focus-within/nav:visible transition-all duration-200">
+            <div class="w-[22rem] bg-white rounded-2xl shadow-[0_16px_48px_rgba(10,10,12,0.12)] border border-[#E4E6EB] p-2">
               {services.map(s => (
-                <a href={s.href} class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors group/item">
-                  <div class="w-7 h-7 rounded-lg bg-[#F5F5F8] group-hover/item:bg-white flex items-center justify-center shrink-0 transition-colors">
-                    <Icon name={s.iconName} size={14} class="text-[#44444F] group-hover/item:text-accent-600 transition-colors" strokeWidth={1.75} />
-                  </div>
-                  <span class="text-[13.5px] font-medium text-[#0C0C0F] group-hover/item:text-accent-600 transition-colors">{s.label}</span>
+                <a href={s.href} class="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#F4F5F7] transition-colors group/item">
+                  <img src={s.icon} alt="" width="72" height="72" class="w-11 h-11 object-contain shrink-0" loading="lazy" decoding="async" />
+                  <span class="text-[13.5px] font-semibold text-[#0A0A0C] group-hover/item:text-[#00C45C] transition-colors">{s.label}</span>
                 </a>
               ))}
-              <div class="h-px bg-[#EBEBEF] mx-3 my-1"></div>
-              <a href="/leistungen" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors">
-                <span class="text-base w-7 text-center">→</span>
-                <span class="text-[13.5px] font-medium text-[#62626E]">Alle Leistungen</span>
+              <div class="h-px bg-[#E4E6EB] mx-3 my-1"></div>
+              <a href="/leistungen" class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold uppercase tracking-[0.06em] text-[#00C45C] hover:bg-[#ECFFF4] transition-colors">
+                Alle Leistungen
+                <span aria-hidden="true">→</span>
               </a>
             </div>
           </div>
         </li>
 
-        {navLinks.slice(1).map(link => (
+        {navLinks.map(link => (
           <li>
             <a
               href={link.href}
               class:list={[
-                'nav-link px-3.5 py-2 rounded-lg text-[14px] font-medium transition-all block',
-                pathname.startsWith(link.href) ? 'nav-link-active' : ''
+                'nav-link px-3.5 py-2 rounded-full text-[13px] font-semibold uppercase tracking-[0.06em] transition-all block',
+                pathname.startsWith(link.href) ? 'nav-link-active' : '',
               ]}
             >
               {link.label}
@@ -96,24 +98,31 @@ const services = [
         ))}
       </ul>
 
-      <!-- CTA + Mobile toggle -->
-      <div class="flex items-center gap-3">
-        <a href="/projekt-starten" class="hidden lg:inline-flex btn btn-primary text-sm py-2.5 px-5">
-          Projekt starten
+      <div class="flex items-center gap-2.5 shrink-0">
+        <a
+          href={`tel:${phoneHref}`}
+          class="hidden xl:inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-[12.5px] font-semibold text-white/80 hover:border-[#00F573] hover:text-[#00F573] transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V17a2 2 0 01-2 2h-1C9.716 19 3 12.284 3 4V3z"/>
+          </svg>
+          {SITE.phone}
+        </a>
+        <a href="/projekt-starten" class="hidden lg:inline-flex btn btn-primary text-[13px] py-2.5 px-5 uppercase tracking-[0.04em]">
+          Angebot anfordern
         </a>
 
-        <!-- Mobile burger -->
         <button
           id="mobile-toggle"
-          class="lg:hidden p-2 rounded-lg transition-colors nav-mobile-btn"
+          class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
           aria-label="Menü öffnen"
           aria-expanded="false"
         >
           <span class="sr-only">Menü</span>
-          <svg id="icon-burger" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <svg id="icon-burger" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <svg id="icon-x" width="20" height="20" viewBox="0 0 20 20" fill="none" class="hidden">
+          <svg id="icon-x" width="20" height="20" viewBox="0 0 20 20" fill="none" class="hidden" aria-hidden="true">
             <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </button>
@@ -121,140 +130,65 @@ const services = [
     </div>
   </nav>
 
-  <!-- Mobile menu -->
-  <div
-    id="mobile-menu"
-    class="lg:hidden hidden bg-white border-t border-[#EBEBEF]"
-  >
+  <div id="mobile-menu" class="lg:hidden hidden border-t border-white/10 bg-[#0A0A0C]">
     <div class="container py-4 space-y-1">
-      <a href="/leistungen" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Leistungen</a>
-      {services.map(s => (
-        <a href={s.href} class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[14px] text-[#62626E] hover:bg-[#F5F5F8] transition-colors pl-7">
-          <Icon name={s.iconName} size={15} class="text-[#88888F] shrink-0" strokeWidth={1.75} />
-          {s.label}
-        </a>
+      <a href="/referenzen" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-semibold uppercase tracking-[0.05em] text-white hover:bg-white/10 hover:text-[#00F573] transition-colors">Cases</a>
+      <details class="rounded-xl" open={servicesOpen}>
+        <summary class="flex items-center justify-between px-3 py-2.5 rounded-xl text-[14px] font-semibold uppercase tracking-[0.05em] text-white cursor-pointer list-none hover:bg-white/10 hover:text-[#00F573] transition-colors">
+          Services
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="menu-chevron" aria-hidden="true">
+            <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="pb-1">
+          {services.map(s => (
+            <a href={s.href} class="flex items-center gap-3 px-3 py-2 rounded-xl text-[14px] font-medium text-white/85 hover:bg-white/10 transition-colors">
+              <img src={s.icon} alt="" width="64" height="64" class="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" loading="lazy" decoding="async" />
+              {s.label}
+            </a>
+          ))}
+          <a href="/leistungen" class="flex items-center px-3 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-[#00F573]">Alle Leistungen</a>
+        </div>
+      </details>
+      {navLinks.map(link => (
+        <a href={link.href} class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-semibold uppercase tracking-[0.05em] text-white hover:bg-white/10 hover:text-[#00F573] transition-colors">{link.label}</a>
       ))}
-      <a href="/referenzen" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Referenzen</a>
-      <a href="/blog" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Blog</a>
-      <a href="/ueber-uns" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Über uns</a>
-      <a href="/karriere" class="flex items-center px-3 py-2.5 rounded-xl text-[14px] font-medium text-[#0C0C0F] hover:bg-[#F5F5F8] transition-colors">Karriere</a>
-      <div class="pt-2">
-        <a href="/projekt-starten" class="btn btn-primary w-full justify-center">Projekt starten</a>
+      <div class="pt-3 space-y-2">
+        <a href="/projekt-starten" class="btn btn-primary w-full justify-center uppercase tracking-[0.04em]">Angebot anfordern</a>
+        <a href={`tel:${phoneHref}`} class="btn btn-ghost w-full justify-center text-[13px]">{SITE.phone}</a>
       </div>
     </div>
   </div>
 </header>
 
 <style>
-  /* ── Default state (light pages) ── */
   #site-header {
     background: transparent;
+    border-bottom: 1px solid transparent;
+  }
+  #site-header.header-scrolled,
+  #site-header.menu-open {
+    background: rgba(10, 10, 12, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
   }
   .nav-link {
-    color: #44444F;
+    color: rgba(255, 255, 255, 0.78);
   }
   .nav-link:hover {
-    background: #F5F5F8;
-    color: #0C0C0F;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
   }
   .nav-link-active {
-    color: #0284C7;
-    background: #F0F9FF;
+    color: #0A0A0C;
+    background: #00F573;
   }
-  .logo-mark {
-    background: #0C0C0F;
-    color: white;
-    border: 1px solid transparent;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .group:hover .logo-mark {
-    border-color: rgba(56, 189, 248, 0.35);
-    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.12);
-  }
-  .logo-text { color: #0C0C0F; }
-  .nav-mobile-btn { color: #0C0C0F; }
-  .nav-mobile-btn:hover { background: #F5F5F8; }
-
-  /* ── On dark hero (homepage before scroll) ── */
-  #site-header.header-on-dark .nav-link {
-    color: rgba(255, 255, 255, 0.65);
-  }
-  #site-header.header-on-dark .nav-link:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
-  }
-  #site-header.header-on-dark .nav-link-active {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.12);
-  }
-  #site-header.header-on-dark .nav-link-active:hover {
-    background: rgba(255, 255, 255, 0.18);
-  }
-  #site-header.header-on-dark .logo-text {
-    color: #ffffff;
-  }
-  #site-header.header-on-dark .logo-mark {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-  }
-  #site-header.header-on-dark .group:hover .logo-mark {
-    border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.12);
-  }
-  #site-header.header-on-dark .logo-icon {
-    fill: white;
-  }
-  #site-header.header-on-dark .btn-primary {
-    background: rgba(255, 255, 255, 0.12);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  #site-header.header-on-dark .btn-primary:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  #site-header.header-on-dark .nav-mobile-btn {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  /* ── Scrolled state ── */
-  #site-header.header-scrolled {
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid #EBEBEF;
-  }
-  #site-header.header-scrolled .nav-link {
-    color: #44444F;
-  }
-  #site-header.header-scrolled .logo-text { color: #0C0C0F; }
-  #site-header.header-scrolled .logo-mark {
-    background: #0C0C0F;
-    color: white;
-  }
-  #site-header.header-scrolled .btn-primary {
-    background: #0C0C0F;
-    color: white;
-    border: none;
-  }
-  #site-header.header-scrolled .btn-primary:hover { background: #1C1C25; }
-  #site-header.header-scrolled .nav-mobile-btn { color: #0C0C0F; }
-
-  /* ── Logo icon ── */
-  .logo-icon { fill: white; }
-
-  /* ── Site logo (image) ──
-     The logo PNG is white-on-transparent. On light header states it is
-     inverted to appear dark; on the dark hero it stays white.
-  */
+  #mobile-menu summary::-webkit-details-marker { display: none; }
+  #mobile-menu details[open] .menu-chevron { transform: rotate(180deg); }
+  .menu-chevron { transition: transform 0.15s ease; }
   .site-logo {
-    filter: invert(1);
-    transition: filter 0.2s ease, opacity 0.2s ease;
-  }
-  #site-header.header-on-dark .site-logo {
-    filter: invert(0);
-  }
-  #site-header.header-scrolled .site-logo {
-    filter: invert(1);
+    transition: opacity 0.2s ease;
   }
   .group:hover .site-logo {
     opacity: 0.85;
@@ -266,12 +200,20 @@ const services = [
   const menu = document.getElementById('mobile-menu');
   const iconBurger = document.getElementById('icon-burger');
   const iconX = document.getElementById('icon-x');
+  const header = document.getElementById('site-header');
 
   toggle?.addEventListener('click', () => {
     const isOpen = !menu?.classList.contains('hidden');
     menu?.classList.toggle('hidden', isOpen);
     iconBurger?.classList.toggle('hidden', !isOpen);
     iconX?.classList.toggle('hidden', isOpen);
+    header?.classList.toggle('menu-open', !isOpen);
     toggle.setAttribute('aria-expanded', String(!isOpen));
   });
+
+  function updateHeader() {
+    header?.classList.toggle('header-scrolled', window.scrollY > 24);
+  }
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  updateHeader();
 </script>

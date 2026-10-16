@@ -69,35 +69,35 @@ const formattedDate = new Date(publishedDate).toLocaleDateString('de-DE', {
   breadcrumbs={breadcrumbs}
 >
   <!-- Article header -->
-  <div class="bg-[#FAFAF8] border-b border-[#EBEBEF] py-14 lg:py-20">
-    <div class="container max-w-2xl">
-      <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-xs text-[#AEAEB5] mb-8 flex-wrap">
-        <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a>
+  <div class="bg-[#0A0A0C] pt-24 lg:pt-28 overflow-hidden">
+    <div class="container grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_240px] items-end gap-8 py-12 lg:py-16">
+      <div class="max-w-2xl">
+      <nav class="flex items-center gap-2 text-xs text-white/45 mb-8 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Startseite</a>
         <span>/</span>
-        <a href="/blog" class="hover:text-[#0C0C0F] transition-colors">Blog</a>
+        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
         <span>/</span>
-        <span class="text-[#62626E] truncate">{title}</span>
+        <span class="text-white/70 truncate">{title}</span>
       </nav>
 
       {category && (
-        <span class="inline-block text-[10.5px] font-bold uppercase tracking-wider text-accent-600 bg-accent-50 px-2.5 py-1 rounded-md mb-5">
+        <span class="inline-block text-[10.5px] font-bold uppercase tracking-wider text-[#0A0A0C] bg-[#00F573] px-2.5 py-1 rounded-md mb-5">
           {category}
         </span>
       )}
 
-      <h1 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4 leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
+      <h1 class="font-extrabold italic text-white tracking-[-0.03em] mb-4 leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
         {title}
       </h1>
 
-      <p class="text-[#62626E] text-base lg:text-lg leading-relaxed mb-7">{description}</p>
+      <p class="text-white/75 text-base lg:text-lg leading-relaxed mb-7">{description}</p>
 
-      <div class="flex flex-wrap items-center gap-4 text-xs text-[#AEAEB5]">
+      <div class="flex flex-wrap items-center gap-4 text-xs text-white/50">
         <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-[#0C0C0F] text-white text-[10px] font-bold flex items-center justify-center">
+          <div class="w-7 h-7 rounded-lg bg-[#00F573] text-[#0A0A0C] text-[10px] font-bold flex items-center justify-center">
             {author.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
           </div>
-          <span class="font-medium text-[#62626E]">{author}</span>
+          <span class="font-medium text-white/80">{author}</span>
         </div>
         <span>·</span>
         <time datetime={publishedDate}>{formattedDate}</time>
@@ -112,10 +112,12 @@ const formattedDate = new Date(publishedDate).toLocaleDateString('de-DE', {
       {tags.length > 0 && (
         <div class="flex flex-wrap gap-1.5 mt-5">
           {tags.map(tag => (
-            <span class="text-[11px] bg-[#EBEBEF] text-[#62626E] px-2.5 py-1 rounded-lg">#{tag}</span>
+            <span class="text-[11px] bg-white/10 text-white/70 px-2.5 py-1 rounded-lg">#{tag}</span>
           ))}
         </div>
       )}
+      </div>
+      <img src="/images/heroes/hero-blog.png" alt="" width="866" height="627" class="hidden lg:block w-full max-w-[240px] justify-self-end" decoding="async" />
     </div>
   </div>
 

@@ -3,10 +3,43 @@ import SEO from '@/components/SEO.astro';
 import Icon from '@/components/Icon.astro';
 import ConsentBanner from '@/components/ConsentBanner.astro';
 import { SITE } from '@/config/site';
+import { faqPageSchema, serviceSchema } from '@/lib/schema';
+
+const CITY_ALIASES: Record<string, string> = {
+  koeln: 'Köln',
+  cologne: 'Köln',
+  muenchen: 'München',
+  munich: 'München',
+  dueseldorf: 'Düsseldorf',
+  nuernberg: 'Nürnberg',
+};
+
+function sanitizeCity(value: string | null): string {
+  if (!value) return '';
+  const cleaned = value
+    .trim()
+    .replace(/[_+]/g, ' ')
+    .replace(/[^A-Za-zÄÖÜäöüß\s-]/g, '')
+    .replace(/\s+/g, ' ')
+    .slice(0, 32);
+  if (cleaned.length < 2) return '';
+  const alias = CITY_ALIASES[cleaned.toLocaleLowerCase('de-DE')];
+  if (alias) return alias;
+  return cleaned.replace(/\b\p{L}/gu, letter => letter.toLocaleUpperCase('de-DE'));
+}
+
+const city = sanitizeCity(Astro.url.searchParams.get('stadt') ?? Astro.url.searchParams.get('city'));
+const campaign = (Astro.url.searchParams.get('utm_campaign') ?? Astro.url.searchParams.get('kampagne') ?? '').slice(0, 60);
+const localLabel = city ? `in ${city}` : '';
+const awarenessParams = new URLSearchParams();
+if (city) awarenessParams.set('stadt', city);
+if (campaign) awarenessParams.set('utm_campaign', campaign);
+const awarenessHref = awarenessParams.toString() ? `/webseite-barbershops?${awarenessParams}` : '/webseite-barbershops';
 
 const packages = [
   {
     name: 'Start',
+    icon: '/images/body/body-mobile.jpg',
     price: '69',
     setup: '0 € Einrichtung',
     setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
@@ -22,6 +55,7 @@ const packages = [
   },
   {
     name: 'Wachstum',
+    icon: '/images/body/body-booking.jpg',
     price: '119',
     setup: '0 € Einrichtung',
     setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
@@ -39,6 +73,7 @@ const packages = [
   },
   {
     name: 'Premium',
+    icon: '/images/body/body-style.jpg',
     price: '199',
     setup: '0 € Einrichtung',
     setupNote: 'bei 24 Monaten · sonst einmalig 299 €',
@@ -78,15 +113,24 @@ const faqs = [
   },
 ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map(faq => ({
-    '@type': 'Question',
-    name: faq.q,
-    acceptedAnswer: { '@type': 'Answer', text: faq.a },
-  })),
-};
+const pageSchema = [
+  faqPageSchema(faqs),
+  serviceSchema({
+    name: city ? `Barbershop Webseite ${city} – monatliche Pakete` : 'Barbershop-Webseite monatlich',
+    description: city
+      ? `Barbershop-Webseiten ${localLabel} ab 69 €/Monat – Hosting, Updates und Terminbuchung inklusive.`
+      : `Professionelle Barbershop-Webseiten ab 69 €/Monat – aus ${SITE.address.city}, inkl. Hosting, Updates und persönlicher Betreuung.`,
+    serviceType: 'Web design subscription',
+    url: `${SITE.url}/barbershop-webseite`,
+  }),
+];
+
+const seoTitle = city
+  ? `Barbershop Webseite ${localLabel} – ab 69 €/Monat`
+  : 'Barbershop Webseite Preise – ab 69 €/Monat | Hamburg';
+const seoDescription = city
+  ? `Barbershop Webseite ${localLabel}: Start, Wachstum oder Premium – ab 69 € monatlich inkl. Hosting und Terminbuchung. Transparente Pakete von Zula Studios.`
+  : 'Barbershop & Friseur Webseite ab 69 €/Monat: drei Pakete, 0 € Einrichtung bei 24 Monaten, Terminbuchung & lokale SEO. Agentur aus Hamburg.';
 ---
 
 <!DOCTYPE html>
@@ -94,7 +138,7 @@ const faqSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0C0C0F" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -104,29 +148,30 @@ const faqSchema = {
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
 
     <SEO
-      title="Barbershop-Webseite ab 69 € monatlich – Zula Studios"
-      description="Professionelle Webseiten für Barbershops und Friseursalons ab 69 € monatlich – inklusive Hosting, Updates und persönlicher Betreuung."
-      keywords={['Barbershop Webseite Preis', 'Webseite für Barbershop monatlich', 'Friseur Webseite Kosten', 'Barbershop Webdesign']}
-      schema={faqSchema}
+      title={seoTitle}
+      description={seoDescription}
+      canonical="/barbershop-webseite"
+      keywords={['Barbershop Webseite Preis', 'Webseite für Barbershop monatlich', 'Friseur Webseite Kosten', 'Barbershop Webdesign Hamburg']}
+      schema={pageSchema}
     />
 
     <style is:global>
       :root {
-        --ink: #0C0C0F;
+        --ink: #0A0A0C;
         --muted: #62626E;
         --border: #E4E4E9;
-        --warm: #FAFAF8;
-        --accent: #0284C7;
+        --warm: #F4F5F7;
+        --accent: #00C45C;
         --section: clamp(3.75rem, 7vw, 6rem);
       }
       *, *::before, *::after { box-sizing: border-box; }
-      body { margin: 0; color: var(--ink); background: #fff; font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
-      ::selection { color: #0C4A6E; background: #BAE6FD; }
+      body { margin: 0; color: var(--ink); background: #fff; font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+      ::selection { color: #1D273D; background: #00F573; }
       :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
       .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 1.125rem; }
       .section { padding-block: var(--section); }
@@ -163,11 +208,14 @@ const faqSchema = {
         <div class="container">
           <div class="hero-grid">
             <div>
-              <p class="eyebrow text-[#A1A1AA]">Webseiten für Barbershops & Friseure</p>
-              <h1>Professioneller Auftritt.<br/><span>Planbarer Monatspreis.</span></h1>
+              <p class="eyebrow">
+                {city ? `Barbershop Webseite ${localLabel}` : `Barbershop Webseite · ${SITE.address.city}`}
+              </p>
+              <h1>Barbershop Webseite.<br/><span>Ab 69 € pro Monat.</span></h1>
               <p class="hero-copy">
-                Ihre neue Salon-Webseite ab 69 € monatlich – inklusive Hosting,
-                Updates und persönlicher Betreuung.
+                {city
+                  ? `Drei Pakete für Salons ${localLabel} – Terminbuchung, Hosting und Betreuung in einem planbaren Preis.`
+                  : `Drei klare Pakete für Barbershops und Friseure – Terminbuchung, Hosting und Betreuung aus Hamburg, deutschlandweit.`}
               </p>
               <a href="#pakete" class="cta hero-cta">Pakete vergleichen</a>
               <p class="hero-note">0 € Einrichtung bei 24 Monaten · sonst einmalig 299 € · Preise netto</p>
@@ -202,6 +250,7 @@ const faqSchema = {
               <article class:list={['price-card', { featured: item.recommended }]}>
                 {item.recommended && <p class="recommendation">Unsere Empfehlung</p>}
                 <div class="price-card__head">
+                  <img src={item.icon} alt="" width="160" height="160" loading="lazy" decoding="async" />
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
                 </div>
@@ -237,10 +286,10 @@ const faqSchema = {
               <p>Ihre Webseite bleibt technisch gepflegt, sicher und erreichbar. Sie brauchen sich nicht um Updates oder Hosting zu kümmern.</p>
             </div>
             <div class="included-list">
-              <p><b>Persönlicher Ansprechpartner</b><span>Direkter Kontakt statt Ticketsystem.</span></p>
-              <p><b>Hosting & Sicherheit</b><span>Technischer Betrieb und regelmäßige Updates.</span></p>
-              <p><b>Mobile Optimierung</b><span>Saubere Darstellung auf Smartphone, Tablet und Desktop.</span></p>
-              <p><b>DSGVO-Grundlagen</b><span>Formulare und Einwilligungen werden sauber umgesetzt.</span></p>
+              <p><img src="/images/body/body-talk.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span><b>Persönlicher Ansprechpartner</b><span>Direkter Kontakt statt Ticketsystem.</span></span></p>
+              <p><img src="/images/body/body-launch.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span><b>Hosting & Sicherheit</b><span>Technischer Betrieb und regelmäßige Updates.</span></span></p>
+              <p><img src="/images/body/body-mobile.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span><b>Mobile Optimierung</b><span>Saubere Darstellung auf Smartphone, Tablet und Desktop.</span></span></p>
+              <p><img src="/images/body/body-plan.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span><b>DSGVO-Grundlagen</b><span>Formulare und Einwilligungen werden sauber umgesetzt.</span></span></p>
             </div>
           </div>
         </div>
@@ -249,15 +298,19 @@ const faqSchema = {
       <!-- Ablauf -->
       <section class="section">
         <div class="container">
-          <div class="section-intro">
+          <div class="section-intro process-intro">
             <p class="eyebrow">Einfach starten</p>
             <h2>In drei Schritten zu Ihrer Webseite.</h2>
           </div>
           <ol class="process">
-            <li><span>01</span><h3>Kostenlos sprechen</h3><p>Wir klären, welches Paket und welcher Umfang sinnvoll sind.</p></li>
-            <li><span>02</span><h3>Webseite gestalten</h3><p>Wir entwickeln den Auftritt passend zu Ihrem Salon.</p></li>
-            <li><span>03</span><h3>Online gehen</h3><p>Nach Ihrer Freigabe veröffentlichen und betreuen wir die Seite.</p></li>
+            <li><img src="/images/body/body-talk.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span>01</span><h3>Kostenlos sprechen</h3><p>Wir klären, welches Paket und welcher Umfang sinnvoll sind.</p></li>
+            <li><img src="/images/body/body-plan.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span>02</span><h3>Webseite gestalten</h3><p>Wir entwickeln den Auftritt passend zu Ihrem Salon.</p></li>
+            <li><img src="/images/body/body-launch.jpg" alt="" width="160" height="160" loading="lazy" decoding="async" /><span>03</span><h3>Online gehen</h3><p>Nach Ihrer Freigabe veröffentlichen und betreuen wir die Seite.</p></li>
           </ol>
+          <p class="mt-10 text-[13.5px] leading-6 text-[#62626E]">
+            Erst Vorteile und Ablauf verstehen?{' '}
+            <a href={awarenessHref} class="font-semibold text-[#00C45C] hover:underline">Zur Übersicht für Barbershops</a>
+          </p>
         </div>
       </section>
 
@@ -275,13 +328,17 @@ const faqSchema = {
       </section>
 
       <!-- Kontakt -->
-      <section id="kontakt" class="section bg-[#0C0C0F] scroll-mt-16">
+      <section id="kontakt" class="section bg-white border-t border-[#E4E6EB] scroll-mt-16">
         <div class="container">
           <div class="contact-layout">
             <div>
               <p class="eyebrow">Unverbindlich anfragen</p>
               <h2>Welches Paket passt zu Ihrem Salon?</h2>
               <p>Wir melden uns persönlich, beantworten Ihre Fragen und empfehlen nur den Umfang, den Sie wirklich benötigen.</p>
+              <p class="mt-5 text-[13.5px] leading-6 text-[#62626E]">
+                Noch unsicher?{' '}
+                <a href={awarenessHref} class="font-semibold text-[#00C45C] hover:underline">Vorteile & Ablauf ansehen</a>
+              </p>
             </div>
             <div class="form-shell">
               <h3>Kostenloses Erstgespräch anfragen</h3>
@@ -289,6 +346,11 @@ const faqSchema = {
               <form id="lead-form" novalidate>
                 <input type="hidden" name="status" value="braucht-webseite" />
                 <input type="hidden" name="paket" id="selected-package" value="Wachstum" />
+                <input type="hidden" name="stadt" value={city} />
+                <input type="hidden" name="kampagne" value={campaign} />
+                <input type="hidden" name="quelle" value="barbershop-webseite" />
+                <input type="hidden" name="utm_source" value="" />
+                <input type="hidden" name="utm_medium" value="" />
                 <div class="field-grid">
                   <label><span>Name *</span><input type="text" name="name" required autocomplete="name" /></label>
                   <label><span>Salonname *</span><input type="text" name="firma" required autocomplete="organization" /></label>
@@ -328,101 +390,118 @@ const faqSchema = {
 
 <style>
   header nav a { color: #44444F; font-size: .84375rem; font-weight: 500; text-decoration: none; transition: color .15s ease; }
-  header nav a:hover { color: #0284C7; }
-  .cta { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; padding: .875rem 1.5rem; border: 0; border-radius: .5rem; background: #0284C7; color: #fff; font-family: inherit; font-size: .875rem; font-weight: 600; line-height: 1.4; text-align: center; text-decoration: none; cursor: pointer; transition: background .15s ease; }
-  .cta:hover { background: #0369A1; }
+  header nav a:hover { color: #00C45C; }
+  .cta { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; padding: .875rem 1.5rem; border: 0; border-radius: 999px; background: #00F573; color: #1D273D; font-family: inherit; font-size: .875rem; font-weight: 700; line-height: 1.4; text-align: center; text-decoration: none; cursor: pointer; transition: background .15s ease; }
+  .cta:hover { background: #3FF98F; }
   .cta.is-loading { opacity: .7; pointer-events: none; }
   .header-cta { min-height: 2.75rem; padding-block: .65rem; }
 
-  .hero { padding-block: clamp(3.75rem,7vw,6rem); background: #0C0C0F; }
+  .hero { padding-block: clamp(3.75rem,7vw,6rem); background: #0A0A0C; }
   .hero-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 3rem; align-items: center; }
-  .hero h1 { margin: 0 0 1.25rem; color: #fff; font-size: clamp(2rem,4vw,3.35rem); line-height: 1.12; letter-spacing: -.035em; }
-  .hero h1 span { color: #38BDF8; }
-  .hero-copy { max-width: 31rem; margin: 0 0 1.75rem; color: #A1A1AA; font-size: 1rem; line-height: 1.65; }
-  .hero-note { margin: 1.25rem 0 0; color: #777781; font-size: .75rem; line-height: 1.55; }
+  .hero h1 { margin: 0 0 1.25rem; color: #fff; font-size: clamp(2.2rem,5vw,3.6rem); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: 0.95; letter-spacing: -.035em; }
+  .hero h1 span { color: #00F573; }
+  .hero-copy { max-width: 31rem; margin: 0 0 1.75rem; color: rgba(255,255,255,.75); font-size: 1rem; line-height: 1.65; }
+  .hero-note { margin: 1.25rem 0 0; color: rgba(255,255,255,.5); font-size: .75rem; line-height: 1.55; }
+  .hero .eyebrow { color: rgba(255,255,255,.55); }
   .hero-photo { width: 100%; max-width: 480px; margin: 0 auto; }
-  .hero-photo img { display: block; width: 100%; height: auto; border: 1px solid #2E2E3A; border-radius: .625rem; }
-  .hero-photo figcaption { margin-top: .75rem; padding-left: .75rem; border-left: 2px solid #0284C7; color: #88888F; font-size: .75rem; line-height: 1.55; }
+  .hero-photo img { display: block; width: 100%; height: auto; border: 1px solid #E4E6EB; border-radius: .625rem; }
+  .hero-photo figcaption { margin-top: .75rem; padding-left: .75rem; border-left: 2px solid #00F573; color: rgba(255,255,255,.55); font-size: .75rem; line-height: 1.55; }
 
-  .pricing-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; align-items: stretch; }
+  .pricing-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; align-items: stretch; max-width: 34rem; margin-inline: auto; }
+  .price-card.featured { order: -1; }
+  .price-card__head { min-height: 0; margin-bottom: 1.5rem; }
   .price-card { position: relative; display: flex; min-width: 0; flex-direction: column; padding: 1.75rem; border: 1px solid #DCDCE2; border-radius: .625rem; background: #fff; }
-  .price-card.featured { border: 2px solid #0284C7; padding: calc(1.75rem - 1px); }
-  .recommendation { position: absolute; top: 0; right: 1.25rem; margin: 0; padding: .45rem .7rem; background: #0284C7; color: #fff; font-size: .625rem; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; }
-  .price-card__head { min-height: 7.5rem; padding-top: .25rem; }
+  .price-card.featured { border: 2px solid #00C45C; padding: calc(1.75rem - 1px); }
+  .recommendation { position: absolute; top: 0; right: 1.25rem; margin: 0; padding: .45rem .7rem; background: #00F573; color: #1D273D; font-size: .625rem; font-weight: 700; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; }
+  .price-card__head { padding-top: .25rem; }
+  .price-card__head img { display: block; width: 6.5rem; height: 6.5rem; object-fit: contain; margin-bottom: .75rem; }
   .price-card__head h3 { margin: 0 0 .6rem; font-size: 1.25rem; line-height: 1.35; }
   .price-card__head p { margin: 0; color: #62626E; font-size: .8125rem; line-height: 1.6; }
   .price { display: flex; align-items: baseline; gap: .35rem; margin: 0; }
   .price strong { font-size: clamp(2.2rem,4vw,3rem); line-height: 1.1; letter-spacing: -.045em; }
   .price span { color: #62626E; font-size: .75rem; }
   .setup { display: flex; flex-direction: column; gap: .15rem; margin: .5rem 0 1.25rem; color: #62626E; font-size: .7rem; line-height: 1.5; }
-  .setup strong { color: #0284C7; font-size: .8125rem; }
-  .package-cta { display: flex; min-height: 2.75rem; align-items: center; justify-content: center; padding: .7rem 1rem; border: 1px solid #D4D4D9; border-radius: .5rem; color: #0C0C0F; font-size: .8125rem; font-weight: 600; text-decoration: none; }
-  .package-cta.primary { border-color: #0284C7; background: #0284C7; color: #fff; }
+  .setup strong { color: #00C45C; font-size: .8125rem; }
+  .package-cta { display: flex; min-height: 2.75rem; align-items: center; justify-content: center; padding: .7rem 1rem; border: 1px solid #D4D4D9; border-radius: .5rem; color: #0A0A0C; font-size: .8125rem; font-weight: 600; text-decoration: none; }
+  .package-cta.primary { border-color: #00F573; background: #00F573; color: #1D273D; }
   .price-card ul { display: flex; flex-direction: column; gap: .75rem; margin: 1.5rem 0 0; padding: 1.5rem 0 0; border-top: 1px solid #E4E4E9; list-style: none; }
   .price-card li { display: grid; grid-template-columns: 1rem minmax(0,1fr); gap: .6rem; align-items: start; color: #44444F; font-size: .8125rem; line-height: 1.5; }
-  .price-card li :global(svg) { margin-top: .15rem; color: #0284C7; }
+  .price-card li :global(svg) { margin-top: .15rem; color: #00C45C; }
   .pricing-note { max-width: 50rem; margin: 1.5rem 0 0; color: #777781; font-size: .71875rem; line-height: 1.6; }
 
   .included-layout, .contact-layout { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
   .included-layout .section-intro { margin-bottom: 0; }
   .included-list { border-top: 1px solid #DCDCE2; }
-  .included-list p { display: flex; flex-direction: column; gap: .25rem; margin: 0; padding: 1.2rem 0; border-bottom: 1px solid #DCDCE2; }
+  .included-list p { display: grid; grid-template-columns: 4.75rem minmax(0,1fr); gap: 1rem; align-items: center; margin: 0; padding: 1rem 0; border-bottom: 1px solid #DCDCE2; }
+  .included-list img { width: 4.75rem; height: 4.75rem; object-fit: contain; }
+  .included-list p > span { display: flex; flex-direction: column; gap: .25rem; }
   .included-list b { font-size: .9375rem; line-height: 1.45; }
   .included-list span { color: #62626E; font-size: .8125rem; line-height: 1.6; }
 
-  .process { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(1.5rem,4vw,3rem); margin: 0; padding: 0; list-style: none; }
-  .process li { padding-top: 1.25rem; border-top: 1px solid #D4D4D9; }
-  .process li > span { color: #0284C7; font-size: .75rem; font-weight: 700; }
-  .process h3 { margin: .75rem 0 .3rem; font-size: .9375rem; line-height: 1.45; }
-  .process p { margin: 0; color: #62626E; font-size: .8125rem; line-height: 1.6; }
+  .process-intro { margin-inline: auto; text-align: center; }
+  .process { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+  .process li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1.25rem 1.35rem;
+    border: 1px solid #E4E6EB;
+    border-radius: 1rem;
+    background: #fff;
+  }
+  .process img { width: 6.5rem; height: 6.5rem; object-fit: contain; margin-bottom: .75rem; }
+  .process li > span { color: #00C45C; font-size: .75rem; font-weight: 700; letter-spacing: .08em; }
+  .process h3 { margin: .35rem 0 .3rem; font-size: 1rem; font-weight: 700; line-height: 1.35; }
+  .process p { margin: 0; max-width: 18rem; color: #62626E; font-size: .8125rem; line-height: 1.6; }
 
   .faq-item { border-top: 1px solid #D4D4D9; }
   .faq-item summary { display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; list-style: none; cursor: pointer; font-size: .9375rem; font-weight: 600; line-height: 1.5; }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary span:last-child { color: #0284C7; font-size: 1.25rem; transition: transform .15s ease; }
+  .faq-item summary span:last-child { color: #00C45C; font-size: 1.25rem; transition: transform .15s ease; }
   .faq-item[open] summary span:last-child { transform: rotate(45deg); }
   .faq-item > p { max-width: 36rem; margin: 0; padding: 0 0 1.25rem; color: #62626E; font-size: .875rem; line-height: 1.65; }
 
-  .contact-layout > div:first-child h2 { max-width: 30rem; margin: 0 0 1rem; color: #fff; font-size: clamp(1.8rem,4vw,3rem); line-height: 1.15; letter-spacing: -.03em; }
-  .contact-layout > div:first-child > p:last-child { max-width: 30rem; margin: 0; color: #9898A0; font-size: .9375rem; line-height: 1.65; }
-  .form-shell { padding: 1.75rem; border-top: 4px solid #0284C7; border-radius: 0 0 .625rem .625rem; background: #fff; }
+  .contact-layout > div:first-child h2 { max-width: 30rem; margin: 0 0 1rem; color: #0A0A0C; font-size: clamp(1.8rem,4vw,3rem); line-height: 1.15; letter-spacing: -.03em; }
+  .contact-layout > div:first-child > p { max-width: 30rem; margin: 0; color: #62626E; font-size: .9375rem; line-height: 1.65; }
+  .form-shell { padding: 1.75rem; border: 1px solid #E4E6EB; border-top: 4px solid #00F573; border-radius: .625rem; background: #fff; box-shadow: 0 4px 24px rgba(10,10,12,.06); }
   .form-shell > h3 { margin: 0 0 .3rem; font-size: 1.0625rem; line-height: 1.45; }
   .form-shell > p { margin: 0 0 1.5rem; color: #88888F; font-size: .75rem; line-height: 1.5; }
   .form-shell form { display: flex; flex-direction: column; gap: .9rem; }
-  .field-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .9rem; }
+  .field-grid { display: grid; grid-template-columns: 1fr; gap: .9rem; }
   .form-shell label:not(.privacy) { display: flex; flex-direction: column; gap: .4rem; color: #62626E; font-size: .6875rem; font-weight: 600; line-height: 1.45; letter-spacing: .04em; text-transform: uppercase; }
-  .form-shell input:not([type='checkbox']):not([type='hidden']), .form-shell textarea { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #E4E4E9; border-radius: .5rem; background: #FAFAF8; color: #0C0C0F; font-family: inherit; font-size: .875rem; line-height: 1.5; outline: none; resize: vertical; }
-  .form-shell input:focus, .form-shell textarea:focus { border-color: #0284C7; background: #fff; }
+  .form-shell input:not([type='checkbox']):not([type='hidden']), .form-shell textarea { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #E4E4E9; border-radius: .5rem; background: #F4F5F7; color: #0A0A0C; font-family: inherit; font-size: .875rem; line-height: 1.5; outline: none; resize: vertical; }
+  .form-shell input:focus, .form-shell textarea:focus { border-color: #00C45C; background: #fff; }
   .form-shell .is-invalid { border-color: #FDA4AF !important; }
   .privacy { display: flex; align-items: flex-start; gap: .65rem; color: #88888F; font-size: .71875rem; line-height: 1.55; cursor: pointer; }
-  .privacy input { width: 1rem; height: 1rem; margin-top: .1rem; flex-shrink: 0; accent-color: #0284C7; }
-  .privacy a { color: #0284C7; }
+  .privacy input { width: 1rem; height: 1rem; margin-top: .1rem; flex-shrink: 0; accent-color: #00C45C; }
+  .privacy a { color: #00C45C; }
   .form-error { display: none; margin: 0; color: #DC2626; font-size: .75rem; line-height: 1.5; text-align: center; }
   .form-error.visible { display: block; }
 
-  footer { padding-block: 2.5rem; border-top: 1px solid #1C1C25; background: #0C0C0F; }
+  footer { padding-block: 2.5rem; border-top: 1px solid #E4E6EB; background: #F4F5F7; }
   footer .container { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-  footer img { display: block; width: auto; height: 2rem; }
+  footer img { display: block; width: auto; height: 2rem; filter: invert(1); }
   footer .container > div { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
   footer a { color: #62626E; font-size: .8125rem; text-decoration: none; }
-  footer a:hover { color: #fff; }
+  footer a:hover { color: #0A0A0C; }
+
+  @media (min-width: 640px) {
+    .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
   @media (min-width: 900px) {
     .hero-grid { grid-template-columns: minmax(0,1fr) 450px; gap: 2.5rem; }
+    .pricing-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; }
+    .price-card.featured { order: 0; }
+    .price-card__head { min-height: 7.5rem; margin-bottom: 0; }
+    .process { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
     .included-layout { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 5rem; }
     .contact-layout { grid-template-columns: minmax(0,1fr) 480px; gap: 4rem; align-items: center; }
   }
 
-  @media (max-width: 850px) {
-    .pricing-grid { grid-template-columns: 1fr; max-width: 34rem; }
-    .price-card.featured { order: -1; }
-    .price-card__head { min-height: 0; margin-bottom: 1.5rem; padding-right: 6rem; }
-  }
-
   @media (max-width: 639px) {
     .hero-cta { width: 100%; }
-    .process, .field-grid { grid-template-columns: 1fr; }
-    .process { gap: 1.75rem; }
     footer .container { align-items: flex-start; flex-direction: column; }
   }
 </style>
@@ -438,6 +517,15 @@ const faqSchema = {
   const form = document.getElementById('lead-form') as HTMLFormElement | null;
   const submit = document.getElementById('lead-submit') as HTMLButtonElement | null;
   const error = document.getElementById('lead-error');
+  const params = new URLSearchParams(window.location.search);
+  const fillHidden = (name: string, value: string) => {
+    const field = form?.elements.namedItem(name) as HTMLInputElement | null;
+    if (field && !field.value && value) field.value = value.slice(0, 60);
+  };
+  fillHidden('stadt', params.get('stadt') ?? params.get('city') ?? '');
+  fillHidden('kampagne', params.get('utm_campaign') ?? params.get('kampagne') ?? '');
+  fillHidden('utm_source', params.get('utm_source') ?? '');
+  fillHidden('utm_medium', params.get('utm_medium') ?? '');
 
   const showError = (message: string) => {
     if (!error) return;

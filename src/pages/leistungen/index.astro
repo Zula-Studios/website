@@ -1,12 +1,17 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
+import { iso } from '@/data/visuals';
+import { SITE } from '@/config/site';
 
 const services = [
   {
     num: '01',
     title: 'Shopify Shop erstellen',
     desc: 'Von der Konzeption über das Custom Theme bis zum Launch. Performante Shops, die konvertieren.',
+    image: iso.shopify,
     href: '/leistungen/shopify-shop-erstellen',
     cta: 'Shop erstellen lassen',
     features: ['Custom Theme Entwicklung', 'Mobile-first Design', 'SEO-Volloptimierung', 'Zahlungsanbieter-Integration', 'Performance-Optimierung'],
@@ -15,6 +20,7 @@ const services = [
     num: '02',
     title: 'Shopify Migration',
     desc: 'Sicher & datenverlustfrei von WooCommerce, Magento, OXID, Shopware und anderen Systemen zu Shopify.',
+    image: iso.migration,
     href: '/leistungen/shopify-migration',
     cta: 'Migration starten',
     features: ['Datenmigration (Produkte, Kunden, Bestellungen)', 'SEO URL-Redirects', 'Zero-Downtime Ansatz', 'QA & Testing', 'Post-Launch Support'],
@@ -23,6 +29,7 @@ const services = [
     num: '03',
     title: 'WordPress zu Astro Migration',
     desc: 'WordPress-Website zu blitzschnellem Astro-Frontend mit Headless CMS — inklusive Content-Übernahme, SEO-Redirects und Redaktions-Workflow.',
+    image: iso.astro,
     href: '/leistungen/wordpress-astro-migration',
     cta: 'Migration anfragen',
     features: ['Astro.js Frontend', 'Headless CMS (Sanity, Strapi & Co.)', 'Content- & Medienmigration', '301-Redirects & SEO', 'Core Web Vitals Optimierung', 'Redaktions-Schulung'],
@@ -31,6 +38,7 @@ const services = [
     num: '04',
     title: 'Landingpages',
     desc: 'Conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und perfekt für Ads, Produkt-Launches und Lead-Kampagnen.',
+    image: iso.landing,
     href: '/leistungen/landingpages',
     cta: 'Landingpage anfragen',
     features: ['Astro.js Performance', 'Conversion-Design', 'Formulare & Lead-Capture', 'GA4 & Meta Pixel', 'Core Web Vitals optimiert', 'Launch in 2–3 Wochen'],
@@ -39,6 +47,7 @@ const services = [
     num: '05',
     title: 'Astro Websites',
     desc: 'Unternehmenswebsites und Marketing-Sites mit Astro.js — schnell, SEO-stark, optional mit Headless CMS für Ihr Redaktionsteam.',
+    image: iso.astro,
     href: '/leistungen/astro-websites',
     cta: 'Website anfragen',
     features: ['5–15+ Seiten', 'Design System & Komponenten', 'Blog & Referenzen', 'Headless CMS optional', 'Core Web Vitals & SEO', 'Shopify-Anbindung möglich'],
@@ -47,41 +56,58 @@ const services = [
     num: '06',
     title: 'Individuelle Entwicklung',
     desc: 'Custom Apps, Liquid-Entwicklung und API-Integrationen — mit Astro.js, Next.js und Laravel dort, wo es technisch Sinn macht. Maßgeschneidert, wenn Standard nicht ausreicht.',
+    image: iso.laravel,
     href: '/leistungen/individuelle-entwicklung',
     cta: 'Projekt besprechen',
     features: ['Custom Shopify Apps', 'Frontends: Astro.js & Next.js', 'Backends & APIs: Laravel', 'ERP / PIM / WMS Integration', 'Headless Commerce', 'Performance-Audits'],
   },
 ];
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Leistungen – Zula Studios Hamburg',
+  description:
+    'Shopify, Astro-Websites, Migrationen, Landingpages und individuelle Webentwicklung aus Hamburg.',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.title,
+    url: `${SITE.url}${s.href}`,
+    description: s.desc,
+  })),
+};
 ---
 
 <BaseLayout
-  title="Leistungen"
-  description="Shopify Shops, Astro Landingpages, WordPress-Migrationen und individuelle Entwicklung — Zula Studios ist Ihr Partner für E-Commerce und moderne Webprojekte."
+  title="Leistungen: Shopify, Astro & Webentwicklung Hamburg"
+  description="Shopify Agentur in Hamburg: Shops, Migrationen, Astro-Websites, Landingpages & Custom Code — bundesweit remote. Jetzt kostenloses Erstgespräch vereinbaren."
+  schema={itemListSchema}
+  darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Leistungen', url: '/leistungen' }]}
 >
-  <!-- Header -->
-  <section class="py-20 lg:py-28 bg-[#FAFAF8] border-b border-[#EBEBEF]">
-    <div class="container">
-      <nav class="flex items-center gap-2 text-xs text-[#AEAEB5] mb-10 flex-wrap">
-        <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
-        <span class="text-[#0C0C0F] font-medium">Leistungen</span>
-      </nav>
-      <SectionLabel tone="blue" class="mb-4">Unsere Leistungen</SectionLabel>
-      <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-5 max-w-2xl" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
-        Shopify & Astro — Expertise für ambitionierte Unternehmen
-      </h1>
-      <p class="text-[#62626E] text-lg max-w-xl leading-relaxed">
-        Über 100 Projekte. Tiefe Shopify-Expertise. Ergebnisorientiertes Arbeiten.
-      </p>
+  <DarkHero
+    title="Leistungen"
+    accent="aus einer Hand."
+    image="/images/heroes/hero-services.png"
+    imageWidth={760}
+    imageHeight={700}
+    seo="Leistungen: Shopify, Astro und Webentwicklung in Hamburg. "
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen' }]}
+  >
+    <p>Shopify-Shops, Migrationen, Astro-Websites und individuelle Entwicklung — für Unternehmen in Hamburg und bundesweit remote.</p>
+    <div class="hero-actions">
+      <a href="/projekt-starten" class="btn btn-primary text-[13px] uppercase tracking-[0.05em]">Projekt anfragen</a>
     </div>
-  </section>
+  </DarkHero>
 
   <!-- Services -->
   <section class="py-20 lg:py-24 bg-white">
     <div class="container space-y-0 border-t border-[#EBEBEF]">
       {services.map((s, i) => (
-        <div class="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-8 lg:gap-16 py-14 border-b border-[#EBEBEF] items-start group" data-reveal>
-          <span class="text-xs font-bold text-[#D4D4D9] tabular-nums pt-1">{s.num}</span>
+        <div class="grid grid-cols-1 lg:grid-cols-[auto_auto_1fr_auto] gap-6 lg:gap-12 py-10 lg:py-14 border-b border-[#EBEBEF] items-start group" data-reveal>
+          <IsoIcon src={s.image} />
+          <span class="text-xs font-bold text-[#00F573] tabular-nums pt-1">{s.num}</span>
           <div>
             <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-3">{s.title}</h2>
             <p class="text-[#62626E] text-base leading-relaxed mb-6 max-w-xl">{s.desc}</p>
@@ -108,11 +134,11 @@ const services = [
   </section>
 
   <!-- CTA -->
-  <section class="py-20 bg-[#0C0C0F] relative overflow-hidden cta-glow">
+  <section class="py-20 lg:py-28 bg-[#F4F5F7] border-t border-[#E4E6EB]">
     <div class="container relative z-10 text-center max-w-xl mx-auto" data-reveal>
-      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl mb-4">Welche Leistung passt zu Ihnen?</h2>
+      <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em] text-3xl mb-4">Welche Leistung passt zu Ihnen?</h2>
       <p class="text-[#62626E] mb-8">Im kostenlosen Erstgespräch finden wir gemeinsam die optimale Lösung.</p>
-      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 rounded-xl font-semibold text-[15px]">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[14px] uppercase tracking-[0.06em]">
         Kostenloses Beratungsgespräch
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

@@ -32,62 +32,55 @@ const { darkHero = false, ...props } = Astro.props;
     <link rel="shortcut icon" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0C0C0F" />
+    <meta name="theme-color" content="#F4F5F7" />
 
-    <!-- ── Font resource hints (non-blocking) ────────────────────────────────
-         dns-prefetch is the fallback for browsers that don't support preconnect.
-         preconnect initiates the TLS handshake to Google's servers early so the
-         font request fires immediately without a cold DNS+TCP+TLS round-trip.
-    ──────────────────────────────────────────────────────────────────────── -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- ── Async font loading (loadCSS technique) ────────────────────────────
-         Using rel="preload" with onload avoids render-blocking font CSS.
-         Only the weights actually used in the design are requested.
-         font-display:swap is included via the &display=swap parameter.
-         <noscript> ensures the font still loads when JS is disabled.
-    ──────────────────────────────────────────────────────────────────────── -->
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       />
     </noscript>
     <SEO {...props} />
     <style is:global>
-      /* ── Design Tokens ── */
+      /* ── Design Tokens — DM-inspired agency system ── */
       :root {
-        --ink: #0C0C0F;
+        --ink: #0A0A0C;
+        --ink-navy: #1D273D;
         --ink-muted: #62626E;
         --ink-subtle: #AEAEB5;
-        --surface-warm: #FAFAF8;
-        --border: #EBEBEF;
-        --accent: #0284C7;
-        --accent-light: #F0F9FF;
+        --surface-warm: #F4F5F7;
+        --border: #E4E6EB;
+        --accent: #00F573;
+        --accent-hover: #00C45C;
+        --accent-ink: #1D273D;
+        --accent-light: #ECFFF4;
         --contrast-violet: #7C3AED;
-        --contrast-emerald: #059669;
+        --contrast-emerald: #00F573;
         --contrast-coral: #EA580C;
         --contrast-amber: #D97706;
         --radius: 0.75rem;
+        --radius-pill: 9999px;
         --transition: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
       /* ── Base ── */
       *, *::before, *::after { box-sizing: border-box; }
 
-      html { font-feature-settings: 'cv11' on, 'ss01' on, 'cv01' on, 'cv08' on; }
+      html { font-feature-settings: 'ss01' on; }
 
       body {
-        font-family: 'Inter', system-ui, sans-serif;
+        font-family: 'Outfit', system-ui, sans-serif;
         color: var(--ink);
         background: #ffffff;
         -webkit-font-smoothing: antialiased;
@@ -97,8 +90,8 @@ const { darkHero = false, ...props } = Astro.props;
 
       /* ── Selection ── */
       ::selection {
-        background: #BAE6FD;
-        color: #0C4A6E;
+        background: #00F573;
+        color: #1D273D;
       }
 
       /* ── Scrollbar ── */
@@ -142,55 +135,108 @@ const { darkHero = false, ...props } = Astro.props;
       .section-label {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.75rem;
+        max-width: 100%;
         font-size: 0.6875rem;
         font-weight: 600;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.12em;
         text-transform: uppercase;
+        text-wrap: balance;
+        text-align: center;
       }
-      .section-label::before {
+      @media (min-width: 640px) {
+        .section-label { letter-spacing: 0.18em; }
+      }
+      .section-label::before,
+      .section-label::after {
         content: '';
         width: 1.25rem;
         height: 1px;
         flex-shrink: 0;
         opacity: 0.65;
+        background: currentColor;
       }
-      .section-label--blue { color: #0284C7; }
-      .section-label--blue::before { background: #0284C7; }
-      .section-label--violet { color: #7C3AED; }
-      .section-label--violet::before { background: #7C3AED; }
-      .section-label--emerald { color: #059669; }
-      .section-label--emerald::before { background: #059669; }
-      .section-label--coral { color: #EA580C; }
-      .section-label--coral::before { background: #EA580C; }
-      .section-label--amber { color: #D97706; }
-      .section-label--amber::before { background: #D97706; }
+      .section-label--blue,
+      .section-label--violet,
+      .section-label--emerald,
+      .section-label--coral,
+      .section-label--amber { color: #00C45C; }
 
-      /* ── Subtle ambient glows ── */
+      .chip-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.625rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      @media (min-width: 480px) {
+        .chip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (min-width: 1024px) {
+        .chip-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+      .chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 3rem;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.75rem;
+        border: 1px solid #EBEBEF;
+        background: #FAFAF8;
+        color: #44444F;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.3;
+        text-align: center;
+      }
+      .chip--accent {
+        border-color: #C6F9D8;
+        background: #ECFFF4;
+        color: #00C45C;
+      }
+
+      /* ── Ambient orbs (DM-style) ── */
       .hero-glow::before,
       .hero-glow::after,
       .cta-glow::before {
         content: '';
         position: absolute;
         pointer-events: none;
+        border-radius: 50%;
+        filter: blur(2px);
       }
       .hero-glow::before {
-        top: 0;
-        right: 0;
-        width: min(500px, 70vw);
-        height: min(500px, 70vw);
-        background: radial-gradient(circle at 75% 20%, rgba(56,189,248,0.11), transparent 62%);
+        top: -8%;
+        right: -5%;
+        width: min(520px, 72vw);
+        height: min(520px, 72vw);
+        background: radial-gradient(circle, rgba(0,245,115,0.28) 0%, rgba(0,245,115,0.06) 45%, transparent 70%);
+        animation: orbFloat 14s ease-in-out infinite;
       }
       .hero-glow::after {
-        bottom: 0;
-        left: 0;
-        width: min(360px, 55vw);
-        height: min(360px, 55vw);
-        background: radial-gradient(circle at 20% 80%, rgba(124,58,237,0.07), transparent 65%);
+        bottom: -10%;
+        left: -8%;
+        width: min(420px, 60vw);
+        height: min(420px, 60vw);
+        background: radial-gradient(circle, rgba(0,196,92,0.18) 0%, transparent 68%);
+        animation: orbFloat 18s ease-in-out infinite reverse;
       }
       .cta-glow::before {
-        inset: 0;
-        background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.14), transparent 58%);
+        inset: auto;
+        bottom: -20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(700px, 90vw);
+        height: min(400px, 50vw);
+        background: radial-gradient(ellipse, rgba(0,245,115,0.22), transparent 70%);
+        filter: blur(0);
+      }
+      @keyframes orbFloat {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        50% { transform: translate(-18px, 22px) scale(1.05); }
       }
 
       /* ── Icon chips & stat accents ── */
@@ -203,11 +249,11 @@ const { darkHero = false, ...props } = Astro.props;
         justify-content: center;
         border: 1px solid transparent;
       }
-      .icon-chip--blue { background: #F0F9FF; border-color: #E0F2FE; color: #0284C7; }
-      .icon-chip--violet { background: #F5F3FF; border-color: #EDE9FE; color: #7C3AED; }
-      .icon-chip--emerald { background: #ECFDF5; border-color: #D1FAE5; color: #059669; }
-      .icon-chip--coral { background: #FFF7ED; border-color: #FFEDD5; color: #EA580C; }
-      .icon-chip--amber { background: #FFFBEB; border-color: #FEF3C7; color: #D97706; }
+      .icon-chip--blue { background: #ECFFF4; border-color: #B3FDD2; color: #00994D; }
+      .icon-chip--violet { background: #ECFFF4; border-color: #B3FDD2; color: #00994D; }
+      .icon-chip--emerald { background: #ECFFF4; border-color: #B3FDD2; color: #00994D; }
+      .icon-chip--coral { background: #ECFFF4; border-color: #B3FDD2; color: #00994D; }
+      .icon-chip--amber { background: #ECFFF4; border-color: #B3FDD2; color: #00994D; }
 
       .stat-accent {
         position: relative;
@@ -220,12 +266,12 @@ const { darkHero = false, ...props } = Astro.props;
         left: 0;
         right: 0;
         height: 2px;
-        opacity: 0.55;
+        opacity: 0.75;
       }
-      .stat-accent--blue::before { background: #0EA5E9; }
-      .stat-accent--violet::before { background: #8B5CF6; }
-      .stat-accent--emerald::before { background: #10B981; }
-      .stat-accent--amber::before { background: #F59E0B; }
+      .stat-accent--blue::before { background: #00F573; }
+      .stat-accent--violet::before { background: #00F573; }
+      .stat-accent--emerald::before { background: #00F573; }
+      .stat-accent--amber::before { background: #00F573; }
 
       /* ── Scroll Progress Bar ── */
       #scroll-progress {
@@ -234,7 +280,7 @@ const { darkHero = false, ...props } = Astro.props;
         left: 0;
         height: 2px;
         width: 0%;
-        background: linear-gradient(90deg, #0284C7 0%, #7C3AED 50%, #059669 100%);
+        background: linear-gradient(90deg, #00F573 0%, #00C45C 100%);
         z-index: 9999;
         transition: width 80ms linear;
         pointer-events: none;
@@ -279,46 +325,51 @@ const { darkHero = false, ...props } = Astro.props;
       details > summary { list-style: none; cursor: pointer; }
       details > summary::-webkit-details-marker { display: none; }
 
-      /* ── Button base ── */
+      /* ── Buttons — pill CTAs like agency reference ── */
       .btn {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.5rem;
         font-size: 0.875rem;
-        font-weight: 600;
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.625rem;
-        transition: all 0.15s ease;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        padding: 0.8rem 1.6rem;
+        border-radius: var(--radius-pill);
+        transition: all 0.18s var(--transition);
         cursor: pointer;
-        white-space: nowrap;
+        white-space: normal;
+        text-align: center;
         text-decoration: none;
+        border: none;
       }
       .btn:active { transform: scale(0.97); }
       .btn-primary {
-        background: var(--ink);
-        color: #ffffff;
+        background: var(--accent);
+        color: var(--accent-ink);
       }
-      .btn-primary:hover { background: #1C1C25; }
+      .btn-primary:hover { background: #3FF98F; color: var(--accent-ink); }
       .btn-ghost {
         background: transparent;
-        color: rgba(255,255,255,0.75);
-        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.85);
+        border: 1.5px solid rgba(255,255,255,0.28);
       }
       .btn-ghost:hover {
         background: rgba(255,255,255,0.08);
         color: #ffffff;
+        border-color: rgba(255,255,255,0.5);
       }
       .btn-outline {
         background: transparent;
         color: var(--ink);
         border: 1.5px solid var(--border);
       }
-      .btn-outline:hover { border-color: #D4D4D9; background: var(--surface-warm); }
+      .btn-outline:hover { border-color: var(--accent); background: var(--accent-light); }
       .btn-accent {
         background: var(--accent);
-        color: #ffffff;
+        color: var(--accent-ink);
       }
-      .btn-accent:hover { background: #0369A1; }
+      .btn-accent:hover { background: #3FF98F; }
     </style>
   </head>
   <body data-hero={darkHero ? 'dark' : 'light'}>
@@ -352,21 +403,7 @@ const { darkHero = false, ...props } = Astro.props;
       );
       document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 
-      // ── Header scroll behavior ──
-      const header = document.getElementById('site-header');
-      const heroDark = document.body.dataset.hero === 'dark';
-
-      function updateHeader() {
-        if (!header) return;
-        const scrolled = window.scrollY > 60;
-        header.classList.toggle('header-scrolled', scrolled);
-        if (heroDark) {
-          header.classList.toggle('header-on-dark', !scrolled);
-        }
-      }
-
-      window.addEventListener('scroll', updateHeader, { passive: true });
-      updateHeader();
+      // Header scroll is handled in Header.astro
     </script>
   </body>
 </html>

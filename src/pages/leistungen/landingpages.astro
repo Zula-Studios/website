@@ -1,18 +1,19 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
+import { serviceSchema, faqPageSchema } from '@/lib/schema';
+import { projekte } from '@/data/projekte';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
+import { iso, processIcons } from '@/data/visuals';
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Landingpages mit Astro',
-  description:
-    'Conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und perfekt für Ads, Launches und Lead-Kampagnen.',
-  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-  serviceType: 'Web Design & Development',
-  areaServed: { '@type': 'Country', name: 'Germany' },
-};
+const pageUrl = `${SITE.url}/leistungen/landingpages`;
+
+const caseTeasers = [...projekte]
+  .filter(p => p.techStack.some(t => t.includes('Astro')) && (p.tags.includes('Leadgenerierung') || p.tags.includes('Conversion')))
+  .sort((a, b) => Number(b.featured) - Number(a.featured))
+  .slice(0, 2);
 
 const useCases = [
   'Produkt-Launches', 'Google & Meta Ads', 'Lead-Generierung', 'Event-Anmeldungen',
@@ -35,18 +36,48 @@ const steps = [
 ];
 
 const benefits = [
-  { title: 'Blitzschnell', desc: 'Astro liefert statische Seiten mit Top-Ladezeiten — besser für Ads und Conversion.', chip: 'icon-chip--blue' },
-  { title: 'Conversion-fokussiert', desc: 'Klare Struktur, starke CTAs und Social Proof — keine Ablenkung.', chip: 'icon-chip--coral' },
-  { title: 'Kampagnen-ready', desc: 'Tracking, UTM-fähig und optimiert für Google Ads & Meta.', chip: 'icon-chip--violet' },
-  { title: 'Wiederverwendbar', desc: 'Komponenten-Bibliothek für künftige Kampagnen und Varianten.', chip: 'icon-chip--emerald' },
+  { icon: iso.launch, title: 'Blitzschnell', desc: 'Astro liefert statische Seiten mit Top-Ladezeiten — besser für Ads und Conversion.' },
+  { icon: iso.target, title: 'Conversion-fokussiert', desc: 'Klare Struktur, starke CTAs und Social Proof — keine Ablenkung.' },
+  { icon: iso.chart, title: 'Kampagnen-ready', desc: 'Tracking, UTM-fähig und optimiert für Google Ads & Meta.' },
+  { icon: iso.style, title: 'Wiederverwendbar', desc: 'Komponenten-Bibliothek für künftige Kampagnen und Varianten.' },
+];
+
+const faqs = [
+  {
+    q: 'Wie schnell ist eine Landingpage live?',
+    a: 'Typischerweise in 2–3 Wochen — ab Briefing bis Go-Live. Express-Sprints sind nach Absprache möglich.',
+  },
+  {
+    q: 'Kann ich mehrere Varianten für A/B-Tests bekommen?',
+    a: 'Ja. Wir bauen Varianten als Astro-Komponenten — z. B. unterschiedliche Headlines oder CTAs — und unterstützen beim Tracking.',
+  },
+  {
+    q: 'Wird Tracking für Google Ads und Meta eingerichtet?',
+    a: 'Ja — GA4, Meta Pixel und Conversion-Events gehören zum Standard. CRM-Anbindung (HubSpot, Pipedrive etc.) ist optional.',
+  },
+  {
+    q: 'Brauche ich WordPress oder ein CMS?',
+    a: 'Für reine Kampagnen-Landingpages meist nicht. Inhalte pflegen wir gemeinsam im Projekt — oder wir binden ein schlankes Headless CMS an, wenn Sie häufiger ändern möchten.',
+  },
+];
+
+const schemas = [
+  serviceSchema({
+    name: 'Landingpages mit Astro',
+    description:
+      'Conversion-starke Astro-Landingpages aus Hamburg — schnell, ads-ready, mit Tracking und Formularen. Bundesweit remote.',
+    serviceType: 'Landing Page Development',
+    url: pageUrl,
+  }),
+  faqPageSchema(faqs),
 ];
 ---
 
 <BaseLayout
-  title="Landingpages mit Astro – Schnell, conversion-stark & ads-ready"
-  description="Professionelle Landingpages mit Astro.js: schnell, mobil optimiert, tracking-fertig. Ideal für Ads, Produkt-Launches und Lead-Kampagnen. Jetzt anfragen."
-  schema={serviceSchema}
-  darkHero={true}
+  title="Landingpages Hamburg – Astro, schnell & conversion-stark"
+  description="Landingpages aus Hamburg mit Astro.js: schnell, ads-ready, GA4 & Meta Pixel inklusive. Web Agentur für HH & remote. Jetzt Landingpage anfragen."
+  schema={schemas}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Leistungen', url: '/leistungen' },
@@ -54,41 +85,28 @@ const benefits = [
   ]}
 >
 
-  <!-- HERO -->
-  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
-    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+  <DarkHero
+    title="Landingpages,"
+    accent="die konvertieren."
+    image="/images/heroes/hero-landing.png"
+    imageWidth={638}
+    imageHeight={766}
+    seo="Landingpages erstellen in Hamburg — "
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen', href: '/leistungen' }, { label: 'Landingpages' }]}
+  >
+    <p>Wir bauen conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und passend für Ads, Launches und Lead-Kampagnen.</p>
+    <div class="hero-actions">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Landingpage anfragen</a>
+      <a href="#prozess" class="btn btn-ghost py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Prozess ansehen</a>
+    </div>
+  </DarkHero>
 
-    <div class="container relative z-10">
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
-        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
-        <span class="text-[#AEAEB5]">Landingpages</span>
-      </nav>
-
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
-          <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-          Astro Landingpages
-        </div>
-        <h1
-          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
-          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
-        >
-          Landingpages,<br/>
-          <span class="font-light italic text-white/55">die in Sekunden</span><br/>
-          überzeugen.
-        </h1>
-        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
-          Wir bauen conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und perfekt für Ads, Launches und Lead-Kampagnen.
-        </p>
-        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
-          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
-            Landingpage anfragen
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <a href="#prozess" class="btn btn-ghost py-3.5 px-7 text-[15px]">Prozess ansehen</a>
-        </div>
-      </div>
+  <!-- GEO -->
+  <section class="py-12 lg:py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container max-w-3xl">
+      <p class="text-[#62626E] text-base lg:text-lg leading-relaxed" data-reveal>
+        <strong class="text-[#0C0C0F] font-semibold">Web Agentur in Hamburg, bundesweit remote:</strong> Wir bauen Astro-Landingpages für Kampagnen in der Metropolregion und für Teams in ganz Deutschland — mit Top Core Web Vitals, sauberem Tracking und klaren Conversion-Zielen.
+      </p>
     </div>
   </section>
 
@@ -98,13 +116,11 @@ const benefits = [
       <div class="flex justify-center mb-6">
         <SectionLabel tone="coral">Ideal für</SectionLabel>
       </div>
-      <div class="flex flex-wrap gap-2.5 justify-center">
+      <ul class="chip-grid">
         {useCases.map(s => (
-          <div class="flex items-center gap-2 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-2.5 text-sm font-medium text-[#44444F]">
-            {s}
-          </div>
+          <li class="chip">{s}</li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -112,7 +128,7 @@ const benefits = [
   <section class="py-20 lg:py-24 bg-[#FAFAF8]">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <SectionLabel tone="blue" class="mb-3">Warum Astro?</SectionLabel>
+        <SectionLabel tone="emerald" class="mb-3">Warum Astro?</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
           Schnell laden, schnell konvertieren
         </h2>
@@ -120,11 +136,7 @@ const benefits = [
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {benefits.map((b, i) => (
           <div class="p-6 bg-white rounded-2xl border border-[#EBEBEF]" data-reveal data-delay={String(i + 1)}>
-            <div class={`icon-chip ${b.chip} mb-4`}>
-              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M4 10l4 4 8-8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
+            <div class="mb-4"><IsoIcon src={b.icon} /></div>
             <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{b.title}</h3>
             <p class="text-[#88888F] text-sm leading-relaxed">{b.desc}</p>
           </div>
@@ -137,12 +149,12 @@ const benefits = [
   <section class="py-20 lg:py-24 bg-white">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <SectionLabel tone="violet" class="mb-3">Im Paket enthalten</SectionLabel>
+        <SectionLabel tone="emerald" class="mb-3">Im Paket enthalten</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
           Alles für einen erfolgreichen Launch
         </h2>
       </div>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-3">
         {included.map((item, i) => (
           <div class="flex items-center gap-3 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 4) + 1)}>
             <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 shrink-0">
@@ -170,7 +182,8 @@ const benefits = [
         </div>
         <div class="space-y-0 border-t border-[#EBEBEF] bg-white rounded-2xl px-6 lg:px-8">
           {steps.map((step, i) => (
-            <div class="flex gap-7 py-6 border-b border-[#EBEBEF] last:border-0" data-reveal data-delay={String((i % 3) + 1)}>
+            <div class="flex gap-4 sm:gap-6 py-6 border-b border-[#EBEBEF] last:border-0" data-reveal data-delay={String((i % 3) + 1)}>
+              <IsoIcon src={processIcons[i]} size="sm" />
               <span class="text-xs font-bold text-accent-500 tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
               <div>
                 <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
@@ -183,29 +196,54 @@ const benefits = [
     </div>
   </section>
 
+  <!-- CASES -->
+  {caseTeasers.length > 0 && (
+    <section class="py-20 lg:py-24 bg-[#F4F5F7]">
+      <div class="container">
+        <div class="mb-10 lg:mb-12" data-reveal>
+          <SectionLabel tone="emerald" class="mb-3">Referenzen</SectionLabel>
+          <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Landingpages & Lead-Funnels in Aktion
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+          {caseTeasers.map((p, i) => (
+            <a
+              href={`/referenzen/${p.slug}`}
+              class="group flex flex-col rounded-2xl overflow-hidden border border-[#E4E6EB] bg-[#F4F5F7] hover:border-[#00F573]/50 transition-all min-h-[220px]"
+              data-reveal
+              data-delay={String(i + 1)}
+            >
+              <div class="flex-1 p-6 lg:p-7 flex flex-col">
+                <p class="text-[11px] font-bold uppercase tracking-[0.12em] text-[#00C45C] mb-3">
+                  {p.service} · {p.jahr}
+                </p>
+                <h3 class="font-bold text-[#0A0A0C] text-xl tracking-[-0.02em] mb-2 group-hover:text-[#00C45C] transition-colors">
+                  {p.client}
+                </h3>
+                <p class="text-[#62626E] text-[14px] leading-snug max-w-sm mb-auto line-clamp-2">
+                  {p.tagline}
+                </p>
+              </div>
+              <div class="flex items-center justify-between px-6 lg:px-7 py-3.5 bg-[#00F573] text-[#1D273D]">
+                <span class="text-[12px] font-extrabold uppercase tracking-[0.14em]">Ansehen</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
   <!-- FAQ -->
   <section class="py-20 bg-white">
     <div class="container max-w-2xl">
       <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
       <div class="space-y-2">
-        {[
-          {
-            q: 'Wie schnell ist eine Landingpage live?',
-            a: 'Typischerweise in 2–3 Wochen — ab Briefing bis Go-Live. Express-Sprints sind nach Absprache möglich.',
-          },
-          {
-            q: 'Kann ich mehrere Varianten für A/B-Tests bekommen?',
-            a: 'Ja. Wir bauen Varianten als Astro-Komponenten — z. B. unterschiedliche Headlines oder CTAs — und unterstützen beim Tracking.',
-          },
-          {
-            q: 'Wird Tracking für Google Ads und Meta eingerichtet?',
-            a: 'Ja — GA4, Meta Pixel und Conversion-Events gehören zum Standard. CRM-Anbindung (HubSpot, Pipedrive etc.) ist optional.',
-          },
-          {
-            q: 'Brauche ich WordPress oder ein CMS?',
-            a: 'Für reine Kampagnen-Landingpages meist nicht. Inhalte pflegen wir gemeinsam im Projekt — oder wir binden ein schlankes Headless CMS an, wenn Sie häufiger ändern möchten.',
-          },
-        ].map(item => (
+        {faqs.map(item => (
           <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
             <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
               {item.q}
@@ -221,13 +259,13 @@ const benefits = [
   </section>
 
   <!-- CTA -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 border-t border-[#E4E6EB]">
     <div class="container relative z-10 text-center max-w-xl mx-auto">
-      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Kampagne geplant?</h2>
-      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">
+      <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Kampagne geplant?</h2>
+      <p class="text-[#62626E] mb-8" data-reveal data-delay="1">
         Erzählen Sie uns von Ihrem Projekt — wir melden uns mit einem konkreten Vorschlag.
       </p>
-      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[14px] uppercase tracking-[0.06em]" data-reveal data-delay="2">
         Landingpage anfragen
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

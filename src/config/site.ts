@@ -1,25 +1,31 @@
 export const SITE = {
   name: 'Zula Studios',
   // ≤ 60 chars total when used in default title: "Zula Studios – {tagline}"
-  tagline: 'Shopify Studio Hamburg',
+  tagline: 'Shopify Agentur Hamburg',
   description:
-    'Professionelle Shopify-Entwicklung in Hamburg: Shops erstellen, Migrationen & Custom Apps mit Laravel, Next.js & Astro. 10+ Projekte. Kostenloses Erstgespräch.',
+    'Shopify Agentur in Hamburg: Shops, Migrationen, Astro-Websites und Laravel-Entwicklung. 10+ Projekte. Kostenloses Erstgespräch für Unternehmen in HH & DE.',
   url: 'https://zulastudios.de',
   email: 'hello@zulastudios.com',
   phone: '+49 (0) 176 34 44 74 85',
   twitterHandle: '@zulastudios',
   address: {
     street: 'Ostpreußenstrasse 6',
-    city: 'Henstedt-Ulzburg',
-    zip: '24558',
+    city: 'Hamburg',
+    zip: '20095',
     country: 'DE',
     countryName: 'Deutschland',
+  },
+  geo: {
+    latitude: 53.5511,
+    longitude: 9.9937,
   },
   social: {
     linkedin: 'https://www.linkedin.com/company/zulastudios/',
     github: 'https://github.com/Zula-Studios',
+    instagram: 'https://www.instagram.com/zula_studios/',
+    facebook: 'https://www.facebook.com/profile.php?id=61595344593815',
   },
-  githubRepo: 'https://github.com/Zula-Studios/website',
+  githubRepo: 'https://github.com/Zula-Studios',
   // Cal-Link für die Terminbuchung (cal.eu-Instanz): Pfad + Origin getrennt,
   // da das Inline-Embed beides braucht. Buchungs-URL: `${calcomOrigin}/${calcom}`
   calcom: 'zula-studios/30min',
@@ -32,6 +38,7 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
+  { label: 'Referenzen', href: '/referenzen' },
   { label: 'Leistungen', href: '/leistungen' },
   {
     label: 'Services',
@@ -45,7 +52,6 @@ export const NAV_LINKS = [
       { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung' },
     ],
   },
-  { label: 'Blog', href: '/blog' },
   { label: 'Über uns', href: '/ueber-uns' },
   { label: 'Karriere', href: '/karriere' },
   { label: 'Kontakt', href: '/kontakt' },

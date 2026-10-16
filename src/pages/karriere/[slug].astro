@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
-import Icon from '@/components/Icon.astro';
 import { careerJobs, CAREERS_DATE_POSTED, CAREERS_VALID_THROUGH } from '@/data/careers';
 
 export const prerender = true;
@@ -69,6 +68,7 @@ const schema = [
   title={`${job.title} – Karriere`}
   {description}
   schema={schema}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Karriere', url: '/karriere' },
@@ -77,23 +77,23 @@ const schema = [
 >
   <article class="bg-white">
     <!-- Page header -->
-    <header class="border-b border-[#EBEBEF] bg-[#FAFAF8]">
-      <div class="container pt-12 pb-12 sm:pt-14 sm:pb-14 lg:pt-20 lg:pb-16">
-        <nav class="flex flex-wrap items-center gap-2 text-xs text-[#AEAEB5] mb-10 sm:mb-12 lg:mb-14">
-          <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a>
+    <header class="bg-[#0A0A0C] pt-20">
+      <div class="container pt-8 pb-12 sm:pt-10 sm:pb-14 lg:pt-12 lg:pb-16">
+        <nav class="flex flex-wrap items-center gap-2 text-xs text-white/45 mb-10 sm:mb-12 lg:mb-14">
+          <a href="/" class="hover:text-white transition-colors">Startseite</a>
           <span>/</span>
-          <a href="/karriere" class="hover:text-[#0C0C0F] transition-colors">Karriere</a>
+          <a href="/karriere" class="hover:text-white transition-colors">Karriere</a>
           <span>/</span>
-          <span class="text-[#0C0C0F] font-medium truncate max-w-[min(100%,12rem)] sm:max-w-none">{job.cardTitle}</span>
+          <span class="text-white/80 font-medium truncate max-w-[min(100%,12rem)] sm:max-w-none">{job.cardTitle}</span>
         </nav>
 
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 lg:gap-14 xl:gap-16">
           <div class="max-w-3xl">
-            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent-600 mb-5 sm:mb-6">{job.tag}</p>
-            <h1 class="font-bold text-[#0C0C0F] tracking-[-0.035em] text-3xl sm:text-4xl lg:text-[2.65rem] leading-[1.08] mb-6 sm:mb-8">
+            <p class="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#00F573] mb-5 sm:mb-6">{job.tag}</p>
+            <h1 class="font-extrabold italic text-white tracking-[-0.035em] text-3xl sm:text-4xl lg:text-[2.65rem] leading-[1.08] mb-6 sm:mb-8">
               {job.title}
             </h1>
-            <p class="text-[#62626E] text-base lg:text-lg leading-relaxed">{job.intro}</p>
+            <p class="text-white/75 text-base lg:text-lg leading-relaxed">{job.intro}</p>
           </div>
 
           <aside class="w-full lg:w-[min(100%,320px)] shrink-0">
@@ -148,8 +148,16 @@ const schema = [
         <div class="min-w-0 space-y-14 lg:space-y-16">
           <section data-reveal>
             <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-6 flex items-center gap-3">
-              <span class="flex w-9 h-9 rounded-lg bg-[#0C0C0F] items-center justify-center">
-                <Icon name={job.iconName} size={18} class="text-white" strokeWidth={1.6} />
+              <span class="flex w-9 h-9 rounded-lg bg-[#F4F5F7] border border-[#E4E6EB] items-center justify-center">
+                <img
+                  src={job.iconName === 'shop' ? '/images/units/unit-shopify.jpg' : '/images/units/unit-laravel.jpg'}
+                  alt=""
+                  width="80"
+                  height="80"
+                  class="w-10 h-10 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               </span>
               Deine Aufgaben
             </h2>
@@ -192,11 +200,11 @@ const schema = [
 
           <section data-reveal data-delay="4">
             <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-6">Das bieten wir</h2>
-            <div class="rounded-2xl bg-[#F0F9FF] border border-[#BAE6FD] p-6 lg:p-8">
+            <div class="rounded-2xl bg-[#F4F5F7] border border-[#BAE6FD] p-6 lg:p-8">
               <ul class="space-y-4">
                 {job.weOffer.map((line) => (
                   <li class="flex gap-3 text-[#0C4A6E] leading-relaxed text-[15px]">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="text-[#0284C7] shrink-0 mt-0.5">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="text-[#00C45C] shrink-0 mt-0.5">
                       <path d="M4 9l4 4 6-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     {line}

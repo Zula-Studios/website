@@ -1,0 +1,94 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  accent: string;
+  image: string;
+  crumbs?: Crumb[];
+  seo?: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}
+
+const {
+  title,
+  accent,
+  image,
+  crumbs = [],
+  seo,
+  imageWidth = 800,
+  imageHeight = 800,
+} = Astro.props;
+---
+
+<section class="bg-[#0A0A0C] pt-24 lg:pt-28 overflow-hidden">
+  <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-center">
+    <div class="relative z-10 px-5 sm:px-8 lg:pl-[max(2.5rem,calc((100vw-1240px)/2+2.5rem))] lg:pr-10 py-12 lg:py-16">
+      {crumbs.length > 0 && (
+        <nav class="flex items-center gap-2 text-xs text-white/45 mb-8 flex-wrap" aria-label="Brotkrumen">
+          {crumbs.map((crumb, i) => (
+            <span class="contents">
+              {i > 0 && <span aria-hidden="true">/</span>}
+              {crumb.href ? (
+                <a href={crumb.href} class="hover:text-white transition-colors">{crumb.label}</a>
+              ) : (
+                <span class="text-white/80 font-medium">{crumb.label}</span>
+              )}
+            </span>
+          ))}
+        </nav>
+      )}
+      <h1
+        class="font-extrabold italic uppercase text-white tracking-[-0.035em]"
+        style="font-size: clamp(2.35rem, 5vw, 4.25rem); line-height: 0.92;"
+      >
+        {seo && <span class="sr-only">{seo}</span>}
+        {title}<br />
+        <span class="text-[#00F573]">{accent}</span>
+      </h1>
+      <div class="hero-copy mt-6 max-w-lg text-white/75 text-[15px] lg:text-base leading-relaxed">
+        <slot />
+      </div>
+    </div>
+    <div class="relative flex items-end justify-center lg:justify-end min-h-[220px] sm:min-h-[280px] lg:min-h-[440px] pointer-events-none px-6 lg:pr-8 lg:pl-0 pb-4 lg:pb-8">
+      <img
+        src={image}
+        alt=""
+        width={imageWidth}
+        height={imageHeight}
+        class="w-full max-w-[400px] h-auto object-contain"
+        decoding="async"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-copy :global(p) {
+    margin-bottom: 0;
+  }
+  .hero-copy :global(.hero-actions) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .hero-copy :global(.hero-actions .btn) {
+    width: 100%;
+  }
+  @media (min-width: 640px) {
+    .hero-copy :global(.hero-actions) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .hero-copy :global(.hero-actions .btn) {
+      width: auto;
+    }
+  }
+</style>

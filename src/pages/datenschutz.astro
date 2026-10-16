@@ -1,18 +1,25 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import DarkHero from '@/components/DarkHero.astro';
 import { SITE } from '@/config/site';
 ---
 
 <BaseLayout
   title="Datenschutzerklärung"
   description="Datenschutzerklärung von Zula Studios gemäß DSGVO."
-  noindex={true}
 >
-  <section class="py-20 lg:py-28 bg-white">
+  <DarkHero
+    title="Datenschutz"
+    accent="und DSGVO."
+    image="/images/heroes/hero-apply.png"
+    imageWidth={684}
+    imageHeight={776}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Datenschutz' }]}
+  >
+    <p>Stand: April 2026 · Gemäß DSGVO, TTDSG und TMG.</p>
+  </DarkHero>
+  <section class="py-16 lg:py-24 bg-white">
     <div class="container max-w-3xl">
-
-      <h1 class="font-bold text-[#0C0C0F] text-3xl lg:text-4xl tracking-[-0.03em] mb-2">Datenschutzerklärung</h1>
-      <p class="text-[#88888F] text-sm mb-12">Stand: April 2026 · Gemäß DSGVO, TTDSG und TMG</p>
 
       <div class="space-y-12 text-[#44444F] leading-relaxed text-[15px]">
 
@@ -21,9 +28,8 @@ import { SITE } from '@/config/site';
           <h2 class="text-[#0C0C0F] font-bold text-xl tracking-[-0.02em] mb-4">1. Verantwortlicher</h2>
           <p>
             Serdar Sahbazoglu – Zula Studios<br />
-            {SITE.address.street}<br />
-            {SITE.address.zip} {SITE.address.city}<br />
-            E-Mail: <a href={`mailto:${SITE.email}`} class="text-accent-600 hover:underline">{SITE.email}</a>
+            E-Mail: <a href={`mailto:${SITE.email}`} class="text-accent-600 hover:underline">{SITE.email}</a><br />
+            Anschrift: siehe <a href="/impressum" class="text-accent-600 hover:underline">Impressum</a>
           </p>
         </div>
 

@@ -27,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  const { name, firma, email, telefon, website, status, nachricht, datenschutz } = body;
+  const { name, firma, email, telefon, website, status, nachricht, datenschutz, stadt, kampagne, quelle, utm_source, utm_medium, paket } = body;
 
   if (!name || !firma || !email || !telefon || datenschutz !== 'true') {
     return new Response(JSON.stringify({ error: 'Pflichtfelder fehlen' }), {
@@ -53,10 +53,14 @@ export const POST: APIRoute = async ({ request }) => {
           ${row('Status', escapeHtmlText(STATUS_LABELS[status] ?? '—'))}
           ${row('Name', escapeHtmlText(name))}
           ${row('Salon', escapeHtmlText(firma))}
+          ${stadt ? row('Stadt', escapeHtmlText(stadt)) : ''}
           ${row('E-Mail', `<a href="mailto:${escapeHtmlText(email)}" style="color:#0284C7;text-decoration:none;">${escapeHtmlText(email)}</a>`)}
           ${row('Telefon', `<a href="tel:${escapeHtmlText(telefon.replace(/\s/g, ''))}" style="color:#0284C7;text-decoration:none;">${escapeHtmlText(telefon)}</a>`)}
           ${website ? row('Webseite', escapeHtmlText(website)) : ''}
+          ${paket ? row('Paket', escapeHtmlText(paket)) : ''}
           ${nachricht ? row('Nachricht', `<span style="white-space:pre-wrap;line-height:1.6;">${escapeHtmlText(nachricht)}</span>`) : ''}
+          ${quelle ? row('Quelle', escapeHtmlText(quelle)) : ''}
+          ${kampagne || utm_source || utm_medium ? row('Kampagne', escapeHtmlText([kampagne, utm_source, utm_medium].filter(Boolean).join(' · '))) : ''}
         </table>
       </div>
     </div>`;

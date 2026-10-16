@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
 import { getCollection } from 'astro:content';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
@@ -16,26 +17,22 @@ const rest = posts.filter(p => !p.data.featured);
   description="Praxisnahe Artikel zu Shopify-Entwicklung, Migrationen, SEO und E-Commerce-Strategie — vom Team der Zula Studios."
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Blog', url: '/blog' }]}
 >
-  <!-- Header -->
-  <section class="py-20 lg:py-28 bg-[#FAFAF8] border-b border-[#EBEBEF]">
-    <div class="container">
-      <nav class="flex items-center gap-2 text-xs text-[#AEAEB5] mb-10">
-        <a href="/" class="hover:text-[#0C0C0F] transition-colors">Startseite</a><span>/</span>
-        <span class="text-[#0C0C0F] font-medium">Blog</span>
-      </nav>
-      <SectionLabel tone="blue" class="mb-4">Blog</SectionLabel>
-      <h1 class="font-bold text-[#0C0C0F] tracking-[-0.04em] mb-4" style="font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95;">
-        Insights & Wissen
-      </h1>
-      <p class="text-[#62626E] text-lg max-w-xl">Praktische Artikel zu Shopify, E-Commerce-Strategie, SEO und Migrationen.</p>
-    </div>
-  </section>
+  <DarkHero
+    title="Insights"
+    accent="und Wissen."
+    image="/images/heroes/hero-blog.png"
+    imageWidth={866}
+    imageHeight={627}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Blog' }]}
+  >
+    <p>Praktische Artikel zu Shopify, E-Commerce-Strategie, SEO und Migrationen.</p>
+  </DarkHero>
 
   <!-- Featured posts -->
   {featured.length > 0 && (
     <section class="py-16 bg-white border-b border-[#EBEBEF]">
       <div class="container">
-        <SectionLabel tone="violet" class="mb-8">Empfohlene Artikel</SectionLabel>
+        <SectionLabel tone="emerald" class="mb-8">Empfohlene Artikel</SectionLabel>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           {featured.map((post, i) => (
             <a

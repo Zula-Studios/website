@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
 import { SITE } from '@/config/site';
-import { projekte, serviceBadge } from '@/data/projekte';
+import { projekte } from '@/data/projekte';
+import { iso } from '@/data/visuals';
 
 export const prerender = true;
 
@@ -11,304 +13,251 @@ export function getStaticPaths() {
 
 const { projekt: p } = Astro.props;
 
-// Next project (wrap around)
+const previewHost = p.url ? new URL(p.url).hostname.replace(/^www\./, '') : 'app.unfallpaten.de';
 const currentIndex = projekte.findIndex(x => x.slug === p.slug);
+const prevProjekt = projekte[(currentIndex - 1 + projekte.length) % projekte.length];
 const nextProjekt = projekte[(currentIndex + 1) % projekte.length];
 
-const schema = {
+const leadTech = p.techStack[0];
+const serviceNamesTech = p.service.toLowerCase().includes(leadTech.toLowerCase().split(' ')[0]);
+const pageTitle = serviceNamesTech
+  ? `${p.client} – ${p.service}`
+  : `${p.client} – ${leadTech}: ${p.service}`;
+const pageDescription = p.seoDescription;
+const pageUrl = `${SITE.url}/referenzen/${p.slug}`;
+const datePublished = `${p.jahr}-06-01`;
+
+const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
-  name: `Case Study: ${p.client}`,
-  description: p.tagline,
-  url: `${SITE.url}/referenzen/${p.slug}`,
-  author: { '@type': 'Organization', name: SITE.name },
-  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  '@id': `${pageUrl}#article`,
+  headline: `${p.client} – ${p.service}`,
+  description: p.seoDescription,
+  url: pageUrl,
+  datePublished,
+  dateModified: datePublished,
+  inLanguage: 'de-DE',
+  keywords: [...p.techStack, ...p.tags, 'Hamburg', SITE.name].join(', '),
+  author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  publisher: {
+    '@type': 'Organization',
+    name: SITE.name,
+    url: SITE.url,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: SITE.address.city,
+      addressCountry: SITE.address.country,
+    },
+  },
+  about: { '@type': 'Organization', name: p.client, ...(p.url ? { url: p.url } : {}) },
 };
 
-const badge = serviceBadge[p.serviceType];
+const techSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `Tech-Stack für ${p.client}`,
+  description: `${SITE.name} in ${SITE.address.city} hat ${p.client} mit ${p.techStack.join(', ')} umgesetzt.`,
+  numberOfItems: p.techDetails.length,
+  itemListElement: p.techDetails.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    description: item.text,
+  })),
+};
+
+const creativeWorkSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: `${p.service} für ${p.client}`,
+  description: p.seoDescription,
+  creator: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  dateCreated: p.jahr,
+  keywords: p.techStack,
+  inLanguage: 'de-DE',
+  locationCreated: {
+    '@type': 'Place',
+    name: SITE.address.city,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: SITE.address.city,
+      addressCountry: SITE.address.country,
+    },
+  },
+};
 ---
 
 <BaseLayout
-  title={`${p.client} – Case Study`}
-  description={p.tagline}
-  schema={schema}
-  darkHero={true}
+  title={pageTitle}
+  description={pageDescription}
+  schema={[articleSchema, creativeWorkSchema, techSchema]}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Referenzen', url: '/referenzen' },
     { name: p.client, url: `/referenzen/${p.slug}` },
   ]}
+  keywords={[...p.techStack, p.service, 'Hamburg', p.client]}
 >
 
-  <!-- ═══════════════════════════════════════
-       HERO — dark, full bleed
-  ═══════════════════════════════════════ -->
-  <section
-    class="relative min-h-[60vh] flex flex-col justify-end pb-16 pt-24 overflow-hidden"
-    style={`background: ${p.cardBg};`}
-  >
-    <!-- Monogram background -->
-    <div
-      class="absolute bottom-0 right-0 font-bold leading-none select-none pointer-events-none"
-      style={`font-size: clamp(14rem, 30vw, 26rem); letter-spacing: -0.05em; color: ${p.cardAccent}; opacity: 0.08; line-height: 0.85; transform: translate(5%, 5%);`}
-      aria-hidden="true"
-    >
-      {p.clientKurz}
-    </div>
-
-    <!-- Subtle grid -->
-    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 32px 32px;"></div>
-
-    <div class="container relative z-10">
-      <!-- Breadcrumb -->
-      <nav class="flex items-center gap-2 text-xs text-white/30 mb-12 flex-wrap">
+  <section class="bg-[#0A0A0C] pt-24 lg:pt-28">
+    <div class="container pt-8 pb-10 lg:pt-12 lg:pb-14">
+      <nav class="flex flex-wrap items-center gap-2 text-xs text-white/45 mb-8" aria-label="Brotkrumen">
         <a href="/" class="hover:text-white transition-colors">Startseite</a>
-        <span>/</span>
-        <a href="/referenzen" class="hover:text-white transition-colors">Referenzen</a>
-        <span>/</span>
-        <span class="text-white/60">{p.client}</span>
+        <span aria-hidden="true">/</span>
+        <a href="/referenzen" class="hover:text-white transition-colors">Cases</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-white/80">{p.client}</span>
       </nav>
 
-      <div class="max-w-3xl">
-        <!-- Service badge -->
-        <div
-          class="inline-flex items-center gap-2 border rounded-full px-3.5 py-1.5 text-[11px] font-semibold mb-6"
-          style={`border-color: ${p.cardAccent}30; color: ${p.cardAccent};`}
-        >
-          <span class="w-1.5 h-1.5 rounded-full" style={`background: ${p.cardAccent};`}></span>
-          {p.service} · {p.industry}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 lg:items-center">
+        <div>
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full bg-[#00F573] text-[#0A0A0C]">Case · {p.jahr}</span>
+            <span class="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white/70 border border-white/20">{p.industry}</span>
+          </div>
+
+          <h1
+            class="font-extrabold italic uppercase text-white tracking-[-0.035em]"
+            style="font-size: clamp(2.2rem, 4.2vw, 3.6rem); line-height: 0.92;"
+          >
+            {p.client}
+          </h1>
+          <p class="mt-3 font-extrabold italic uppercase text-[#00F573] tracking-[-0.03em]" style="font-size: clamp(1.05rem, 2vw, 1.45rem); line-height: 1.05;">
+            {p.service}
+          </p>
+          <p class="mt-5 max-w-xl text-white/75 text-base lg:text-lg leading-relaxed">{p.tagline}</p>
+
+          <div class="mt-7 flex flex-col sm:flex-row gap-3">
+            {p.url && (
+              <a href={p.url} target="_blank" rel="noopener noreferrer" class="btn btn-primary w-full sm:w-auto text-[13px] uppercase tracking-[0.04em] justify-center">Live ansehen</a>
+            )}
+            <a href="/projekt-starten" class="btn btn-ghost w-full sm:w-auto text-[13px] uppercase tracking-[0.04em] justify-center">Ähnliches Projekt</a>
+          </div>
         </div>
 
-        <!-- Client & title -->
-        <p class="text-white/40 text-sm font-medium mb-2">{p.client}</p>
-        <h1
-          class="font-bold text-white leading-[0.93] tracking-[-0.04em] mb-6"
-          style="font-size: clamp(2rem, 5.5vw, 4.5rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
-        >
-          {p.tagline}
-        </h1>
-
-        <!-- Meta row -->
-        <div class="flex flex-wrap items-center gap-6 text-sm text-white/35" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
-          <span class="flex items-center gap-2">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="opacity-50">
-              <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M1 6h12" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M4 1v2M10 1v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            {p.jahr}
-          </span>
-          <span class="flex items-center gap-2">
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="opacity-50">
-              <path d="M7 1l1.8 3.6L13 5.4l-3 2.9.7 4.1L7 10.4l-3.7 2 .7-4.1-3-2.9 4.2-.8z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-            </svg>
-            Zula Studios
-          </span>
+        <div class="rounded-2xl border border-white/10 bg-[#F4F5F7] overflow-hidden">
+          <div class="flex items-center gap-2 px-3 py-2.5 border-b border-[#E4E6EB]">
+            <span class="flex gap-1.5 shrink-0" aria-hidden="true">
+              <span class="h-2.5 w-2.5 rounded-full bg-[#FF5F57]"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-[#28C840]"></span>
+            </span>
+            <span class="min-w-0 flex-1 truncate rounded-md border border-[#E4E6EB] bg-white px-3 py-1 text-[12px] text-[#88888F]">
+              {previewHost}
+            </span>
+          </div>
+          <img
+            src={`/images/cases/${p.slug}.jpg`}
+            alt={`Startseite von ${p.client}`}
+            width="1280"
+            height="800"
+            class="aspect-[16/10] w-full object-cover object-top"
+          />
         </div>
       </div>
     </div>
+
+    <dl class="m-0 grid grid-cols-2 lg:grid-cols-4 border-t border-white/10">
+      {p.metrics.map(m => (
+        <div class="px-5 sm:px-8 py-6 lg:py-8 border-b border-white/10 lg:border-b-0 lg:border-r lg:last:border-r-0 even:border-l even:border-white/10 lg:even:border-l-0">
+          <dd class="m-0 font-extrabold italic text-[#00F573] tracking-[-0.03em]" style="font-size: clamp(1.6rem, 3vw, 2.25rem); line-height: 1;">{m.value}</dd>
+          <dt class="m-0 mt-2 text-[12px] text-white/55 leading-snug">{m.label}</dt>
+        </div>
+      ))}
+    </dl>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       METRICS BAND
-  ═══════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] border-b border-[#1C1C25]">
+  <section class="bg-white py-14 lg:py-20">
+    <div class="container max-w-3xl">
+      <p class="m-0 text-[17px] lg:text-xl text-[#0A0A0C] leading-relaxed">{p.description}</p>
+    </div>
+  </section>
+
+  <section class="bg-[#F4F5F7] py-14 lg:py-20 border-y border-[#E4E6EB]">
     <div class="container">
-      <div class="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#1C1C25]">
-        {p.metrics.map((m, i) => (
-          <div class="px-6 lg:px-10 py-8" data-reveal data-delay={String(i + 1)}>
-            <div class="font-bold text-white text-3xl lg:text-4xl tracking-[-0.04em] leading-none mb-2" style={`color: ${i === 0 ? p.cardAccent : 'white'};`}>
-              {m.value}
-            </div>
-            <div class="text-[#44444F] text-xs font-medium">{m.label}</div>
-          </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {[
+          { icon: iso.target, kicker: '01', title: 'Herausforderung', text: p.challenge },
+          { icon: iso.code, kicker: '02', title: 'Lösung', text: p.solution },
+          { icon: iso.launch, kicker: '03', title: 'Ergebnis', text: p.resultText },
+        ].map(block => (
+          <article class="flex flex-col rounded-2xl border border-[#E4E6EB] bg-white p-6 lg:p-7">
+            <IsoIcon src={block.icon} />
+            <p class="mt-5 mb-2 text-[11px] font-bold tracking-[0.14em] uppercase text-[#00C45C]">{block.kicker}</p>
+            <h2 class="m-0 font-extrabold italic uppercase text-[#0A0A0C] tracking-[-0.03em] text-xl">{block.title}</h2>
+            <p class="mt-3 mb-0 text-[14.5px] text-[#44444F] leading-relaxed">{block.text}</p>
+          </article>
         ))}
       </div>
+      <p class="mt-6 mb-0 text-[13px] text-[#9898A0]">
+        Umgesetzt von {SITE.name} — Shopify & Web Agentur in {SITE.address.city}.
+      </p>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       CASE STUDY CONTENT
-  ═══════════════════════════════════════ -->
-  <section class="py-20 lg:py-28 bg-white">
+  <section class="bg-white py-14 lg:py-20">
     <div class="container">
-      <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-12 lg:gap-20">
+      <h2 class="m-0 font-extrabold italic uppercase text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1;">
+        Was gemacht wurde
+      </h2>
+      <ol class="m-0 mt-8 p-0 list-none grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {p.deliverables.map((item, i) => (
+          <li class="flex gap-4 items-center rounded-2xl border border-[#E4E6EB] bg-[#FAFAF8] px-4 py-4">
+            <span class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-extrabold text-[#0A0A0C] bg-[#00F573]">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="text-[15px] text-[#0A0A0C] leading-snug">{item}</span>
+          </li>
+        ))}
+      </ol>
 
-        <!-- Sidebar (sticky on desktop) -->
-        <aside class="lg:sticky lg:top-24 h-fit space-y-8">
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Kunde</p>
-            <p class="font-semibold text-[#0C0C0F] text-sm">{p.client}</p>
+      <h2 class="m-0 mt-14 font-extrabold italic uppercase text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1;">
+        Tech-Stack
+      </h2>
+      <p class="mt-4 mb-0 max-w-3xl text-[16px] text-[#44444F] leading-relaxed">
+        {SITE.name} in {SITE.address.city} hat für {p.client} ({p.industry}) diesen Stack eingesetzt: {p.techStack.join(', ')}.
+        Jede Technik hat im Projekt eine konkrete Aufgabe.
+      </p>
+      <ul class="m-0 mt-6 p-0 list-none flex flex-wrap gap-2">
+        {p.techStack.map(tech => (
+          <li class="inline-flex items-center rounded-full border border-[#E4E6EB] bg-[#F4F5F7] px-4 py-2 text-[13.5px] font-semibold text-[#0A0A0C]">
+            {tech}
+          </li>
+        ))}
+      </ul>
+      <dl class="m-0 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-3">
+        {p.techDetails.map(item => (
+          <div class="rounded-2xl border border-[#E4E6EB] bg-[#FAFAF8] px-5 py-5">
+            <dt class="m-0 font-extrabold italic uppercase text-[#0A0A0C] tracking-[-0.02em] text-lg">{item.name}</dt>
+            <dd class="m-0 mt-2 text-[14.5px] text-[#44444F] leading-relaxed">{item.text}</dd>
           </div>
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Branche</p>
-            <p class="font-semibold text-[#0C0C0F] text-sm">{p.industry}</p>
-          </div>
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Leistung</p>
-            <p class="font-semibold text-[#0C0C0F] text-sm">{p.service}</p>
-          </div>
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Jahr</p>
-            <p class="font-semibold text-[#0C0C0F] text-sm">{p.jahr}</p>
-          </div>
-          {p.url && (
-            <div data-reveal>
-              <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Website</p>
-              <a
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600 hover:text-accent-700 transition-colors group"
-              >
-                {p.url.replace('https://', '')}
-                <svg width="11" height="11" viewBox="0 0 14 14" fill="none" class="opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">
-                  <path d="M1 13L13 1M13 1H5M13 1v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </div>
-          )}
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-3">Tags</p>
-            <div class="flex flex-wrap gap-1.5">
-              {p.tags.map(t => (
-                <span class="text-[10.5px] font-medium bg-[#F5F5F8] text-[#62626E] px-2 py-0.5 rounded">{t}</span>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        <!-- Main content -->
-        <div class="space-y-16">
-
-          <!-- Challenge -->
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-5 flex items-center gap-3">
-              <span class="w-4 h-px bg-[#EBEBEF]"></span>
-              Ausgangssituation
-            </p>
-            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-4">Die Herausforderung</h2>
-            <p class="text-[#44444F] text-base lg:text-[17px] leading-relaxed">{p.challenge}</p>
-          </div>
-
-          <!-- Divider -->
-          <div class="h-px bg-[#EBEBEF]"></div>
-
-          <!-- Solution -->
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-5 flex items-center gap-3">
-              <span class="w-4 h-px bg-[#EBEBEF]"></span>
-              Umsetzung
-            </p>
-            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-4">Unsere Lösung</h2>
-            <p class="text-[#44444F] text-base lg:text-[17px] leading-relaxed">{p.solution}</p>
-          </div>
-
-          <!-- Divider -->
-          <div class="h-px bg-[#EBEBEF]"></div>
-
-          <!-- Results -->
-          <div data-reveal>
-            <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-5 flex items-center gap-3">
-              <span class="w-4 h-px bg-[#EBEBEF]"></span>
-              Ergebnis
-            </p>
-            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-4">Was erreicht wurde</h2>
-            <p class="text-[#44444F] text-base lg:text-[17px] leading-relaxed mb-8">{p.resultText}</p>
-
-            <!-- Metrics in context -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              {p.metrics.map((m, i) => (
-                <div class="rounded-2xl p-5 border border-[#EBEBEF] bg-[#FAFAF8]" data-reveal data-delay={String(i + 1)}>
-                  <div
-                    class="font-bold text-2xl lg:text-3xl tracking-[-0.04em] leading-none mb-2"
-                    style={`color: ${i === 0 ? p.cardAccent : '#0C0C0F'};`}
-                  >
-                    {m.value}
-                  </div>
-                  <div class="text-[#88888F] text-xs leading-tight">{m.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <!-- Testimonial -->
-          {p.testimonial && (
-            <div class="rounded-2xl bg-[#FAFAF8] border border-[#EBEBEF] p-8 lg:p-10" data-reveal>
-              <!-- Large quote mark -->
-              <svg width="32" height="24" viewBox="0 0 28 22" fill="none" class="mb-5">
-                <path d="M0 22V13.2C0 5.6 4.2 1.4 12.6 0l1.4 2.8C9.8 3.8 7.7 5.6 7 8.4h5.6V22H0zm15.4 0V13.2C15.4 5.6 19.6 1.4 28 0l1.4 2.8C25.2 3.8 23.1 5.6 22.4 8.4H28V22H15.4z" fill="#EBEBEF"/>
-              </svg>
-              <blockquote class="text-[#44444F] text-base lg:text-lg leading-relaxed mb-6">
-                {p.testimonial.quote}
-              </blockquote>
-              <footer class="flex items-center gap-3">
-                <div
-                  class="w-10 h-10 rounded-xl font-bold text-white text-sm flex items-center justify-center shrink-0"
-                  style={`background: ${p.cardAccent};`}
-                >
-                  {p.testimonial.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                </div>
-                <div>
-                  <div class="font-semibold text-[#0C0C0F] text-sm">{p.testimonial.name}</div>
-                  <div class="text-[#AEAEB5] text-xs mt-0.5">{p.testimonial.role}</div>
-                </div>
-              </footer>
-            </div>
-          )}
-        </div>
-      </div>
+        ))}
+      </dl>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       NEXT PROJECT
-  ═══════════════════════════════════════ -->
-  <section class="bg-[#FAFAF8] border-t border-[#EBEBEF] py-12">
+  <section class="bg-[#F4F5F7] py-14 lg:py-20 border-t border-[#E4E6EB]">
     <div class="container">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div>
-          <p class="text-[10.5px] font-semibold tracking-[0.18em] uppercase text-[#AEAEB5] mb-1">Nächste Referenz</p>
-          <p class="font-bold text-[#0C0C0F] text-lg tracking-[-0.01em]">{nextProjekt.client}</p>
-          <p class="text-[#88888F] text-sm mt-0.5">{nextProjekt.service}</p>
-        </div>
-        <div class="flex gap-3">
-          <a href="/referenzen" class="btn btn-outline text-sm py-2.5">
-            ← Alle Referenzen
-          </a>
-          <a href={`/referenzen/${nextProjekt.slug}`} class="btn btn-primary text-sm py-2.5">
-            Nächste Case Study
-            <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-              <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <a href={`/referenzen/${prevProjekt.slug}`} class="rounded-2xl border border-[#E4E6EB] bg-white p-6 hover:border-[#00F573] transition-colors">
+          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-[#9898A0]">Vorheriger Case</span>
+          <span class="mt-2 block font-extrabold italic uppercase text-[#0A0A0C] text-xl tracking-[-0.02em]">{prevProjekt.client}</span>
+          <span class="mt-1 block text-[13px] text-[#62626E]">{prevProjekt.service}</span>
+        </a>
+        <a href={`/referenzen/${nextProjekt.slug}`} class="rounded-2xl border border-[#E4E6EB] bg-white p-6 hover:border-[#00F573] transition-colors sm:text-right">
+          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-[#9898A0]">Nächster Case</span>
+          <span class="mt-2 block font-extrabold italic uppercase text-[#0A0A0C] text-xl tracking-[-0.02em]">{nextProjekt.client}</span>
+          <span class="mt-1 block text-[13px] text-[#62626E]">{nextProjekt.service}</span>
+        </a>
       </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════
-       CTA
-  ═══════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden">
-    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 100%, rgba(56,189,248,0.16), transparent 55%);"></div>
-    <div class="container relative z-10 text-center max-w-xl mx-auto" data-reveal>
-      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl mb-4">Ähnliche Ergebnisse für Ihr Business?</h2>
-      <p class="text-[#62626E] mb-8">Starten Sie mit einem kostenlosen Erstgespräch.</p>
-      <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-8 text-[15px] rounded-xl font-semibold">
-        Kostenloses Erstgespräch
-        <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-          <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <div class="mt-10 text-center">
+        <a href="/referenzen" class="text-[13px] font-bold uppercase tracking-[0.08em] text-[#00C45C] hover:underline">Alle Cases</a>
+        <h2 class="mt-8 font-extrabold italic uppercase text-[#0A0A0C] tracking-[-0.03em] text-2xl lg:text-3xl">Ähnliches Projekt?</h2>
+        <p class="mt-3 mb-6 text-[#62626E] text-sm">Erstgespräch in Hamburg — unverbindlich.</p>
+        <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[13px] uppercase tracking-[0.06em]">Angebot anfordern</a>
+      </div>
     </div>
   </section>
 
 </BaseLayout>
-
-<style>
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: none; }
-  }
-</style>

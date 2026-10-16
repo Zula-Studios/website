@@ -25,7 +25,7 @@ const props = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0C0C0F" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="shortcut icon" href="/favicon.png" />
@@ -39,26 +39,26 @@ const props = Astro.props;
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
       />
     </noscript>
     <SEO {...props} />
     <style is:global>
       :root {
-        --ink: #0C0C0F; --ink-muted: #62626E; --ink-subtle: #AEAEB5;
-        --surface-warm: #FAFAF8; --border: #EBEBEF;
-        --accent: #0284C7; --accent-light: #F0F9FF;
+        --ink: #0A0A0C; --ink-muted: #62626E; --ink-subtle: #AEAEB5;
+        --surface-warm: #F4F5F7; --border: #E4E6EB;
+        --accent: #00F573; --accent-light: #ECFFF4; --accent-ink: #1D273D;
       }
       *, *::before, *::after { box-sizing: border-box; }
-      html { font-feature-settings: 'cv11' on, 'ss01' on; }
-      body { font-family: 'Inter', system-ui, sans-serif; color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-      ::selection { background: #BAE6FD; color: #0C4A6E; }
+      html { font-feature-settings: 'ss01' on; }
+      body { font-family: 'Outfit', system-ui, sans-serif; color: var(--ink); background: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+      ::selection { background: #00F573; color: #1D273D; }
       ::-webkit-scrollbar { width: 5px; }
       ::-webkit-scrollbar-thumb { background: #D4D4D9; border-radius: 10px; }
       :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
@@ -66,12 +66,12 @@ const props = Astro.props;
       @media (min-width: 640px) { .container { padding: 0 2rem; } }
       @media (min-width: 1024px) { .container { padding: 0 2.5rem; } }
       .label { display: inline-block; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-subtle); }
-      .btn { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 0.625rem; transition: all 0.15s ease; cursor: pointer; white-space: nowrap; text-decoration: none; }
+      .btn { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; font-weight: 700; padding: 0.8rem 1.6rem; border-radius: 9999px; transition: all 0.15s ease; cursor: pointer; white-space: nowrap; text-decoration: none; border: none; }
       .btn:active { transform: scale(0.97); }
-      .btn-primary { background: var(--ink); color: #fff; }
-      .btn-primary:hover { background: #1C1C25; }
-      .btn-accent { background: var(--accent); color: #fff; }
-      .btn-accent:hover { background: #0369A1; }
+      .btn-primary { background: #00F573; color: #1D273D; }
+      .btn-primary:hover { background: #3FF98F; }
+      .btn-accent { background: #00F573; color: #1D273D; }
+      .btn-accent:hover { background: #3FF98F; }
       .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--border); }
       .btn-outline:hover { border-color: #D4D4D9; background: var(--surface-warm); }
       [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1); }
@@ -114,12 +114,12 @@ const props = Astro.props;
     </main>
 
     <!-- Minimal footer for landing pages -->
-    <footer class="bg-[#0C0C0F] py-8">
+    <footer class="bg-[#F4F5F7] border-t border-[#E4E6EB] py-8">
       <div class="container flex flex-col sm:flex-row items-center justify-between gap-4 text-[12.5px] text-[#62626E]">
-        <a href="/" class="text-white font-semibold">{SITE.name}</a>
+        <a href="/" class="text-[#0A0A0C] font-semibold">{SITE.name}</a>
         <div class="flex gap-5">
-          <a href="/datenschutz" class="hover:text-white transition-colors">Datenschutz</a>
-          <a href="/impressum" class="hover:text-white transition-colors">Impressum</a>
+          <a href="/datenschutz" class="hover:text-[#0A0A0C] transition-colors">Datenschutz</a>
+          <a href="/impressum" class="hover:text-[#0A0A0C] transition-colors">Impressum</a>
         </div>
       </div>
     </footer>

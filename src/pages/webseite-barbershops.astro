@@ -1,70 +1,92 @@
 ---
 import SEO from '@/components/SEO.astro';
-import Icon from '@/components/Icon.astro';
 import ConsentBanner from '@/components/ConsentBanner.astro';
 import { SITE } from '@/config/site';
+import { faqPageSchema, serviceSchema } from '@/lib/schema';
+
+const CITY_ALIASES: Record<string, string> = {
+  koeln: 'Köln',
+  cologne: 'Köln',
+  muenchen: 'München',
+  munich: 'München',
+  dueseldorf: 'Düsseldorf',
+  nuernberg: 'Nürnberg',
+};
+
+function sanitizeCity(value: string | null): string {
+  if (!value) return '';
+  const cleaned = value
+    .trim()
+    .replace(/[_+]/g, ' ')
+    .replace(/[^A-Za-zÄÖÜäöüß\s-]/g, '')
+    .replace(/\s+/g, ' ')
+    .slice(0, 32);
+  if (cleaned.length < 2) return '';
+  const alias = CITY_ALIASES[cleaned.toLocaleLowerCase('de-DE')];
+  if (alias) return alias;
+  return cleaned.replace(/\b\p{L}/gu, letter => letter.toLocaleUpperCase('de-DE'));
+}
+
+const city = sanitizeCity(Astro.url.searchParams.get('stadt') ?? Astro.url.searchParams.get('city'));
+const campaign = (Astro.url.searchParams.get('utm_campaign') ?? Astro.url.searchParams.get('kampagne') ?? '').slice(0, 60);
+const localLabel = city ? `in ${city}` : '';
+const bookingUrl = `${SITE.calcomOrigin}/${SITE.calcom}`;
+const priceParams = new URLSearchParams();
+if (city) priceParams.set('stadt', city);
+if (campaign) priceParams.set('utm_campaign', campaign);
+const pricingHref = priceParams.toString() ? `/barbershop-webseite?${priceParams}` : '/barbershop-webseite';
 
 const probleme = [
-  { title: 'Der erste Eindruck passt nicht zum Salon.', desc: 'Online wirkt Ihr Auftritt schwächer als das Erlebnis vor Ort.' },
-  { title: 'Termine kosten unnötig Zeit.', desc: 'Kunden müssen anrufen, obwohl sie lieber direkt online buchen würden.' },
-  { title: 'Leistungen und Preise bleiben unklar.', desc: 'Interessenten finden nicht schnell genug, was zu ihnen passt.' },
-  { title: 'Auf dem Smartphone wird es mühsam.', desc: 'Ist die Seite schwer bedienbar, wird der Termin später gebucht – oder woanders.' },
-  { title: 'Bei Google gewinnt die Konkurrenz.', desc: 'Ohne lokalen Auftritt werden andere Salons zuerst gefunden.' },
+  { title: 'Kunden rufen an, statt zu buchen.', desc: 'Jeder Anruf unterbricht den Schnitt. Eine klare Buchung spart Zeit.' },
+  { title: 'Die Seite wirkt schwächer als der Salon.', desc: 'Der erste Eindruck entsteht online – oft bevor jemand den Laden betritt.' },
+  { title: 'Die Konkurrenz wird zuerst gefunden.', desc: 'Ohne lokalen Auftritt entscheidet Google für den Salon nebenan.' },
 ];
 
 const vorteile = [
-  { icon: 'calendar', title: 'Termine einfacher buchen', desc: 'Kunden gelangen ohne Umwege zu Ihrer Online-Terminbuchung.' },
-  { icon: 'sparkles', title: 'Ihr Stil wird sichtbar', desc: 'Design, Bilder und Texte passen zu Ihrem Salon und Ihrer Zielgruppe.' },
-  { icon: 'mobile', title: 'Für Smartphones entwickelt', desc: 'Schnelle Bedienung für Kunden, die unterwegs einen Termin suchen.' },
-  { icon: 'pin', title: 'Lokal besser auffindbar', desc: 'Saubere Grundlagen für Suchanfragen in Ihrer Stadt.' },
-  { icon: 'users', title: 'Neue Mitarbeiter erreichen', desc: 'Offene Stellen und Bewerbungen bekommen einen klaren Platz.' },
-];
-
-const leistungen = [
-  { n: '01', title: 'Individuelles Webdesign', desc: 'Passend zu Atmosphäre, Farben und Positionierung Ihres Salons.' },
-  { n: '02', title: 'Terminbuchung integrieren', desc: 'Ihr vorhandenes Buchungssystem wird sinnvoll eingebunden.' },
-  { n: '03', title: 'Leistungen klar präsentieren', desc: 'Haarschnitt, Bart, Farbe und Styling sofort verständlich.' },
-  { n: '04', title: 'Google & Technik', desc: 'Schnelle Ladezeiten und eine solide lokale SEO-Grundlage.' },
+  { icon: '/images/body/body-booking.jpg', title: 'Termine ohne Telefonkette', desc: 'Kunden buchen direkt, auch abends und am Wochenende.' },
+  { icon: '/images/body/body-style.jpg', title: 'Ihr Stil wird sichtbar', desc: 'Die Seite wirkt so gepflegt wie Ihr Handwerk.' },
+  { icon: '/images/body/body-pin.jpg', title: 'Lokal besser auffindbar', desc: 'Saubere Grundlagen für Suchanfragen in Ihrer Stadt.' },
 ];
 
 const ablauf = [
-  { n: '01', title: 'Kostenlos kennenlernen', desc: 'Wir sprechen über Ihren Salon, Ihre Kunden und Ihre Ziele.' },
-  { n: '02', title: 'Gestalten & umsetzen', desc: 'Sie erhalten ein klares Angebot. Wir entwickeln Ihre neue Webseite.' },
-  { n: '03', title: 'Online gehen', desc: 'Nach Ihrem Feedback veröffentlichen wir die Seite und binden die Buchung ein.' },
+  { n: '01', title: '15 Minuten sprechen', desc: 'Wir schauen uns Ihren Salon und Ihre aktuelle Seite an.', icon: '/images/body/body-talk.jpg' },
+  { n: '02', title: 'Klarer Vorschlag', desc: 'Sie erfahren, was sinnvoll ist – ohne Verkaufsdruck.', icon: '/images/body/body-plan.jpg' },
+  { n: '03', title: 'Seite geht live', desc: 'Nach Ihrer Freigabe veröffentlichen wir den neuen Auftritt.', icon: '/images/body/body-launch.jpg' },
 ];
 
 const faqs = [
-  { q: 'Was kostet eine Webseite für einen Barbershop?', a: 'Das hängt vom Umfang ab. Nach dem kostenlosen Gespräch erhalten Sie ein transparentes Festpreisangebot.' },
+  { q: 'Was kostet eine Webseite für einen Barbershop?', a: 'Es gibt monatliche Pakete ab 69 €. Preise und Leistungen sehen Sie auf der Übersichtsseite – oder wir klären sie im Gespräch.' },
   { q: 'Kann mein Buchungssystem eingebunden werden?', a: 'Ja. Gängige Terminlösungen lassen sich als direkter Buchungsweg integrieren.' },
-  { q: 'Wie lange dauert die Erstellung?', a: 'Eine typische Salon-Webseite ist in wenigen Wochen fertig. Den Zeitplan vereinbaren wir vor Projektstart.' },
-  { q: 'Kann meine bestehende Webseite überarbeitet werden?', a: 'Ja. Wir prüfen, was erhalten bleiben kann, und empfehlen den sinnvollsten Weg.' },
-  { q: 'Unterstützt Zula Studios bei Google?', a: 'Ja. Die Seite erhält eine saubere technische Grundlage und passende lokale Inhalte.' },
+  { q: 'Wie lange dauert die Erstellung?', a: 'Eine typische Salon-Webseite ist in wenigen Wochen fertig.' },
+  { q: 'Muss ich mich sofort entscheiden?', a: 'Nein. Das Erstgespräch ist unverbindlich. Danach entscheiden Sie in Ruhe.' },
 ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: faqs.map(faq => ({
-    '@type': 'Question',
-    name: faq.q,
-    acceptedAnswer: { '@type': 'Answer', text: faq.a },
-  })),
-};
+const serviceDescription = city
+  ? `Individuelle Barbershop-Webseiten in ${city} – mobil optimiert, lokal auffindbar und auf Online-Terminbuchungen ausgerichtet.`
+  : `Professionelle Webseiten für Barbershops und Friseursalons – aus ${SITE.address.city}, deutschlandweit. Mobil, buchbar, lokal sichtbar.`;
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Webdesign für Barbershops und Friseursalons',
-  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-  areaServed: 'DE',
-  description: 'Individuelle Webseiten für Barbershops und Friseursalons – mobil optimiert, lokal auffindbar und mit direkter Terminbuchung.',
-};
+const pageSchema = [
+  faqPageSchema(faqs),
+  serviceSchema({
+    name: city ? `Barbershop Webseite ${city}` : 'Webdesign für Barbershops & Friseure',
+    description: serviceDescription,
+    serviceType: 'Web design for barbershops',
+    url: `${SITE.url}/webseite-barbershops`,
+  }),
+];
 
 const navLinks = [
   { label: 'Vorteile', href: '#vorteile' },
   { label: 'Ablauf', href: '#ablauf' },
   { label: 'FAQ', href: '#faq' },
 ];
+
+const seoTitle = city
+  ? `Barbershop Webseite ${localLabel} – Termine online buchen`
+  : 'Barbershop Webseite erstellen – mehr Terminbuchungen | Hamburg';
+const seoDescription = city
+  ? `Barbershop Webseite ${localLabel}: mobil, mit Terminbuchung und lokaler Sichtbarkeit. Zula Studios – kostenloses Erstgespräch, Pakete ab 69 €/Monat.`
+  : `Webseite für Barbershops & Friseure aus Hamburg: Terminbuchung, mobiles Design, lokale SEO. Pakete ab 69 €/Monat – jetzt Erstgespräch sichern.`;
 ---
 
 <!DOCTYPE html>
@@ -72,7 +94,7 @@ const navLinks = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0C0C0F" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -82,30 +104,31 @@ const navLinks = [
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Outfit:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700;1,800&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
 
     <SEO
-      title="Webseiten für Barbershops & Friseure – mehr Terminbuchungen"
-      description="Zula Studios entwickelt professionelle Webseiten für Barbershops und Friseursalons – individuell, mobil optimiert und auf Terminbuchungen ausgerichtet."
+      title={seoTitle}
+      description={seoDescription}
+      canonical="/webseite-barbershops"
       keywords={['Webseite für Barbershop', 'Webdesign für Friseure', 'Barbershop Webseite erstellen lassen', 'Friseur Webseite mit Terminbuchung']}
-      schema={[faqSchema, serviceSchema]}
+      schema={pageSchema}
     />
 
     <style is:global>
       :root {
-        --ink: #0C0C0F;
+        --ink: #0A0A0C;
         --muted: #62626E;
         --subtle: #9898A0;
         --border: #E4E4E9;
-        --warm: #FAFAF8;
-        --accent: #0284C7;
+        --warm: #F4F5F7;
+        --accent: #00C45C;
         --section: clamp(3.75rem, 7vw, 6rem);
       }
       *, *::before, *::after { box-sizing: border-box; }
-      body { margin: 0; background: #fff; color: var(--ink); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
-      ::selection { background: #BAE6FD; color: #0C4A6E; }
+      body { margin: 0; background: #fff; color: var(--ink); font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+      ::selection { background: #00F573; color: #1D273D; }
       :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
       .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 1.125rem; }
       .section { padding-block: var(--section); }
@@ -125,7 +148,7 @@ const navLinks = [
           <img src="/images/logo.png" alt="Zula Studios" width="367" height="344" class="h-9 w-auto" style="filter:invert(1);" />
         </a>
         <nav class="hidden md:flex items-center gap-7" aria-label="Seitennavigation">
-          {navLinks.map(link => <a href={link.href} class="py-2 text-[13.5px] font-medium text-[#44444F] hover:text-[#0284C7] transition-colors">{link.label}</a>)}
+          {navLinks.map(link => <a href={link.href} class="py-2 text-[13.5px] font-medium text-[#44444F] hover:text-[#00C45C] transition-colors">{link.label}</a>)}
         </nav>
         <a href="#kontakt" class="cta header-cta">
           <span class="sm:hidden">Erstgespräch</span>
@@ -136,21 +159,33 @@ const navLinks = [
 
     <main>
       <!-- Hero -->
-      <section class="hero bg-[#0C0C0F]">
+      <section class="hero bg-[#0A0A0C]">
         <div class="container">
           <div class="hero-grid">
             <div class="hero-copy">
-              <p class="eyebrow text-[#9898A0]">Webseiten für Barbershops & Friseure</p>
+              <p class="eyebrow text-[#9898A0]">
+                {city ? `Webseiten für Barbershops ${localLabel}` : 'Webseiten für Barbershops & Friseure'}
+              </p>
               <h1 class="hero-title">
-                <span>Mehr Termine.</span>
-                <span>Stärkerer Auftritt.</span>
+                {city ? (
+                  <>
+                    <span>Mehr Termine</span>
+                    <span>für Barbershops {localLabel}.</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Mehr Termine.</span>
+                    <span>Weniger Anrufe.</span>
+                  </>
+                )}
               </h1>
               <p class="hero-description">
-                Zula Studios entwickelt Webseiten für Barbershops und Friseursalons –
-                passend zu Ihrem Stil und auf Terminbuchungen ausgerichtet.
+                {city
+                  ? `Salon-Webseite ${localLabel}, die zu Ihrem Stil passt – mit klarer Terminbuchung statt Telefonkette.`
+                  : `Salon-Webseite aus Hamburg: Ihr Stil online, Termine direkt buchbar – weniger Anrufe, mehr volle Stühle.`}
               </p>
               <a href="#kontakt" class="cta hero-cta">Kostenloses Erstgespräch sichern</a>
-              <p class="mt-5 text-[12.5px] leading-5 text-[#777781]">Unverbindlich · Persönlich · Ohne Verkaufsdruck</p>
+              <p class="mt-5 text-[12.5px] leading-5 text-white/50">Unverbindlich · 15 Minuten · Ohne Verkaufsdruck</p>
             </div>
 
             <figure class="barber-photo">
@@ -174,7 +209,7 @@ const navLinks = [
         <div class="container">
           <div class="section-intro">
             <p class="eyebrow">Kommt Ihnen das bekannt vor?</p>
-            <h2>Guter Salon – aber online spürt man es nicht?</h2>
+            <h2>{city ? `Guter Salon ${localLabel} – online spürt man es nicht?` : 'Guter Salon – aber online spürt man es nicht?'}</h2>
             <p>Bevor ein neuer Kunde Ihren Stuhl erlebt, erlebt er Ihre Webseite.</p>
           </div>
           <ol class="problem-list">
@@ -189,18 +224,18 @@ const navLinks = [
       </section>
 
       <!-- Vorteile -->
-      <section id="vorteile" class="section bg-[#0C0C0F] scroll-mt-16">
+      <section id="vorteile" class="section bg-[#F4F5F7] scroll-mt-16">
         <div class="container">
           <div class="benefits-grid">
             <div class="section-intro benefits-intro">
-              <p class="eyebrow text-[#9898A0]">Die Lösung</p>
-              <h2 class="text-white">Ihre Webseite macht Lust auf den ersten Termin.</h2>
-              <p class="!text-[#9898A0]">Sie zeigt Ihren Stil, beantwortet wichtige Fragen und führt direkt zur Buchung.</p>
+              <p class="eyebrow">Die Lösung</p>
+              <h2>Ihre Webseite macht Lust auf den ersten Termin.</h2>
+              <p>Sie zeigt Ihren Stil, beantwortet wichtige Fragen und führt direkt zur Buchung.</p>
             </div>
             <div class="benefit-list">
               {vorteile.map(vorteil => (
                 <div class="benefit-row">
-                  <Icon name={vorteil.icon} size={18} class="mt-1 shrink-0 text-[#38BDF8]" strokeWidth={1.75} />
+                  <img src={vorteil.icon} alt="" width="160" height="160" loading="lazy" decoding="async" />
                   <div><h3>{vorteil.title}</h3><p>{vorteil.desc}</p></div>
                 </div>
               ))}
@@ -210,54 +245,27 @@ const navLinks = [
         </div>
       </section>
 
-      <!-- Leistungen -->
-      <section class="section">
-        <div class="container">
-          <div class="section-intro">
-            <p class="eyebrow">Was Sie bekommen</p>
-            <h2>Digital so professionell wie Ihr Handwerk.</h2>
-          </div>
-          <div class="service-list">
-            {leistungen.map(leistung => (
-              <div class="service-row">
-                <span>{leistung.n}</span>
-                <div><h3>{leistung.title}</h3><p>{leistung.desc}</p></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <!-- Prozess -->
       <section id="ablauf" class="section bg-[#FAFAF8] border-y border-[#EBEBEF] scroll-mt-16">
         <div class="container">
-          <div class="section-intro">
+          <div class="section-intro process-intro">
             <p class="eyebrow">Einfacher Ablauf</p>
             <h2>In drei Schritten zur neuen Webseite.</h2>
           </div>
           <ol class="process-list">
             {ablauf.map(schritt => (
-              <li><span>{schritt.n}</span><h3>{schritt.title}</h3><p>{schritt.desc}</p></li>
+              <li>
+                <img src={schritt.icon} alt="" width="160" height="160" loading="lazy" decoding="async" />
+                <span>{schritt.n}</span>
+                <h3>{schritt.title}</h3>
+                <p>{schritt.desc}</p>
+              </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      <!-- Trust -->
-      <section class="section">
-        <div class="container">
-          <div class="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-20 items-start">
-            <div class="section-intro mb-0">
-              <p class="eyebrow">Warum Zula Studios</p>
-              <h2>Persönlich. Klar. Ohne Agenturtheater.</h2>
-              <p>Sie haben einen festen Ansprechpartner, einen transparenten Ablauf und ein Design, das nicht aus dem Baukasten kommt.</p>
-            </div>
-            <div class="trust-copy">
-              <p><b>Individuell gestaltet</b><span>Passend zu Ihrem Salon statt austauschbarer Vorlage.</span></p>
-              <p><b>Mobil zuerst gedacht</b><span>Für Kunden, die spontan nach einem Termin suchen.</span></p>
-              <p><b>Nach dem Launch erreichbar</b><span>Änderungen und Erweiterungen übernehmen wir auf Wunsch.</span></p>
-            </div>
-          </div>
+          <p class="process-note">
+            Schon Preise vergleichen?{' '}
+            <a href={pricingHref} class="font-semibold text-[#00C45C] hover:underline">Pakete ansehen</a>
+          </p>
         </div>
       </section>
 
@@ -266,10 +274,18 @@ const navLinks = [
         <div class="container max-w-3xl">
           <div class="section-intro"><p class="eyebrow">Häufige Fragen</p><h2>Kurz beantwortet.</h2></div>
           <div>
-            {faqs.map(faq => (
+            {faqs.map((faq, index) => (
               <details class="faq-item border-t border-[#D4D4D9]">
                 <summary><span>{faq.q}</span><span aria-hidden="true">+</span></summary>
-                <p>{faq.a}</p>
+                {index === 0 ? (
+                  <p>
+                    Es gibt monatliche Pakete ab 69 €.{' '}
+                    <a href={pricingHref}>Pakete und Preise ansehen</a>
+                    {' '}– oder wir klären sie im Gespräch.
+                  </p>
+                ) : (
+                  <p>{faq.a}</p>
+                )}
               </details>
             ))}
           </div>
@@ -277,31 +293,46 @@ const navLinks = [
       </section>
 
       <!-- Kontakt -->
-      <section id="kontakt" class="section bg-[#0C0C0F] scroll-mt-16">
+      <section id="kontakt" class="section bg-white border-t border-[#E4E6EB] scroll-mt-16">
         <div class="container">
           <div class="grid grid-cols-1 lg:grid-cols-[1fr_480px] gap-12 lg:gap-16 items-center">
             <div>
-              <p class="eyebrow text-[#9898A0]">Jetzt starten</p>
-              <h2 class="contact-title">Lassen Sie uns über Ihren Salon sprechen.</h2>
-              <p class="max-w-md text-[15px] leading-[1.65] text-[#9898A0]">Wir melden uns persönlich und besprechen unverbindlich, was für Ihren Auftritt sinnvoll ist.</p>
+              <p class="eyebrow">Jetzt starten</p>
+              <h2 class="contact-title">
+                {city ? `Lassen Sie uns über Ihren Salon ${localLabel} sprechen.` : 'Lassen Sie uns über Ihren Salon sprechen.'}
+              </h2>
+              <p class="max-w-md text-[15px] leading-[1.65] text-[#62626E]">
+                Wir melden uns persönlich und besprechen unverbindlich, was für Ihren Auftritt sinnvoll ist.
+              </p>
+              <p class="mt-6 text-[13.5px] leading-6 text-[#62626E]">
+                Lieber direkt einen Termin wählen?{' '}
+                <a href={bookingUrl} class="font-semibold text-[#00C45C] hover:underline" target="_blank" rel="noopener noreferrer">
+                  15 Minuten buchen
+                </a>
+              </p>
             </div>
 
             <div>
-              <div class="h-1 bg-[#0284C7]"></div>
-              <div class="bg-white rounded-b-lg px-5 py-7 sm:px-8">
+              <div class="h-1 bg-[#00F573] rounded-t-lg"></div>
+              <div class="bg-white rounded-b-lg border border-[#E4E6EB] border-t-0 px-5 py-7 sm:px-8 shadow-sm">
                 <h3 class="m-0 mb-1 text-[17px] leading-[1.45] font-bold">Kostenloses Erstgespräch anfragen</h3>
                 <p class="m-0 mb-6 text-xs leading-[1.5] text-[#88888F]">Persönliche Antwort · Unverbindlich · Kein Spam</p>
                 <form id="lead-form" novalidate class="space-y-3.5">
+                  <input type="hidden" name="stadt" value={city} />
+                  <input type="hidden" name="kampagne" value={campaign} />
+                  <input type="hidden" name="quelle" value="webseite-barbershops" />
+                  <input type="hidden" name="utm_source" value="" />
+                  <input type="hidden" name="utm_medium" value="" />
                   <fieldset>
                     <legend class="sr-only">Haben Sie bereits eine Webseite?</legend>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {[
-                        { value: 'hat-webseite', label: 'Ich habe bereits eine Webseite' },
-                        { value: 'braucht-webseite', label: 'Ich benötige eine neue Webseite' },
+                        { value: 'hat-webseite', label: 'Habe schon eine Webseite' },
+                        { value: 'braucht-webseite', label: 'Brauche eine neue Webseite' },
                       ].map((option, index) => (
                         <label class="status-option h-full cursor-pointer">
                           <input type="radio" name="status" value={option.value} class="sr-only" checked={index === 1} />
-                          <span class="status-pill flex h-full min-h-[60px] items-center justify-center rounded-md border border-[#EBEBEF] px-3 py-3 text-center text-[11.5px] font-semibold leading-[1.45] text-[#62626E]">{option.label}</span>
+                          <span class="status-pill flex h-full min-h-[48px] items-center justify-center rounded-md border border-[#EBEBEF] px-2.5 py-2.5 text-center text-[12px] font-semibold leading-none whitespace-nowrap text-[#62626E]">{option.label}</span>
                         </label>
                       ))}
                     </div>
@@ -322,6 +353,9 @@ const navLinks = [
                     <span>Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *</span>
                   </label>
                   <button id="lead-submit" type="submit" class="cta w-full">Kostenloses Erstgespräch anfragen</button>
+                  <p class="m-0 text-center text-[12.5px] leading-5 text-[#88888F]">
+                    <a href={pricingHref} class="font-medium text-[#00C45C] hover:underline">Pakete und Preise ansehen</a>
+                  </p>
                   <p id="lead-error" class="hidden m-0 text-center text-[12.5px] leading-relaxed text-red-600" role="alert"></p>
                 </form>
               </div>
@@ -331,13 +365,13 @@ const navLinks = [
       </section>
     </main>
 
-    <footer class="bg-[#0C0C0F] border-t border-[#1C1C25] py-10">
+    <footer class="bg-[#F4F5F7] border-t border-[#E4E6EB] py-10">
       <div class="container flex flex-col sm:flex-row gap-6 items-start sm:items-center justify-between">
-        <a href="/" aria-label={`${SITE.name} – Startseite`}><img src="/images/logo.png" alt="Zula Studios" width="367" height="344" class="h-8 w-auto" loading="lazy" /></a>
+        <a href="/" aria-label={`${SITE.name} – Startseite`}><img src="/images/logo.png" alt="Zula Studios" width="367" height="344" class="h-8 w-auto" style="filter:invert(1);" loading="lazy" /></a>
         <div class="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-[#62626E]">
-          <a href={`mailto:${SITE.email}`} class="hover:text-white">{SITE.email}</a>
-          <a href="/impressum" class="hover:text-white">Impressum</a>
-          <a href="/datenschutz" class="hover:text-white">Datenschutz</a>
+          <a href={`mailto:${SITE.email}`} class="hover:text-[#0A0A0C]">{SITE.email}</a>
+          <a href="/impressum" class="hover:text-[#0A0A0C]">Impressum</a>
+          <a href="/datenschutz" class="hover:text-[#0A0A0C]">Datenschutz</a>
         </div>
       </div>
     </footer>
@@ -357,9 +391,9 @@ const navLinks = [
     justify-content: center;
     padding: 0.875rem 1.5rem;
     border: 0;
-    border-radius: 0.5rem;
-    background: #0284C7;
-    color: #fff;
+    border-radius: 999px;
+    background: #00F573;
+    color: #1D273D;
     font-family: inherit;
     font-size: 0.875rem;
     font-weight: 600;
@@ -369,19 +403,21 @@ const navLinks = [
     cursor: pointer;
     transition: background 0.15s ease;
   }
-  .cta:hover { background: #0369A1; }
+  .cta:hover { background: #3FF98F; }
   .cta.is-loading { opacity: .7; pointer-events: none; }
   .header-cta { min-height: 2.75rem; padding-block: .65rem; }
-  .hero { padding-block: clamp(3.75rem, 7vw, 6rem); }
+  .hero { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
   .hero-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 3rem; align-items: center; }
-  .hero-title { margin: 0 0 1.25rem; color: #fff; font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 700; line-height: 1.14; letter-spacing: -.035em; }
+  .hero-title { margin: 0 0 1.25rem; color: #fff; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: 0.95; letter-spacing: -.035em; }
   .hero-title span { display: block; }
-  .hero-description { max-width: 31.25rem; margin: 0 0 1.75rem; color: #A1A1AA; font-size: .9375rem; line-height: 1.65; }
-  .contact-title { max-width: 30rem; margin: 0 0 1rem; color: #fff; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -.03em; text-wrap: balance; }
+  .hero-title span + span { color: #00F573; }
+  .hero-description { max-width: 31.25rem; margin: 0 0 1.75rem; color: rgba(255,255,255,.75); font-size: .9375rem; line-height: 1.65; }
+  .hero .eyebrow { color: rgba(255,255,255,.55); }
+  .contact-title { max-width: 30rem; margin: 0 0 1rem; color: #0A0A0C; font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -.03em; text-wrap: balance; }
 
   .barber-photo { width: 100%; max-width: 480px; margin: 0 auto; }
-  .barber-photo img { display: block; width: 100%; height: auto; border: 1px solid #2E2E3A; border-radius: .625rem; }
-  .barber-photo figcaption { margin-top: .75rem; padding-left: .75rem; border-left: 2px solid #0284C7; color: #88888F; font-size: .75rem; line-height: 1.55; }
+  .barber-photo img { display: block; width: 100%; height: auto; border: 1px solid #E4E6EB; border-radius: .625rem; }
+  .barber-photo figcaption { margin-top: .75rem; padding-left: .75rem; border-left: 2px solid #00F573; color: rgba(255,255,255,.55); font-size: .75rem; line-height: 1.55; }
 
   @media (min-width: 640px) {
     .hero-description { font-size: 1rem; }
@@ -395,56 +431,70 @@ const navLinks = [
     .hero-grid { grid-template-columns: minmax(0,1fr) 480px; gap: 3rem; }
   }
 
-  .problem-list, .process-list { max-width: 48rem; margin: 0; padding: 0; list-style: none; }
+  .problem-list { max-width: 48rem; margin: 0; padding: 0; list-style: none; }
   .problem-list li { display: grid; grid-template-columns: 2.25rem minmax(0,1fr); gap: 1rem; align-items: center; padding: 1.25rem 0; border-top: 1px solid #DCDCE2; }
-  .problem-list li > span, .service-row > span, .process-list li > span { color: #0284C7; font-size: .8125rem; font-weight: 700; line-height: 1.6; }
-  .problem-list h3, .service-row h3, .process-list h3, .benefit-row h3 { margin: 0 0 .3rem; font-size: .9375rem; font-weight: 600; line-height: 1.45; letter-spacing: -.01em; }
-  .problem-list p, .service-row p, .process-list p, .benefit-row p { margin: 0; color: #62626E; font-size: .84375rem; line-height: 1.6; }
+  .problem-list li > span { color: #00C45C; font-size: .8125rem; font-weight: 700; line-height: 1.6; }
+  .problem-list h3, .benefit-row h3 { margin: 0 0 .3rem; font-size: .9375rem; font-weight: 600; line-height: 1.45; letter-spacing: -.01em; }
+  .problem-list p, .benefit-row p { margin: 0; color: #62626E; font-size: .84375rem; line-height: 1.6; }
   .problem-list h3 { font-size: 1rem; }
 
   .benefits-grid { display: grid; grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
   .benefits-intro, .benefit-list { min-width: 0; }
-  .benefit-list { border-top: 1px solid #2E2E3A; }
-  .benefit-row { display: grid; grid-template-columns: 1.5rem minmax(0,1fr); gap: 1rem; padding: 1.25rem 0; border-bottom: 1px solid #2E2E3A; }
-  .benefit-row h3 { color: #fff; }
-  .benefit-row p { color: #9898A0; }
+  .benefit-list { border-top: 1px solid #E4E6EB; }
+  .benefit-row { display: grid; grid-template-columns: 4.75rem minmax(0,1fr); gap: 1rem; align-items: center; padding: 1.25rem 0; border-bottom: 1px solid #E4E6EB; }
+  .benefit-row img { width: 4.75rem; height: 4.75rem; object-fit: contain; }
+  .benefit-row h3 { color: #0A0A0C; }
+  .benefit-row p { color: #62626E; }
 
-  .service-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); max-width: 48rem; border-top: 1px solid #E4E4E9; }
-  .service-row { display: grid; grid-template-columns: 2.25rem minmax(0,1fr); gap: 1rem; padding: 1.5rem 1.5rem 1.5rem 0; border-bottom: 1px solid #E4E4E9; }
-  .service-row:nth-child(odd) { border-right: 1px solid #E4E4E9; }
-  .service-row:nth-child(even) { padding-left: 1.5rem; }
+  .process-intro { margin-inline: auto; text-align: center; }
+  .process-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .process-list li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1.25rem 1.35rem;
+    border: 1px solid #E4E6EB;
+    border-radius: 1rem;
+    background: #fff;
+  }
+  .process-list img { width: 6.5rem; height: 6.5rem; object-fit: contain; margin-bottom: .75rem; }
+  .process-list li > span { color: #00C45C; font-size: .75rem; font-weight: 700; letter-spacing: .08em; }
+  .process-list h3 { margin: .35rem 0 .3rem; font-size: 1rem; font-weight: 700; line-height: 1.35; letter-spacing: -.01em; }
+  .process-list p { margin: 0; max-width: 18rem; color: #62626E; font-size: .84375rem; line-height: 1.6; }
+  .process-note { margin: 1.5rem 0 0; text-align: center; color: #62626E; font-size: .84375rem; line-height: 1.6; }
 
-  .process-list { display: grid; max-width: none; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(1.5rem,4vw,3rem); }
-  .process-list li { padding-top: 1.25rem; border-top: 1px solid #D4D4D9; }
-  .process-list h3 { margin-top: .75rem; }
-
-  .trust-copy { border-top: 1px solid #E4E4E9; }
-  .trust-copy p { display: flex; flex-direction: column; gap: .25rem; margin: 0; padding: 1.25rem 0; border-bottom: 1px solid #E4E4E9; }
-  .trust-copy b { font-size: .9375rem; line-height: 1.45; }
-  .trust-copy span { color: #62626E; font-size: .84375rem; line-height: 1.6; }
+  @media (min-width: 768px) {
+    .process-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+  }
 
   .faq-item summary { display: flex; justify-content: space-between; gap: 1rem; padding: 1.25rem 0; list-style: none; cursor: pointer; font-size: .9375rem; font-weight: 600; line-height: 1.5; }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item[open] summary span:last-child { transform: rotate(45deg); }
-  .faq-item summary span:last-child { color: #0284C7; font-size: 1.25rem; transition: transform .15s ease; }
+  .faq-item summary span:last-child { color: #00C45C; font-size: 1.25rem; transition: transform .15s ease; }
   .faq-item > p { max-width: 36rem; margin: 0; padding: 0 0 1.25rem; color: #62626E; font-size: .875rem; line-height: 1.65; }
+  .faq-item > p a { color: #00C45C; font-weight: 600; text-decoration: none; }
+  .faq-item > p a:hover { text-decoration: underline; }
 
-  .status-option input:checked ~ .status-pill { border-color: #0284C7; background: #F0F9FF; color: #0369A1; }
-  .status-option input:focus-visible ~ .status-pill { outline: 2px solid #0284C7; outline-offset: 2px; }
+  .status-option input:checked ~ .status-pill { border-color: #00C45C; background: #ECFFF4; color: #00C45C; }
+  .status-option input:focus-visible ~ .status-pill { outline: 2px solid #00C45C; outline-offset: 2px; }
   .field { display: flex; flex-direction: column; gap: .4rem; color: #62626E; font-size: .6875rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-  .field input, .field textarea { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #E4E4E9; border-radius: .5rem; background: #FAFAF8; color: #0C0C0F; font-family: inherit; font-size: .875rem; font-weight: 400; line-height: 1.5; text-transform: none; outline: none; resize: vertical; }
-  .field input:focus, .field textarea:focus { border-color: #0284C7; background: #fff; }
+  .field input, .field textarea { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #E4E4E9; border-radius: .5rem; background: #F4F5F7; color: #0A0A0C; font-family: inherit; font-size: .875rem; font-weight: 400; line-height: 1.5; text-transform: none; outline: none; resize: vertical; }
+  .field input:focus, .field textarea:focus { border-color: #00C45C; background: #fff; }
   .field input.is-invalid, .field textarea.is-invalid { border-color: #FDA4AF; }
   .privacy { display: flex; align-items: flex-start; gap: .65rem; color: #88888F; font-size: .71875rem; line-height: 1.55; cursor: pointer; }
-  .privacy input { width: 1rem; height: 1rem; margin-top: .1rem; accent-color: #0284C7; flex-shrink: 0; }
-  .privacy a { color: #0284C7; text-decoration: underline; }
+  .privacy input { width: 1rem; height: 1rem; margin-top: .1rem; accent-color: #00C45C; flex-shrink: 0; }
+  .privacy a { color: #00C45C; text-decoration: underline; }
 
   @media (max-width: 639px) {
     .hero-cta { width: 100%; }
-    .service-list, .process-list { grid-template-columns: 1fr; }
-    .service-row, .service-row:nth-child(even) { padding-inline: 0; }
-    .service-row:nth-child(odd) { border-right: 0; }
-    .process-list { gap: 1.75rem; }
   }
 
   @media (min-width: 1024px) {
@@ -466,6 +516,15 @@ const navLinks = [
   const form = document.getElementById('lead-form') as HTMLFormElement | null;
   const submit = document.getElementById('lead-submit') as HTMLButtonElement | null;
   const error = document.getElementById('lead-error');
+  const params = new URLSearchParams(window.location.search);
+  const fillHidden = (name: string, value: string) => {
+    const field = form?.elements.namedItem(name) as HTMLInputElement | null;
+    if (field && !field.value && value) field.value = value.slice(0, 60);
+  };
+  fillHidden('stadt', params.get('stadt') ?? params.get('city') ?? '');
+  fillHidden('kampagne', params.get('utm_campaign') ?? params.get('kampagne') ?? '');
+  fillHidden('utm_source', params.get('utm_source') ?? '');
+  fillHidden('utm_medium', params.get('utm_medium') ?? '');
 
   const showError = (message: string) => {
     if (!error) return;

@@ -2,11 +2,17 @@
 /**
  * Meta Ads Lead-Generation Landing Page
  * URL: /kampagne/shopify
- * Color scheme: #0C0C0F (black) + #F5C518 (golden yellow)
+ * Color scheme: light surfaces + #00F573 / #00C45C accent
  */
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import { faqPageSchema, serviceSchema } from '@/lib/schema';
+import { projekte } from '@/data/projekte';
+
+const referenzenCases = projekte.filter(
+  p => p.tags.includes('Shopify') || p.serviceType === 'shop' || p.serviceType === 'migration',
+).slice(0, 3);
 
 const results = [
   { value: '+18 %',  label: 'Conversion Rate'         },
@@ -25,33 +31,9 @@ const painPoints = [
 ];
 
 const steps = [
-  { n: '01', title: 'Kostenloses Erstgespräch',  desc: 'In 30 Minuten analysieren wir Ihre Situation und zeigen Ihnen konkrete Möglichkeiten.' },
-  { n: '02', title: 'Maßgeschneidertes Konzept', desc: 'Sie erhalten ein individuelles Konzept mit klarem Zeitplan und transparenter Preisübersicht.' },
-  { n: '03', title: 'Entwicklung & Launch',       desc: 'Wir entwickeln agil, mit wöchentlichen Updates – und begleiten Sie über den Launch hinaus.' },
-];
-
-const testimonials = [
-  {
-    quote: 'Zula Studios hat unseren WooCommerce-Shop in Rekordzeit zu Shopify Plus migriert – ohne einen einzigen Tag Downtime. Die Conversion Rate hat sich in Wochen spürbar verbessert.',
-    name: 'Markus Weber',
-    role: 'CEO, TechFashion GmbH',
-    initials: 'MW',
-    result: '+18 % Conversion',
-  },
-  {
-    quote: 'Der neue Shop übertrifft alle Erwartungen. Die Conversion Rate hat sich in den ersten drei Monaten verdoppelt und unsere Kunden lieben das Design.',
-    name: 'Sandra Koch',
-    role: 'Gründerin, Naturkosmetik Berlin',
-    initials: 'SK',
-    result: '+105 % Traffic',
-  },
-  {
-    quote: 'Die Custom-App hat unsere Fulfillment-Prozesse revolutioniert. Transparente Kommunikation, sauberer Code, top Ergebnis.',
-    name: 'Thomas Bauer',
-    role: 'E-Commerce Manager, SportWorld AG',
-    initials: 'TB',
-    result: '-94 % Bestellfehler',
-  },
+  { n: '01', title: 'Kostenloses Erstgespräch',  desc: 'In 30 Minuten analysieren wir Ihre Situation und zeigen Ihnen konkrete Möglichkeiten.', icon: '/images/body/body-talk.jpg' },
+  { n: '02', title: 'Maßgeschneidertes Konzept', desc: 'Sie erhalten ein individuelles Konzept mit klarem Zeitplan und transparenter Preisübersicht.', icon: '/images/body/body-plan.jpg' },
+  { n: '03', title: 'Entwicklung & Launch',       desc: 'Wir entwickeln agil, mit wöchentlichen Updates – und begleiten Sie über den Launch hinaus.', icon: '/images/body/body-launch.jpg' },
 ];
 
 const faqs = [
@@ -63,13 +45,27 @@ const faqs = [
     a: 'Ja. Jedes Projekt beinhaltet 60 Tage kostenlosen Post-Launch-Support. Danach bieten wir flexible Retainer-Pakete an.' },
   { q: 'Arbeitet ihr auch mit bestehenden Shopify-Shops?',
     a: 'Absolut. Ob Redesign, App-Entwicklung, Performance-Audit oder Conversion-Optimierung – wir übernehmen Shopify-Projekte jeder Größe.' },
+  { q: 'Warum eine Shopify-Agentur aus Hamburg?',
+    a: 'Wir sitzen in Hamburg, arbeiten remote deutschlandweit und kennen den lokalen Markt. Persönliche Beratung, klare Prozesse und technische Umsetzung aus einer Hand.' },
+];
+
+const lpSchema = [
+  serviceSchema({
+    name: 'Shopify Entwicklung & Migration Hamburg',
+    description:
+      'Shopify-Shops, WooCommerce-Migrationen und Custom-Entwicklung für E-Commerce-Unternehmen – Zula Studios, Shopify Agentur in Hamburg.',
+    serviceType: 'Shopify development',
+    url: `${SITE.url}/kampagne/shopify`,
+  }),
+  faqPageSchema(faqs),
 ];
 ---
 
 <LandingLayout
-  title="Shopify Studio Hamburg – Shops, Migration & Custom-Entwicklung"
-  description="Professionelle Shopify-Entwicklung in Hamburg. Laravel, Next.js & Astro. 10+ Projekte, 0 Tage Downtime. Jetzt kostenloses Erstgespräch sichern."
+  title="Shopify Agentur Hamburg – Shop, Migration & Entwicklung"
+  description="Shopify Agentur in Hamburg: neue Shops, WooCommerce-Migration ohne Downtime, Custom Themes & Apps. Laravel, Next.js & Astro. Kostenloses Erstgespräch."
   noindex={true}
+  schema={lpSchema}
 >
 
   <!-- META PIXEL — uncomment + replace YOUR_PIXEL_ID -->
@@ -81,34 +77,21 @@ const faqs = [
   <!-- ══════════════════════════════════════════════════════════
        HERO
   ══════════════════════════════════════════════════════════ -->
-  <section class="relative bg-[#0C0C0F] overflow-hidden">
-    <!-- Dot grid -->
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 28px 28px;"></div>
-    <!-- Yellow glow -->
-    <div class="absolute -top-32 -left-32 w-[640px] h-[640px] pointer-events-none rounded-full" style="background: radial-gradient(circle, rgba(245,197,24,0.12), transparent 65%);"></div>
+  <section class="relative bg-[#0A0A0C] overflow-hidden">
+    <div class="container relative z-10 py-14 lg:py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-10 lg:gap-16 items-center">
 
-    <div class="container relative z-10 pt-20 pb-24 lg:pt-28 lg:pb-32">
-      <div class="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-center">
-
-        <!-- Left: Headline -->
-        <div style="animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.05s both">
-
-          <div class="inline-flex items-center gap-2.5 rounded-full border border-[#2E2E3A] bg-[#161618] px-4 py-2 mb-8">
-            <span class="w-2 h-2 rounded-full bg-[#F5C518] animate-pulse"></span>
-            <span class="text-[11px] font-semibold text-[#AEAEB5] tracking-[0.12em] uppercase">Shopify Studio Hamburg</span>
-          </div>
-
-          <h1 class="font-bold text-white leading-[0.92] tracking-[-0.04em] mb-7" style="font-size: clamp(2.75rem, 6.5vw, 5rem);">
-            Mehr Umsatz.<br/>
-            <span style="color: #F5C518;">Weniger Stress.</span><br/>
-            <span class="font-light italic text-white/40">Mit Shopify.</span>
+        <div>
+          <h1
+            class="font-extrabold italic uppercase text-white tracking-[-0.035em] mb-6"
+            style="font-size: clamp(2.35rem, 5vw, 4.1rem); line-height: 0.92;"
+          >
+            Shopify aus<br />Hamburg.<br />
+            <span class="text-[#00F573]">Shops, die verkaufen.</span>
           </h1>
 
-          <p class="text-[#9898A0] text-base lg:text-[17px] leading-relaxed mb-9 max-w-[480px]">
-            Wir entwickeln Shopify-Shops, Custom-Themes und individuelle Web-Apps mit
-            <strong class="text-[#D4D4D9] font-semibold">Laravel, Next.js & Astro</strong> —
-            von der Migration bis zur maßgeschneiderten Lösung.
-            Über 100 erfolgreiche Projekte.
+          <p class="text-white/75 text-[15px] lg:text-base leading-relaxed mb-8 max-w-[480px]">
+            Neue Shops, WooCommerce-Migrationen ohne Downtime und Custom-Entwicklung mit Laravel, Next.js und Astro. Feste Ansprechpartner, 10+ abgeschlossene Projekte.
           </p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
@@ -118,9 +101,9 @@ const faqs = [
               'Antwort innerhalb von 24 Stunden',
               'Kein Verkaufsdruck, kein Risiko',
             ].map(t => (
-              <div class="flex items-center gap-2.5 text-[13px] text-[#9898A0]">
-                <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style="background: rgba(245,197,24,0.15);">
-                  <Icon name="check" size={11} class="shrink-0" strokeWidth={2.5} style="color: #F5C518;" />
+              <div class="flex items-center gap-2.5 text-[13px] text-white/75">
+                <div class="w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#00F573]/20">
+                  <Icon name="check" size={11} class="shrink-0 text-[#00F573]" strokeWidth={2.5} />
                 </div>
                 {t}
               </div>
@@ -131,18 +114,18 @@ const faqs = [
         <!-- Right: Lead form -->
         <div id="lead-form-top" style="animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.18s both">
           <!-- Yellow top accent stripe -->
-          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #F5C518, #D9A912);"></div>
-          <div class="bg-white rounded-b-2xl shadow-[0_28px_80px_rgba(0,0,0,0.4)] px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9">
+          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #00F573, #00C45C);"></div>
+          <div class="bg-white rounded-b-2xl border border-[#E4E6EB] border-t-0 shadow-[0_20px_50px_rgba(10,10,12,0.08)] px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9">
 
             <div class="mb-6">
-              <h2 class="font-bold text-[#0C0C0F] text-[18px] tracking-[-0.02em] mb-1">
+              <h2 class="font-bold text-[#0A0A0C] text-[18px] tracking-[-0.02em] mb-1">
                 Jetzt kostenlos anfragen
               </h2>
               <p class="text-[#AEAEB5] text-xs">Unverbindlich · Antwort in 24 Std. · Kein Spam</p>
             </div>
 
             <!-- Service quick-select pills -->
-            <div class="flex flex-wrap gap-2 mb-6">
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 mb-6">
               {[
                 { value: 'neuer-shop',  label: 'Neuer Shop'       },
                 { value: 'migration',   label: 'Migration'        },
@@ -152,7 +135,7 @@ const faqs = [
               ].map((s, i) => (
                 <label class="quick-pill cursor-pointer">
                   <input type="radio" name="service_quick" value={s.value} class="sr-only" checked={i === 0} />
-                  <div class="pill-label rounded-full border border-[#EBEBEF] px-3.5 py-1.5 text-[12px] font-semibold text-[#88888F] transition-all duration-150 select-none">
+                  <div class="pill-label w-full text-center rounded-full border border-[#EBEBEF] px-3.5 py-1.5 text-[12px] font-semibold text-[#88888F] transition-all duration-150 select-none">
                     {s.label}
                   </div>
                 </label>
@@ -163,7 +146,7 @@ const faqs = [
               <input type="hidden" name="service" id="service-hidden" value="neuer-shop" />
               <input type="hidden" name="source" value="meta-ads-hero" />
 
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="lp-field">
                   <input type="text" name="vorname" placeholder=" " required autocomplete="given-name" class="lp-input" />
                   <label class="lp-label">Vorname *</label>
@@ -203,12 +186,12 @@ const faqs = [
   <!-- ══════════════════════════════════════════════════════════
        TRUST BAR
   ══════════════════════════════════════════════════════════ -->
-  <section class="bg-[#111118] border-y border-[#1C1C25]">
+  <section class="bg-white border-y border-[#E4E6EB]">
     <div class="container">
-      <div class="grid grid-cols-3 lg:grid-cols-6 divide-x divide-[#1C1C25]">
+      <div class="grid grid-cols-3 lg:grid-cols-6 divide-x divide-[#E4E6EB]">
         {results.map(r => (
           <div class="px-5 py-7 text-center">
-            <div class="font-bold text-[22px] tracking-[-0.04em] leading-none mb-1.5" style="color: #F5C518;">{r.value}</div>
+            <div class="font-bold text-[22px] tracking-[-0.04em] leading-none mb-1.5" style="color: #00F573;">{r.value}</div>
             <div class="text-[#9898A0] text-[11px] leading-tight">{r.label}</div>
           </div>
         ))}
@@ -219,13 +202,13 @@ const faqs = [
   <!-- ══════════════════════════════════════════════════════════
        PAIN → SOLUTION
   ══════════════════════════════════════════════════════════ -->
-  <section class="bg-[#111118] py-20 lg:py-28 border-y border-[#1C1C25]">
+  <section class="bg-white py-20 lg:py-28 border-y border-[#E4E6EB]">
     <div class="container">
 
       <!-- Header -->
       <div class="max-w-2xl mx-auto text-center mb-14" data-reveal>
         <p class="label text-[#9898A0] mb-3">Kennen Sie das?</p>
-        <h2 class="font-bold text-white tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+        <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
           Probleme, die Sie täglich Umsatz kosten
         </h2>
       </div>
@@ -238,13 +221,13 @@ const faqs = [
         </div>
         <div></div>
         <div class="flex items-center gap-2.5">
-          <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:#F5C518;"></span>
-          <span class="text-[11px] font-bold uppercase tracking-[0.14em]" style="color:#A07B10;">Die Lösung</span>
+          <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background:#00F573;"></span>
+          <span class="text-[11px] font-bold uppercase tracking-[0.14em]" style="color:#00C45C;">Die Lösung</span>
         </div>
       </div>
 
       <!-- Rows -->
-      <div class="max-w-4xl mx-auto divide-y divide-[#1C1C25]" data-reveal data-delay="1">
+      <div class="max-w-4xl mx-auto divide-y divide-[#E4E6EB]" data-reveal data-delay="1">
         {painPoints.map((p, i) => (
           <div class="grid grid-cols-1 lg:grid-cols-[1fr_56px_1fr] items-center gap-4 py-6">
 
@@ -255,7 +238,7 @@ const faqs = [
                   <path d="M2 2l6 6M8 2L2 8" stroke="#F87171" stroke-width="1.75" stroke-linecap="round"/>
                 </svg>
               </div>
-              <p class="text-[#9898A0] text-[14px] leading-relaxed">{p.pain}</p>
+              <p class="text-[#62626E] text-[14px] leading-relaxed">{p.pain}</p>
             </div>
 
             <!-- Arrow connector -->
@@ -266,19 +249,19 @@ const faqs = [
             </div>
             <!-- Mobile: subtle separator -->
             <div class="lg:hidden flex items-center gap-3 pl-9.5">
-              <div class="flex-1 h-px bg-[#1C1C25]"></div>
+              <div class="flex-1 h-px bg-[#E4E6EB]"></div>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M7 2v10M2 8l5 5 5-5" stroke="#3E3E4A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <div class="flex-1 h-px bg-[#1C1C25]"></div>
+              <div class="flex-1 h-px bg-[#E4E6EB]"></div>
             </div>
 
             <!-- Solution -->
             <div class="flex items-start gap-3.5">
-              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: rgba(245,197,24,0.12); border: 1px solid rgba(245,197,24,0.25);">
-                <Icon name="check" size={10} strokeWidth={2.75} style="color: #F5C518;" />
+              <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background: rgba(0,245,115,0.12); border: 1px solid rgba(0,196,92,0.25);">
+                <Icon name="check" size={10} strokeWidth={2.75} style="color: #00C45C;" />
               </div>
-              <p class="text-white text-[14px] leading-relaxed font-medium">{p.fix}</p>
+              <p class="text-[#0A0A0C] text-[14px] leading-relaxed font-medium">{p.fix}</p>
             </div>
 
           </div>
@@ -299,30 +282,29 @@ const faqs = [
   <!-- ══════════════════════════════════════════════════════════
        HOW IT WORKS
   ══════════════════════════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] py-20 lg:py-28 relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 28px 28px;"></div>
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 relative overflow-hidden">
     <div class="container relative z-10">
       <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
-        <p class="label text-[#9898A0] mb-3">So einfach geht's</p>
-        <h2 class="font-bold text-white tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+        <p class="label mb-3">So einfach geht's</p>
+        <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
           In 3 Schritten zu Ihrem Shopify-Shop
         </h2>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 max-w-4xl mx-auto">
         {steps.map((s, i) => (
-          <div class="relative rounded-2xl border border-[#1C1C25] bg-[#111118] p-8 hover:border-[#2E2E3A] transition-colors" data-reveal data-delay={String(i + 1)}>
+          <div class="relative rounded-2xl border border-[#E4E6EB] bg-white p-8 hover:border-[#00C45C]/40 transition-colors shadow-sm" data-reveal data-delay={String(i + 1)}>
             {i < 2 && (
               <div class="hidden lg:block absolute top-10 -right-2.5 z-10 opacity-30">
                 <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
-                  <path d="M1 7h12M8 2l5 5-5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="#0A0A0C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
             )}
-            <!-- Step number with yellow -->
-            <div class="font-black text-5xl tracking-[-0.05em] leading-none mb-6 select-none" style="color: #F5C518; opacity: 0.9;">{s.n}</div>
-            <h3 class="font-bold text-white text-[15px] mb-2.5 tracking-[-0.01em]">{s.title}</h3>
-            <p class="text-[#9898A0] text-sm leading-relaxed">{s.desc}</p>
+            <img src={s.icon} alt="" width="160" height="160" class="w-28 h-28 object-contain mb-5" loading="lazy" decoding="async" />
+            <div class="font-black text-5xl tracking-[-0.05em] leading-none mb-6 select-none" style="color: #00C45C; opacity: 0.9;">{s.n}</div>
+            <h3 class="font-bold text-[#0A0A0C] text-[15px] mb-2.5 tracking-[-0.01em]">{s.title}</h3>
+            <p class="text-[#62626E] text-sm leading-relaxed">{s.desc}</p>
           </div>
         ))}
       </div>
@@ -330,49 +312,65 @@ const faqs = [
   </section>
 
   <!-- ══════════════════════════════════════════════════════════
-       TESTIMONIALS
+       REFERENZEN
   ══════════════════════════════════════════════════════════ -->
   <section class="bg-white py-20 lg:py-28">
     <div class="container">
       <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
-        <p class="label mb-3">Kundenstimmen</p>
-        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
-          Was unsere Kunden sagen
+        <p class="label mb-3">Referenzen</p>
+        <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+          Echte Shopify-Projekte aus unserer Arbeit
         </h2>
+        <p class="text-[#62626E] text-sm mt-4 max-w-md mx-auto">
+          Keine erfundenen Bewertungen – hier sehen Sie ausgewählte Cases mit Zahlen und Ergebnissen.
+        </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {testimonials.map((t, i) => (
-          <div class="flex flex-col bg-[#FAFAF8] border border-[#EBEBEF] rounded-2xl p-7 lg:p-8" data-reveal data-delay={String(i + 1)}>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+        {referenzenCases.map((projekt, i) => (
+          <a
+            href={`/referenzen/${projekt.slug}`}
+            class="group flex flex-col bg-[#FAFAF8] border border-[#EBEBEF] rounded-2xl p-7 lg:p-8 transition-colors hover:border-[#00F573]/50 hover:shadow-md no-underline"
+            data-reveal
+            data-delay={String(i + 1)}
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-xl text-white text-[11px] font-bold flex items-center justify-center shrink-0"
+                style={`background: ${projekt.cardBg};`}
+              >
+                {projekt.clientKurz}
+              </div>
+              <div>
+                <div class="font-semibold text-[#0A0A0C] text-[14px] group-hover:text-[#00C45C] transition-colors">{projekt.client}</div>
+                <div class="text-[#AEAEB5] text-[11px]">{projekt.industry} · {projekt.jahr}</div>
+              </div>
+            </div>
 
-            <!-- Stars -->
-            <div class="flex gap-0.5 mb-5">
-              {[1,2,3,4,5].map(() => (
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="#F5C518">
-                  <path d="M8 1l1.85 3.75L14 5.5l-3 2.92.7 4.1L8 10.4l-3.7 2.12.7-4.1L2 5.5l4.15-.75L8 1z"/>
-                </svg>
+            <p class="text-[#44444F] text-sm leading-relaxed mb-5 flex-grow">{projekt.tagline}</p>
+
+            <div class="grid grid-cols-2 gap-2 mb-5">
+              {projekt.metrics.slice(0, 2).map(m => (
+                <div class="rounded-lg bg-white border border-[#EBEBEF] px-2.5 py-2 text-center">
+                  <div class="font-bold text-[#0A0A0C] text-[13px]">{m.value}</div>
+                  <div class="text-[#AEAEB5] text-[10px] leading-tight">{m.label}</div>
+                </div>
               ))}
             </div>
 
-            <p class="text-[#44444F] text-sm leading-relaxed mb-6 flex-grow">"{t.quote}"</p>
-
-            <div class="flex items-center justify-between pt-5 border-t border-[#EBEBEF]">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-[#0C0C0F] text-white text-[11px] font-bold flex items-center justify-center shrink-0">
-                  {t.initials}
-                </div>
-                <div>
-                  <div class="font-semibold text-[#0C0C0F] text-[13px]">{t.name}</div>
-                  <div class="text-[#AEAEB5] text-[11px]">{t.role}</div>
-                </div>
-              </div>
-              <div class="text-[11px] font-bold px-2.5 py-1 rounded-lg whitespace-nowrap" style="background: #FEFCE8; color: #92400E;">
-                {t.result}
-              </div>
-            </div>
-          </div>
+            <span class="text-[13px] font-semibold text-[#00C45C] inline-flex items-center gap-1.5 mt-auto">
+              Case Study lesen
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
         ))}
       </div>
+
+      <p class="text-center mt-10" data-reveal>
+        <a href="/referenzen" class="text-[14px] font-semibold text-[#62626E] hover:text-[#0A0A0C] underline underline-offset-4 transition-colors">
+          Alle Referenzen ansehen
+        </a>
+      </p>
     </div>
   </section>
 
@@ -383,7 +381,7 @@ const faqs = [
     <div class="container max-w-3xl">
       <div class="max-w-xl mx-auto text-center mb-14" data-reveal>
         <p class="label mb-3">Häufige Fragen</p>
-        <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+        <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
           Ihre Fragen — unsere Antworten
         </h2>
       </div>
@@ -392,7 +390,7 @@ const faqs = [
         {faqs.map(faq => (
           <details class="faq-item bg-white border border-[#EBEBEF] rounded-2xl overflow-hidden group">
             <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer select-none">
-              <span class="font-semibold text-[#0C0C0F] text-[14.5px] leading-snug">{faq.q}</span>
+              <span class="font-semibold text-[#0A0A0C] text-[14.5px] leading-snug">{faq.q}</span>
               <div class="faq-icon w-8 h-8 rounded-xl border border-[#EBEBEF] flex items-center justify-center shrink-0 transition-all duration-200">
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" class="faq-chevron transition-transform duration-200">
                   <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -411,22 +409,22 @@ const faqs = [
   <!-- ══════════════════════════════════════════════════════════
        BOTTOM CTA — dark with second form
   ══════════════════════════════════════════════════════════ -->
-  <section class="bg-[#0C0C0F] py-20 lg:py-28 relative overflow-hidden" id="lead-form-bottom">
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 relative overflow-hidden" id="lead-form-bottom">
     <!-- Yellow glow bottom -->
-    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(245,197,24,0.14), transparent 60%);"></div>
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(0,245,115,0.1), transparent 60%);"></div>
 
     <div class="container relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-20 items-center">
 
         <!-- Left copy -->
         <div data-reveal>
-          <p class="label text-[#9898A0] mb-5">Jetzt starten</p>
-          <h2 class="font-bold text-white tracking-[-0.04em] mb-6" style="font-size: clamp(2rem, 5vw, 3.75rem); line-height: 0.95;">
+          <p class="label mb-5">Jetzt starten</p>
+          <h2 class="font-bold text-[#0A0A0C] tracking-[-0.04em] mb-6" style="font-size: clamp(2rem, 5vw, 3.75rem); line-height: 0.95;">
             Ihr nächster<br/>
-            <span style="color: #F5C518;">Shopify-Shop</span><br/>
+            <span style="color: #00C45C;">Shopify-Shop</span><br/>
             fängt hier an.
           </h2>
-          <p class="text-[#9898A0] text-base leading-relaxed mb-8 max-w-md">
+          <p class="text-[#62626E] text-base leading-relaxed mb-8 max-w-md">
             Kein Verkaufsdruck, kein Risiko. Nur ein ehrliches Gespräch darüber, wie wir Ihren Shop auf das nächste Level bringen.
           </p>
           <div class="space-y-3.5">
@@ -435,9 +433,9 @@ const faqs = [
               'Antwort innerhalb von 24 Stunden',
               'Kein Minimalbudget für die Anfrage',
             ].map(item => (
-              <div class="flex items-center gap-3 text-[13.5px] text-[#9898A0]">
-                <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(245,197,24,0.12);">
-                  <Icon name="check" size={12} strokeWidth={2.5} style="color: #F5C518;" />
+              <div class="flex items-center gap-3 text-[13.5px] text-[#62626E]">
+                <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(0,245,115,0.12);">
+                  <Icon name="check" size={12} strokeWidth={2.5} style="color: #00C45C;" />
                 </div>
                 {item}
               </div>
@@ -447,16 +445,16 @@ const faqs = [
 
         <!-- Right: second form -->
         <div data-reveal data-delay="2">
-          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #F5C518, #D9A912);"></div>
-          <div class="bg-white rounded-b-2xl px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9 shadow-[0_32px_80px_rgba(0,0,0,0.45)]">
+          <div class="h-1 rounded-t-2xl" style="background: linear-gradient(90deg, #00F573, #00C45C);"></div>
+          <div class="bg-white rounded-b-2xl border border-[#E4E6EB] border-t-0 px-7 pt-7 pb-8 lg:px-9 lg:pt-8 lg:pb-9 shadow-[0_20px_50px_rgba(10,10,12,0.08)]">
 
-            <h3 class="font-bold text-[#0C0C0F] text-[17px] tracking-[-0.02em] mb-1">Anfrage absenden</h3>
+            <h3 class="font-bold text-[#0A0A0C] text-[17px] tracking-[-0.02em] mb-1">Anfrage absenden</h3>
             <p class="text-[#AEAEB5] text-xs mb-6">Nur E-Mail ist Pflicht · Wir melden uns innerhalb von 24 Std.</p>
 
             <form name="meta-lead-bottom" method="POST" action="/danke" class="space-y-3" id="bottom-form">
               <input type="hidden" name="source" value="meta-ads-bottom" />
 
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="lp-field">
                   <input type="text" name="vorname" placeholder=" " autocomplete="given-name" class="lp-input" />
                   <label class="lp-label">Vorname</label>
@@ -496,15 +494,10 @@ const faqs = [
 </LandingLayout>
 
 <style>
-  /* ── Yellow accent tokens ──────────────────────────────────────────────────
-     --y:    primary golden yellow
-     --y-dk: darker hover/pressed
-     --y-lt: very light tint for backgrounds
-  ──────────────────────────────────────────────────────────────────────── */
   :root {
-    --y:    #F5C518;
-    --y-dk: #D9A912;
-    --y-lt: #FEFCE8;
+    --y:    #00F573;
+    --y-dk: #3FF98F;
+    --y-lt: #ECFFF4;
   }
 
   @keyframes fadeUp {
@@ -519,7 +512,7 @@ const faqs = [
     justify-content: center;
     gap: 0.5rem;
     background: var(--y);
-    color: #0C0C0F;
+    color: #1D273D;
     font-size: 0.9375rem;
     font-weight: 700;
     padding: 1rem 2rem;
@@ -528,18 +521,18 @@ const faqs = [
     cursor: pointer;
     font-family: inherit;
     transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-    box-shadow: 0 4px 18px rgba(245, 197, 24, 0.3);
+    box-shadow: 0 4px 18px rgba(0, 245, 115, 0.25);
     text-decoration: none;
     white-space: nowrap;
   }
   .lp-cta-btn:hover {
     background: var(--y-dk);
-    box-shadow: 0 6px 24px rgba(245, 197, 24, 0.4);
+    box-shadow: 0 6px 24px rgba(0, 245, 115, 0.35);
     transform: translateY(-1px);
   }
   .lp-cta-btn:active {
     transform: translateY(0) scale(0.98);
-    box-shadow: 0 2px 8px rgba(245, 197, 24, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 245, 115, 0.2);
   }
   /* Loading state */
   .lp-cta-btn.is-loading {
@@ -551,7 +544,7 @@ const faqs = [
     content: '';
     width: 16px; height: 16px;
     border: 2px solid rgba(0,0,0,0.2);
-    border-top-color: #0C0C0F;
+    border-top-color: #0A0A0C;
     border-radius: 50%;
     animation: spin 0.55s linear infinite;
   }
@@ -561,7 +554,7 @@ const faqs = [
   .quick-pill input:checked ~ .pill-label {
     background: var(--y-lt);
     border-color: var(--y);
-    color: #78350F;
+    color: #1D273D;
   }
   .pill-label:hover {
     border-color: #D4D4D9;
@@ -578,7 +571,7 @@ const faqs = [
     border: 1.5px solid #EBEBEF;
     border-radius: 0.875rem;
     font-size: 0.875rem;
-    color: #0C0C0F;
+    color: #0A0A0C;
     outline: none;
     font-family: inherit;
     transition: border-color 0.14s ease, background 0.14s ease, box-shadow 0.14s ease;
@@ -587,7 +580,7 @@ const faqs = [
   .lp-input:focus {
     border-color: var(--y);
     background: white;
-    box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.12);
+    box-shadow: 0 0 0 3px rgba(0, 245, 115, 0.12);
   }
 
   .lp-label {
@@ -608,23 +601,23 @@ const faqs = [
     font-weight: 700;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: #A16207;
+    color: #00C45C;
     transform: none;
   }
 
   /* ── FAQ accordion ───────────────────────────────────────────────────────── */
   .faq-item[open] {
-    border-color: rgba(245, 197, 24, 0.4);
-    box-shadow: 0 0 0 1px rgba(245, 197, 24, 0.15), 0 4px 20px rgba(0,0,0,0.05);
+    border-color: rgba(0, 196, 92, 0.4);
+    box-shadow: 0 0 0 1px rgba(0, 245, 115, 0.15), 0 4px 20px rgba(0,0,0,0.05);
   }
   .faq-item[open] .faq-icon {
     background: var(--y-lt);
-    border-color: rgba(245, 197, 24, 0.4);
-    color: #92400E;
+    border-color: rgba(0, 196, 92, 0.4);
+    color: #00C45C;
   }
   .faq-item[open] .faq-chevron {
     transform: rotate(180deg);
-    color: #92400E;
+    color: #00C45C;
   }
 
   /* ── Reveal animations ───────────────────────────────────────────────────── */

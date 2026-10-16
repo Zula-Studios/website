@@ -3,46 +3,82 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
+import { localBusinessSchema } from '@/lib/schema';
 
-const schema = {
+const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  name: 'Kontakt – Zula Studios',
+  name: 'Kontakt – Zula Studios Hamburg',
+  description:
+    'Kontakt zur Shopify Agentur Zula Studios in Hamburg: Telefon, E-Mail und Formular.',
   url: `${SITE.url}/kontakt`,
-  mainEntity: {
-    '@type': 'Organization',
-    name: SITE.name,
-    telephone: SITE.phone,
-    email: SITE.email,
-  },
+  mainEntity: { '@id': `${SITE.url}/#localservice` },
 };
+
+const schema = [contactPageSchema, localBusinessSchema()];
 ---
 
 <BaseLayout
-  title="Kontakt – Zula Studios"
-  description="Kontaktieren Sie Zula Studios. Wir sind per E-Mail, Telefon und Formular erreichbar. Antwort innerhalb von 24 Stunden."
+  title="Kontakt Shopify Agentur Hamburg"
+  description="Shopify Agentur Hamburg: hello@zulastudios.com, +49 176 34 44 74 85. Formular und Antwort in 24 Std."
   schema={schema}
-  darkHero={true}
+  darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Kontakt', url: '/kontakt' }]}
 >
 
   <!-- HERO -->
-  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden hero-glow">
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="container relative z-10">
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a>
-        <span>/</span>
-        <span class="text-white font-medium">Kontakt</span>
-      </nav>
-      <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 flex items-center gap-3">
-        <span class="w-5 h-px bg-[#2E2E3A]"></span>
-        Wir sind für Sie da
-      </p>
-      <h1 class="font-bold text-white tracking-[-0.04em]" style="font-size: clamp(2.75rem, 7vw, 5.5rem); line-height: 0.93; animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both">
-        Schreiben<br/>
-        <span class="font-light italic text-white/45">Sie uns.</span>
-      </h1>
+  <section class="bg-[#0A0A0C] pt-24 lg:pt-28 overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-end">
+      <div class="relative z-10 px-5 sm:px-8 lg:pl-[max(2.5rem,calc((100vw-1240px)/2+2.5rem))] lg:pr-8 pt-8 pb-12 lg:pb-16">
+        <nav class="flex items-center gap-2 text-xs text-white/45 mb-8">
+          <a href="/" class="hover:text-white transition-colors">Startseite</a>
+          <span>/</span>
+          <span class="text-white/80 font-medium">Kontakt</span>
+        </nav>
+        <h1
+          class="font-extrabold italic uppercase text-white tracking-[-0.035em]"
+          style="font-size: clamp(2.6rem, 5.6vw, 4.75rem); line-height: 0.92;"
+        >
+          Lass uns<br />
+          <span class="text-[#00F573]">reden.</span>
+        </h1>
+
+        <div class="mt-8 max-w-md rounded-2xl bg-[#F3F4F6] px-5 py-4 sm:px-6 sm:py-5">
+          <h2 class="font-bold text-[#0A0A0C] text-base tracking-[-0.02em] mb-3">Kontakt</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <a href={`mailto:${SITE.email}`} class="group min-w-0">
+              <span class="flex items-center gap-2 text-[13px] font-semibold text-[#0A0A0C] mb-1">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none" class="text-[#0A0A0C]" aria-hidden="true">
+                  <path d="M3 6.5h14v9H3v-9z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M3 7l7 5 7-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                E-Mail
+              </span>
+              <span class="block text-[14px] text-[#0A0A0C] underline underline-offset-2 decoration-[#0A0A0C]/40 group-hover:decoration-[#00C45C] truncate">{SITE.email}</span>
+            </a>
+            <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} class="group min-w-0">
+              <span class="flex items-center gap-2 text-[13px] font-semibold text-[#0A0A0C] mb-1">
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="currentColor" class="text-[#0A0A0C]" aria-hidden="true">
+                  <path d="M3 5a2 2 0 012-2h2.2a1 1 0 01.95.68l1.1 3.3a1 1 0 01-.5 1.18l-1.5.75a8.5 8.5 0 004.84 4.84l.75-1.5a1 1 0 011.18-.5l3.3 1.1a1 1 0 01.68.95V15a2 2 0 01-2 2h-1C7.8 17 3 12.2 3 6V5z"/>
+                </svg>
+                Telefon
+              </span>
+              <span class="block text-[14px] text-[#0A0A0C] underline underline-offset-2 decoration-[#0A0A0C]/40 group-hover:decoration-[#00C45C]">{SITE.phone}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex items-end justify-center lg:justify-end min-h-[220px] sm:min-h-[280px] lg:min-h-[420px] pointer-events-none">
+        <img
+          src="/images/contact-hero.png"
+          alt=""
+          width="935"
+          height="972"
+          class="w-full max-w-[420px] h-auto object-contain object-bottom"
+          decoding="async"
+        />
+      </div>
     </div>
   </section>
 
@@ -55,7 +91,7 @@ const schema = {
         <aside class="lg:sticky lg:top-28 space-y-8" data-reveal>
 
           <div>
-            <SectionLabel tone="blue" class="mb-5">Direkter Kontakt</SectionLabel>
+            <SectionLabel tone="emerald" class="mb-5">Direkter Kontakt</SectionLabel>
             <div class="space-y-4">
 
               <a href={`mailto:${SITE.email}`} class="flex items-center gap-4 group p-4 rounded-2xl border border-[#EBEBEF] hover:border-[#D4D4D9] hover:bg-[#FAFAF8] transition-all">
@@ -88,19 +124,6 @@ const schema = {
                 </svg>
               </a>
 
-              <div class="flex items-center gap-4 p-4 rounded-2xl border border-[#EBEBEF]">
-                <div class="w-11 h-11 rounded-xl bg-[#F5F5F8] flex items-center justify-center shrink-0">
-                  <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[#88888F]">
-                    <path d="M10 2a6 6 0 016 6c0 4-6 10-6 10S4 12 4 8a6 6 0 016-6zM10 9a1 1 0 100-2 1 1 0 000 2z" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </div>
-                <div>
-                  <div class="text-[10px] label mb-0.5">Adresse</div>
-                  <div class="text-sm font-medium text-[#0C0C0F]">{SITE.address.street}</div>
-                  <div class="text-sm text-[#88888F]">{SITE.address.zip} {SITE.address.city}</div>
-                </div>
-              </div>
-
               {SITE.githubRepo && (
                 <a href={SITE.githubRepo} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group p-4 rounded-2xl border border-[#EBEBEF] hover:border-[#D4D4D9] hover:bg-[#FAFAF8] transition-all">
                   <div class="w-11 h-11 rounded-xl bg-[#F5F5F8] group-hover:bg-accent-50 flex items-center justify-center transition-colors shrink-0">
@@ -110,7 +133,7 @@ const schema = {
                   </div>
                   <div>
                     <div class="text-[10px] label mb-0.5">GitHub</div>
-                    <div class="text-sm font-semibold text-[#0C0C0F] group-hover:text-accent-600 transition-colors">Zula-Studios/website</div>
+                    <div class="text-sm font-semibold text-[#0C0C0F] group-hover:text-accent-600 transition-colors">Zula-Studios</div>
                   </div>
                   <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="ml-auto text-[#AEAEB5] group-hover:text-accent-600 group-hover:translate-x-0.5 transition-all">
                     <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -121,36 +144,15 @@ const schema = {
             </div>
           </div>
 
-          <!-- Availability -->
-          <div class="rounded-2xl bg-[#FAFAF8] border border-[#EBEBEF] p-5">
-            <SectionLabel tone="violet" class="mb-4">Erreichbarkeit</SectionLabel>
-            <div class="space-y-2.5 text-sm">
-              <div class="flex justify-between">
-                <span class="text-[#62626E]">Montag – Freitag</span>
-                <span class="font-semibold text-[#0C0C0F]">09:00 – 18:00</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-[#62626E]">Samstag – Sonntag</span>
-                <span class="text-[#AEAEB5]">Auf Anfrage</span>
-              </div>
-              <div class="pt-3 border-t border-[#EBEBEF] flex items-center gap-2 text-emerald-600 text-xs font-semibold">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
-                Antwort innerhalb von 24 Stunden
-              </div>
-            </div>
-          </div>
-
           <!-- CTA to project wizard -->
-          <div class="rounded-2xl bg-[#0C0C0F] p-5">
-            <p class="text-white font-semibold text-[15px] mb-1.5 tracking-[-0.01em]">Haben Sie ein konkretes Projekt?</p>
-            <p class="text-[#9898A0] text-sm leading-relaxed mb-4">Nutzen Sie unseren geführten Projektassistenten für eine schnellere Antwort.</p>
-            <a href="/projekt-starten" class="inline-flex items-center gap-2 bg-white text-[#0C0C0F] text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors">
+          <div class="rounded-2xl bg-[#F4F5F7] border border-[#E4E6EB] p-5">
+            <p class="text-[#0A0A0C] font-semibold text-[15px] mb-1.5 tracking-[-0.01em]">Haben Sie ein konkretes Projekt?</p>
+            <p class="text-[#62626E] text-sm leading-relaxed mb-4">Nutzen Sie unseren geführten Projektassistenten für eine schnellere Antwort.</p>
+            <a href="/projekt-starten" class="inline-flex items-center gap-2 btn btn-primary text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors">
               Projekt starten
               <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
-          </div>
-
-        </aside>
+          </div></aside>
 
         <!-- Right: simple form -->
         <div data-reveal data-delay="2">
@@ -226,18 +228,18 @@ const schema = {
     to   { opacity: 1; transform: none; }
   }
   .float-group { position: relative; }
-  .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0C0C0F; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
+  .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0A0A0C; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
   .float-input:hover { border-color: #D4D4D9; }
-  .float-input:focus { border-color: #0284C7; background: white; box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+  .float-input:focus { border-color: #00C45C; background: white; box-shadow: 0 0 0 3px rgba(0,196,92,0.15); }
   .float-textarea    { resize: none; padding-bottom: 2rem; }
   .float-label       { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.875rem; color: #AEAEB5; pointer-events: none; transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease, transform 0.15s ease; white-space: nowrap; transform-origin: left center; }
   .float-label--textarea { top: 1rem; transform: none; }
   .float-input:focus ~ .float-label,
-  .float-input:not(:placeholder-shown) ~ .float-label { top: 0.45rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; transform: none; }
+  .float-input:not(:placeholder-shown) ~ .float-label { top: 0.45rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #00C45C; transform: none; }
   .float-textarea:focus ~ .float-label--textarea,
-  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea { top: 0.35rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; }
+  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea { top: 0.35rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #00C45C; }
   .custom-cb-wrapper:hover .cb-box { border-color: #AEAEB5; }
-  .cb-box.is-checked { background: #0284C7; border-color: #0284C7; }
+  .cb-box.is-checked { background: #00C45C; border-color: #00C45C; }
   .cb-box.is-checked .cb-check { opacity: 1 !important; transform: scale(1) !important; }
   #submit-btn.loading { opacity: 0.7; pointer-events: none; }
   #submit-btn.loading::after { content: ''; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 0.25rem; }
@@ -268,7 +270,7 @@ const schema = {
     const len = textarea.value.length;
     if (counter) {
       counter.textContent = `${len} / 1000`;
-      counter.style.color = len > 960 ? '#DC2626' : len > 880 ? '#0284C7' : '#D4D4D9';
+      counter.style.color = len > 960 ? '#DC2626' : len > 880 ? '#00C45C' : '#D4D4D9';
     }
   });
 

@@ -1,50 +1,40 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import DarkHero from '@/components/DarkHero.astro';
 import { SITE } from '@/config/site';
 import { bewerbungStelleOptions } from '@/data/careers';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Bewerbung – Zula Studios',
+  name: 'Bewerbung – Shopify & Web Entwickler Hamburg',
   description:
-    'Online-Bewerbung bei Zula Studios: Stelle wählen, Lebenslauf hochladen, Anschreiben senden. Wir melden uns zeitnah.',
+    'Bewerbungsformular bei Zula Studios Hamburg: Shopify- oder Web-Entwickler, Lebenslauf und Anschreiben online einreichen.',
   url: `${SITE.url}/karriere/bewerben`,
 };
 ---
 
 <BaseLayout
-  title="Jetzt bewerben"
-  description="Bewerbungsformular bei Zula Studios: Position wählen, Lebenslauf hochladen, Kontaktdaten und Anschreiben — wir melden uns innerhalb weniger Werktage."
+  title="Bewerbung – Shopify & Web Entwickler Hamburg"
+  description="Online-Bewerbung bei Zula Studios Hamburg: Shopify- oder Web-Entwickler (m/w/d), Lebenslauf hochladen — Antwort in wenigen Werktagen."
   schema={schema}
-  darkHero={true}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Karriere', url: '/karriere' },
     { name: 'Bewerbung', url: '/karriere/bewerben' },
   ]}
 >
-  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="absolute top-0 right-0 w-[500px] h-[420px]" style="background: radial-gradient(circle at 70% 25%, rgba(56,189,248,0.12), transparent 58%);"></div>
-    <div class="container relative z-10">
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a>
-        <span>/</span>
-        <a href="/karriere" class="hover:text-white transition-colors">Karriere</a>
-        <span>/</span>
-        <span class="text-white font-medium">Bewerbung</span>
-      </nav>
-      <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-5">Karriere</p>
-      <h1 class="font-bold text-white tracking-[-0.04em] max-w-2xl" style="font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 0.98;">
-        Jetzt<br />
-        <span class="font-light italic text-white/45">bewerben.</span>
-      </h1>
-      <p class="mt-6 text-[#B4B4BC] text-sm lg:text-[15px] max-w-xl leading-relaxed">
-        Fülle das Formular aus und lade deinen Lebenslauf (PDF oder Word) hoch — wir bestätigen den Eingang per E-Mail. Weitere Unterlagen kannst du bei Bedarf nachreichen.
-      </p>
-    </div>
-  </section>
+  <DarkHero
+    title="Jetzt"
+    accent="bewerben."
+    image="/images/heroes/hero-apply.png"
+    imageWidth={684}
+    imageHeight={776}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Karriere', href: '/karriere' }, { label: 'Bewerbung' }]}
+  >
+    <p>Fülle das Formular aus und lade deinen Lebenslauf hoch — wir bestätigen den Eingang per E-Mail.</p>
+  </DarkHero>
 
   <section class="bg-white py-14 lg:py-20">
     <div class="container max-w-2xl">
@@ -55,7 +45,7 @@ const schema = {
             id="stelle"
             name="stelle"
             required
-            class="w-full px-4 py-3.5 bg-[#FAFAF8] border-[1.5px] border-[#EBEBEF] rounded-xl text-sm text-[#0C0C0F] outline-none transition-colors hover:border-[#D4D4D9] focus:border-[#0284C7] focus:bg-white focus:ring-[3px] focus:ring-sky-500/15"
+            class="w-full px-4 py-3.5 bg-[#FAFAF8] border-[1.5px] border-[#EBEBEF] rounded-xl text-sm text-[#0C0C0F] outline-none transition-colors hover:border-[#D4D4D9] focus:border-[#00C45C] focus:bg-white focus:ring-[3px] focus:ring-[#00C45C]/15"
           >
             <option value="" disabled selected>Bitte wählen</option>
             {bewerbungStelleOptions.map((o) => (
@@ -339,7 +329,7 @@ const schema = {
     const len = textarea.value.length;
     if (counter) {
       counter.textContent = `${len} / 3000`;
-      counter.style.color = len > 2850 ? '#DC2626' : len > 2600 ? '#0284C7' : '#D4D4D9';
+      counter.style.color = len > 2850 ? '#DC2626' : len > 2600 ? '#00C45C' : '#D4D4D9';
     }
   });
 

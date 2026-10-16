@@ -31,12 +31,17 @@ const {
   keywords = [],
 } = Astro.props;
 
-// ── Title: max 60 chars, site name always at the end ─────────────────────────
-const pageTitle = title
-  ? `${title} | ${SITE.name}`
-  : `${SITE.name} – ${SITE.tagline}`;
+// ── Title: site name once at the end, avoid "… | Zula Studios | Zula Studios" ─
+const brand = SITE.name;
+const rawTitle = (title ?? '').trim();
+const titleWithoutBrand = rawTitle
+  .replace(new RegExp(`\\s*[|–—-]\\s*${brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i'), '')
+  .trim();
+const pageTitle = titleWithoutBrand
+  ? `${titleWithoutBrand} | ${brand}`
+  : `${brand} – ${SITE.tagline}`;
 
-// ── Canonical: always absolute ────────────────────────────────────────────────
+// ── Canonical: pathname only (ignore query params like ?stadt=) unless set ───
 const canonicalURL = canonical
   ? new URL(canonical, SITE.url).toString()
   : new URL(Astro.url.pathname, SITE.url).toString();
@@ -81,7 +86,7 @@ const organizationSchema = {
   sameAs: [...Object.values(SITE.social).filter(Boolean), SITE.githubRepo].filter(Boolean),
 };
 
-// WebSite with SearchAction (sitewide)
+// WebSite (sitewide) — no SearchAction until a real site search exists
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -90,14 +95,6 @@ const websiteSchema = {
   url: SITE.url,
   publisher: { '@id': `${SITE.url}/#organization` },
   inLanguage: 'de-DE',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${SITE.url}/blog?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
 };
 
 // BreadcrumbList (page-specific)
@@ -133,14 +130,18 @@ const pageSchemas: object[] = Array.isArray(schema)
 <meta name="author" content={author ?? SITE.name} />
 {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 
-<!-- Phone / email auto-detection prevention (avoids CLS on iOS) -->
-<meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
+<!-- Avoid auto-linking dates/emails; allow telephone for tap-to-call on mobile -->
+<meta name="format-detection" content="date=no, email=no, address=no" />
 
 <!-- ═══════════════════════════════════════════════
      GEO — Local SEO signals for Google Maps / local pack
 ════════════════════════════════════════════════ -->
-<meta name="geo.region" content="DE-BE" />
+<meta name="geo.region" content="DE-HH" />
 <meta name="geo.placename" content={SITE.address.city} />
+<meta name="geo.position" content={`${SITE.geo.latitude};${SITE.geo.longitude}`} />
+<meta name="ICBM" content={`${SITE.geo.latitude}, ${SITE.geo.longitude}`} />
+<meta name="coverage" content="Hamburg, Deutschland" />
+<meta name="distribution" content="global" />
 
 <!-- ═══════════════════════════════════════════════
      OPEN GRAPH (Facebook / LinkedIn / WhatsApp)

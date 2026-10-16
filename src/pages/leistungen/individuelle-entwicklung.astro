@@ -1,18 +1,19 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
+import { serviceSchema, faqPageSchema } from '@/lib/schema';
+import { projekte } from '@/data/projekte';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
+import { iso } from '@/data/visuals';
 
-const serviceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Service',
-  name: 'Individuelle Web-Entwicklung',
-  description:
-    'Custom Shopify Apps, Laravel-Backends und APIs, Frontends mit Astro.js und Next.js, API-Integrationen und Headless Commerce — maßgeschneidert für Ihr Business.',
-  provider: { '@type': 'Organization', name: SITE.name, url: SITE.url },
-  serviceType: 'Custom Software Development',
-  areaServed: { '@type': 'Country', name: 'Germany' },
-};
+const pageUrl = `${SITE.url}/leistungen/individuelle-entwicklung`;
+
+const caseTeasers = [...projekte]
+  .filter(p => p.serviceType === 'entwicklung')
+  .sort((a, b) => Number(b.featured) - Number(a.featured))
+  .slice(0, 2);
 
 const capabilities = [
   {
@@ -55,13 +56,43 @@ const useCases = [
   { case: 'Multi-Store', example: 'Zentrale Produktverwaltung für mehrere Shops' },
   { case: 'Subscription Commerce', example: 'Abo-Modelle & Recurring Revenue automatisiert' },
 ];
+
+const faqs = [
+  {
+    q: 'Wann lohnt sich individuelle Entwicklung statt Standard-Apps?',
+    a: 'Wenn Prozesse, Integrationen oder UX Standard-Apps nicht abbilden — oder laufende App-Kosten und Performance-Probleme Ihr Wachstum bremsen.',
+  },
+  {
+    q: 'Welche Technologien setzt ihr ein?',
+    a: 'Frontends mit Astro.js und Next.js, Backends und APIs mit Laravel, Shopify-Apps mit Remix/Node — immer passend zur Aufgabe, nicht zur Mode.',
+  },
+  {
+    q: 'Könnt ihr bestehende Shopify-Shops erweitern?',
+    a: 'Ja — Custom Apps, Liquid-Sections, Storefront API und ERP/PIM-Anbindungen gehören zu unserem Alltag. Gerne auch nach einem Shop-Relaunch.',
+  },
+  {
+    q: 'Arbeitet ihr als Entwicklungs-Partner remote?',
+    a: 'Ja. Basis in Hamburg, Zusammenarbeit deutschlandweit — mit klaren Sprints, Code-Reviews und dokumentierten APIs.',
+  },
+];
+
+const schemas = [
+  serviceSchema({
+    name: 'Individuelle Web-Entwicklung',
+    description:
+      'Custom Shopify Apps, Laravel-Backends, Astro/Next-Frontends und API-Integrationen — Web Agentur Hamburg, bundesweit remote.',
+    serviceType: 'Custom Software Development',
+    url: pageUrl,
+  }),
+  faqPageSchema(faqs),
+];
 ---
 
 <BaseLayout
-  title="Individuelle Web-Entwicklung – Astro.js, Next.js & Laravel"
-  description="Custom Shopify Apps, Laravel-Backends und APIs, Frontends mit Astro.js und Next.js, API-Integrationen und Headless Commerce. Maßgeschneiderte Lösungen von Zula Studios. Jetzt anfragen."
-  schema={serviceSchema}
-  darkHero={true}
+  title="Individuelle Webentwicklung Hamburg – Laravel & Shopify"
+  description="Individuelle Entwicklung aus Hamburg: Shopify Apps, Laravel-APIs, Astro/Next-Frontends. Für HH & remote. Technisches Briefing — jetzt Projekt anfragen."
+  schema={schemas}
+  darkHero={false}
   breadcrumbs={[
     { name: 'Startseite', url: '/' },
     { name: 'Leistungen', url: '/leistungen' },
@@ -69,39 +100,27 @@ const useCases = [
   ]}
 >
 
-  <!-- HERO -->
-  <section class="bg-[#0C0C0F] pb-20 pt-16 lg:pb-28 lg:pt-20 relative overflow-hidden hero-glow">
-    <div class="absolute inset-0" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
+  <DarkHero
+    title="Wenn Standard"
+    accent="nicht reicht."
+    image="/images/heroes/hero-laravel.png"
+    imageWidth={752}
+    imageHeight={663}
+    seo="Individuelle Webentwicklung in Hamburg — "
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen', href: '/leistungen' }, { label: 'Individuelle Entwicklung' }]}
+  >
+    <p>Custom Apps, Integrationen und Headless Commerce — mit Astro im Frontend und Laravel, wenn APIs und Logik tiefer gehen.</p>
+    <div class="hero-actions">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Projekt anfragen</a>
+    </div>
+  </DarkHero>
 
-    <div class="container relative z-10">
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-10 flex-wrap">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a><span>/</span>
-        <a href="/leistungen" class="hover:text-white transition-colors">Leistungen</a><span>/</span>
-        <span class="text-[#AEAEB5]">Individuelle Entwicklung</span>
-      </nav>
-
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 border border-[#1C1C25] rounded-full px-4 py-1.5 text-[11.5px] text-[#9898A0] font-medium mb-8">
-          <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
-          Individuelle Entwicklung
-        </div>
-        <h1
-          class="font-bold text-white tracking-[-0.04em] leading-[0.93] mb-6"
-          style="font-size: clamp(2.75rem, 7vw, 6rem); animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both"
-        >
-          Wenn Standard<br/>
-          <span class="font-light italic text-white/55">nicht ausreicht.</span>
-        </h1>
-        <p class="text-[#AEAEB5] text-base lg:text-lg max-w-xl leading-relaxed mb-10" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.2s both">
-          Custom Apps, tiefe Integrationen, Headless Commerce — mit Astro.js und Next.js für moderne Frontends und Laravel, wenn es um APIs, Backends und komplexe Logik geht. Wir entwickeln exakt das, was Ihr Business braucht.
-        </p>
-        <div class="flex flex-wrap gap-3" style="animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.3s both">
-          <a href="/projekt-starten" class="btn bg-white text-[#0C0C0F] hover:bg-[#F5F5F8] py-3.5 px-7 text-[15px] rounded-xl font-semibold">
-            Projekt anfragen
-            <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-        </div>
-      </div>
+  <!-- GEO -->
+  <section class="py-12 lg:py-16 bg-white border-b border-[#EBEBEF]">
+    <div class="container max-w-3xl">
+      <p class="text-[#62626E] text-base lg:text-lg leading-relaxed" data-reveal>
+        <strong class="text-[#0C0C0F] font-semibold">Web Agentur in Hamburg, bundesweit remote:</strong> Wir entwickeln maßgeschneiderte Apps, APIs und Frontends für E-Commerce und Web — von der ersten Architektur-Skizze bis zum produktiven Betrieb.
+      </p>
     </div>
   </section>
 
@@ -109,7 +128,7 @@ const useCases = [
   <section class="py-20 lg:py-24 bg-white">
     <div class="container">
       <div class="mb-12" data-reveal>
-        <SectionLabel tone="blue" class="mb-3">Kernkompetenzen</SectionLabel>
+        <SectionLabel tone="emerald" class="mb-3">Kernkompetenzen</SectionLabel>
         <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">Was wir entwickeln</h2>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -118,6 +137,7 @@ const useCases = [
             class="p-7 bg-[#FAFAF8] rounded-2xl border border-[#EBEBEF] hover:bg-white hover:border-[#D4D4D9] hover:shadow-sm transition-all group cursor-default"
             data-reveal data-delay={String((i % 3) + 1)}
           >
+            <div class="mb-4"><IsoIcon src={[iso.shopify, iso.style, iso.code, iso.astro, iso.chart, iso.launch][i]} /></div>
             <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2 group-hover:text-accent-600 transition-colors">{cap.title}</h3>
             <p class="text-[#88888F] text-sm leading-relaxed mb-4">{cap.desc}</p>
             <div class="flex flex-wrap gap-1.5">
@@ -137,7 +157,7 @@ const useCases = [
       <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 lg:gap-24">
 
         <div data-reveal>
-          <SectionLabel tone="violet" class="mb-4">Warum maßgeschneidert?</SectionLabel>
+          <SectionLabel tone="emerald" class="mb-4">Warum maßgeschneidert?</SectionLabel>
           <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-5" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
             Volle Kontrolle.<br/>Kein Kompromiss.
           </h2>
@@ -180,12 +200,74 @@ const useCases = [
     </div>
   </section>
 
+  <!-- CASES -->
+  {caseTeasers.length > 0 && (
+    <section class="py-20 lg:py-24 bg-[#F4F5F7]">
+      <div class="container">
+        <div class="mb-10 lg:mb-12" data-reveal>
+          <SectionLabel tone="emerald" class="mb-3">Referenzen</SectionLabel>
+          <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+            Custom Development in echten Projekten
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+          {caseTeasers.map((p, i) => (
+            <a
+              href={`/referenzen/${p.slug}`}
+              class="group flex flex-col rounded-2xl overflow-hidden border border-[#E4E6EB] bg-[#F4F5F7] hover:border-[#00F573]/50 transition-all min-h-[220px]"
+              data-reveal
+              data-delay={String(i + 1)}
+            >
+              <div class="flex-1 p-6 lg:p-7 flex flex-col">
+                <p class="text-[11px] font-bold uppercase tracking-[0.12em] text-[#00C45C] mb-3">
+                  {p.service} · {p.jahr}
+                </p>
+                <h3 class="font-bold text-[#0A0A0C] text-xl tracking-[-0.02em] mb-2 group-hover:text-[#00C45C] transition-colors">
+                  {p.client}
+                </h3>
+                <p class="text-[#62626E] text-[14px] leading-snug max-w-sm mb-auto line-clamp-2">
+                  {p.tagline}
+                </p>
+              </div>
+              <div class="flex items-center justify-between px-6 lg:px-7 py-3.5 bg-[#00F573] text-[#1D273D]">
+                <span class="text-[12px] font-extrabold uppercase tracking-[0.14em]">Ansehen</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="group-hover:translate-x-0.5 transition-transform" aria-hidden="true">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  <section class="py-20 bg-white">
+    <div class="container max-w-2xl">
+      <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
+      <div class="space-y-2">
+        {faqs.map(item => (
+          <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
+            <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
+              {item.q}
+              <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform">
+                <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+            </summary>
+            <div class="px-5 pb-4 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-3.5">{item.a}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
-  <section class="bg-[#0C0C0F] py-20 relative overflow-hidden cta-glow">
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 border-t border-[#E4E6EB]">
     <div class="container relative z-10 text-center max-w-xl mx-auto">
-      <h2 class="font-bold text-white tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Haben Sie ein Projekt im Kopf?</h2>
-      <p class="text-[#9898A0] mb-8" data-reveal data-delay="1">Schildern Sie uns Ihre Anforderungen — wir antworten innerhalb von 24 Stunden.</p>
-      <a href="/projekt-starten" class="btn btn-accent py-3.5 px-8 text-[15px] rounded-xl font-semibold" data-reveal data-delay="2">
+      <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>Haben Sie ein Projekt im Kopf?</h2>
+      <p class="text-[#62626E] mb-8" data-reveal data-delay="1">Schildern Sie uns Ihre Anforderungen — wir antworten innerhalb von 24 Stunden.</p>
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[14px] uppercase tracking-[0.06em]" data-reveal data-delay="2">
         Projekt anfragen
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>

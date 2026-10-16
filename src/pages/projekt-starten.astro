@@ -2,31 +2,33 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
+import { iso } from '@/data/visuals';
 import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import { localBusinessSchema } from '@/lib/schema';
 
-const schema = {
+const contactPageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  name: 'Projekt starten – Zula Studios',
+  name: 'Projekt starten – Erstgespräch Zula Studios Hamburg',
+  description:
+    'Kostenloses Erstgespräch und unverbindliches Angebot für Shopify- und Web-Projekte — Shopify Agentur Hamburg.',
   url: `${SITE.url}/projekt-starten`,
-  mainEntity: {
-    '@type': 'Organization',
-    name: SITE.name,
-    telephone: SITE.phone,
-    email: SITE.email,
-  },
+  mainEntity: { '@id': `${SITE.url}/#localservice` },
 };
 
+const schema = [contactPageSchema, localBusinessSchema()];
+
 const services = [
-  { value: 'shopify-shop',             label: 'Shopify Shop',       desc: 'Neuer Shop von Grund auf',  iconName: 'shop'      },
-  { value: 'shopify-migration',        label: 'Migration',          desc: 'Wechsel zu Shopify',        iconName: 'migration' },
-  { value: 'wordpress-astro-migration', label: 'WordPress → Astro', desc: 'Migration & Headless CMS',  iconName: 'globe'     },
-  { value: 'landingpages',             label: 'Landingpage',        desc: 'Ads & Lead-Kampagnen',      iconName: 'target'    },
-  { value: 'astro-websites',           label: 'Astro Website',      desc: 'Unternehmenswebsite',       iconName: 'layers'    },
-  { value: 'individuelle-entwicklung', label: 'Custom App',         desc: 'Apps & Integrationen',      iconName: 'code'      },
-  { value: 'optimierung',              label: 'Optimierung',        desc: 'Performance & Conversion',  iconName: 'zap'       },
-  { value: 'beratung',                 label: 'Beratung / Audit',   desc: 'Strategie & Analyse',       iconName: 'eye'       },
-  { value: 'sonstiges',                label: 'Sonstiges',          desc: 'Anderes Vorhaben',          iconName: 'layers'    },
+  { value: 'shopify-shop',             label: 'Shopify Shop',       desc: 'Neuer Shop von Grund auf',  icon: iso.shopify },
+  { value: 'shopify-migration',        label: 'Migration',          desc: 'Wechsel zu Shopify',        icon: iso.migration },
+  { value: 'wordpress-astro-migration', label: 'WordPress → Astro', desc: 'Migration & Headless CMS',  icon: iso.astro },
+  { value: 'landingpages',             label: 'Landingpage',        desc: 'Ads & Lead-Kampagnen',      icon: iso.landing },
+  { value: 'astro-websites',           label: 'Astro Website',      desc: 'Unternehmenswebsite',       icon: iso.astro },
+  { value: 'individuelle-entwicklung', label: 'Custom App',         desc: 'Apps & Integrationen',      icon: iso.code },
+  { value: 'optimierung',              label: 'Optimierung',        desc: 'Performance & Conversion',  icon: iso.chart },
+  { value: 'beratung',                 label: 'Beratung / Audit',   desc: 'Strategie & Analyse',       icon: iso.talk },
+  { value: 'sonstiges',                label: 'Sonstiges',          desc: 'Anderes Vorhaben',          icon: iso.plan },
 ];
 
 const timelines = [
@@ -45,32 +47,23 @@ const trust = [
 ---
 
 <BaseLayout
-  title="Projekt starten – Kostenloses Erstgespräch"
-  description="Starten Sie Ihr Shopify-Projekt. Wir melden uns innerhalb von 24 Stunden mit einem ersten Konzept. Kostenlos und unverbindlich."
+  title="Projekt starten – Erstgespräch Shopify Agentur Hamburg"
+  description="Kostenloses Erstgespräch & Angebot von Zula Studios Hamburg: Shopify, Migration, Astro-Web. Antwort in 24 Std. — unverbindlich."
   schema={schema}
-  darkHero={true}
+  darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Projekt starten', url: '/projekt-starten' }]}
 >
 
-  <!-- HERO -->
-  <section class="bg-[#0C0C0F] pt-20 pb-16 relative overflow-hidden hero-glow">
-    <div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 32px 32px;"></div>
-    <div class="container relative z-10">
-      <nav class="flex items-center gap-2 text-xs text-[#9898A0] mb-12">
-        <a href="/" class="hover:text-white transition-colors">Startseite</a>
-        <span>/</span>
-        <span class="text-white font-medium">Projekt starten</span>
-      </nav>
-      <p class="text-[#9898A0] text-[11px] font-semibold tracking-[0.2em] uppercase mb-5 flex items-center gap-3">
-        <span class="w-5 h-px bg-[#2E2E3A]"></span>
-        Kostenloses Erstgespräch
-      </p>
-      <h1 class="font-bold text-white tracking-[-0.04em]" style="font-size: clamp(2.75rem, 7vw, 5.5rem); line-height: 0.93; animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both">
-        Starten wir<br/>
-        <span class="font-light italic text-white/45">Ihr Projekt.</span>
-      </h1>
-    </div>
-  </section>
+  <DarkHero
+    title="Kostenloses"
+    accent="Erstgespräch."
+    image="/images/heroes/hero-project.png"
+    imageWidth={810}
+    imageHeight={724}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Projekt starten' }]}
+  >
+    <p>Unverbindliches Angebot für Shopify und Web — aus Hamburg, für Unternehmen in HH und ganz Deutschland.</p>
+  </DarkHero>
 
   <!-- MAIN -->
   <section class="bg-white py-16 lg:py-24">
@@ -80,7 +73,7 @@ const trust = [
         <!-- Sidebar -->
         <aside class="lg:sticky lg:top-28 space-y-6" data-reveal>
           <div>
-            <SectionLabel tone="blue" class="mb-5">Direkter Kontakt</SectionLabel>
+            <SectionLabel tone="emerald" class="mb-5">Direkter Kontakt</SectionLabel>
             <div class="space-y-3">
               <a href={`mailto:${SITE.email}`} class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-xl bg-[#F5F5F8] group-hover:bg-accent-50 flex items-center justify-center transition-colors shrink-0">
@@ -107,24 +100,6 @@ const trust = [
             </div>
           </div>
 
-          <div class="rounded-2xl bg-[#FAFAF8] border border-[#EBEBEF] p-5">
-            <SectionLabel tone="violet" class="mb-3">Erreichbarkeit</SectionLabel>
-            <div class="space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-[#62626E]">Mo – Fr</span>
-                <span class="font-medium text-[#0C0C0F]">09:00 – 18:00</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-[#62626E]">Sa – So</span>
-                <span class="text-[#AEAEB5]">Auf Anfrage</span>
-              </div>
-              <div class="pt-2.5 border-t border-[#EBEBEF] flex items-center gap-2 text-emerald-600 text-xs font-medium">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
-                Antwort innerhalb von 24 Stunden
-              </div>
-            </div>
-          </div>
-
           <div class="space-y-2.5">
             {trust.map(item => (
               <div class="flex items-center gap-2.5 text-sm text-[#62626E]">
@@ -135,22 +110,21 @@ const trust = [
           </div>
 
           <!-- Direct booking -->
-          <div class="rounded-2xl bg-[#0C0C0F] p-5">
-            <p class="text-white font-semibold text-[15px] mb-1.5 tracking-[-0.01em]">Lieber direkt sprechen?</p>
-            <p class="text-[#9898A0] text-sm leading-relaxed mb-4">Buchen Sie ein kostenloses Kennenlerngespräch – 30 Minuten, unverbindlich.</p>
+          <div class="rounded-2xl bg-[#F4F5F7] border border-[#E4E6EB] p-5">
+            <p class="text-[#0A0A0C] font-semibold text-[15px] mb-1.5 tracking-[-0.01em]">Lieber direkt sprechen?</p>
+            <p class="text-[#62626E] text-sm leading-relaxed mb-4">Buchen Sie ein kostenloses Kennenlerngespräch – 30 Minuten, unverbindlich.</p>
             <a
               href={`${SITE.calcomOrigin}/${SITE.calcom}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 bg-white text-[#0C0C0F] text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors"
+              class="inline-flex items-center gap-2 btn btn-primary text-[13px] font-semibold px-4 py-2.5 rounded-xl hover:bg-[#F5F5F8] transition-colors"
             >
               <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
                 <path d="M6 2v3M14 2v3M3 8h14M4 4h12a1 1 0 011 1v11a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Termin buchen
             </a>
-          </div>
-        </aside>
+          </div></aside>
 
         <!-- Multi-step form -->
         <div data-reveal data-delay="2">
@@ -192,9 +166,7 @@ const trust = [
                   <label class="service-option cursor-pointer">
                     <input type="radio" name="service" value={s.value} class="sr-only" required />
                     <div class="svc-card h-full rounded-2xl border-2 border-[#EBEBEF] p-4 flex flex-col gap-3 transition-all duration-150 hover:border-[#D4D4D9] hover:shadow-sm">
-                      <div class="svc-icon w-9 h-9 rounded-xl bg-[#F5F5F8] flex items-center justify-center transition-all duration-150">
-                        <Icon name={s.iconName} size={16} strokeWidth={1.75} class="transition-colors" />
-                      </div>
+                      <img src={s.icon} alt="" width="96" height="96" class="w-12 h-12 object-contain" loading="lazy" decoding="async" />
                       <div>
                         <div class="font-semibold text-[#0C0C0F] text-[13px] leading-tight mb-0.5">{s.label}</div>
                         <div class="text-[11px] text-[#AEAEB5] leading-snug">{s.desc}</div>
@@ -321,28 +293,28 @@ const trust = [
   }
   .step-circle { background: white; border-color: #EBEBEF; color: #AEAEB5; }
   .step-label  { color: #AEAEB5; }
-  [data-step-state="active"] .step-circle { background: #0C0C0F; border-color: #0C0C0F; color: white; }
-  [data-step-state="active"] .step-label  { color: #0C0C0F; }
-  [data-step-state="done"] .step-circle   { background: #0284C7; border-color: #0284C7; color: white; }
+  [data-step-state="active"] .step-circle { background: #00C45C; border-color: #00C45C; color: white; }
+  [data-step-state="active"] .step-label  { color: #0A0A0C; }
+  [data-step-state="done"] .step-circle   { background: #00C45C; border-color: #00C45C; color: white; }
   [data-step-state="done"] .step-num      { display: none; }
   [data-step-state="done"] .step-check    { display: block !important; }
-  [data-step-state="done"] .step-label    { color: #0284C7; }
-  .service-option input:checked ~ .svc-card { border-color: #0284C7; background: #F0F9FF; box-shadow: 0 0 0 1px #0284C7; }
-  .service-option input:checked ~ .svc-card .svc-icon { background: #0284C7; color: white; }
-  .timeline-option input:checked ~ .pill-card { border-color: #0284C7; background: #F0F9FF; color: #0369A1; font-weight: 600; box-shadow: 0 0 0 1px #0284C7; }
+  [data-step-state="done"] .step-label    { color: #00C45C; }
+  .service-option input:checked ~ .svc-card { border-color: #00C45C; background: #F0F9FF; box-shadow: 0 0 0 1px #00C45C; }
+  .service-option input:checked ~ .svc-card .svc-icon { background: #00C45C; color: white; }
+  .timeline-option input:checked ~ .pill-card { border-color: #00C45C; background: #F0F9FF; color: #0369A1; font-weight: 600; box-shadow: 0 0 0 1px #00C45C; }
   .float-group { position: relative; }
-  .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0C0C0F; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
+  .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0A0A0C; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
   .float-input:hover  { border-color: #D4D4D9; }
-  .float-input:focus  { border-color: #0284C7; background: white; box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+  .float-input:focus  { border-color: #00C45C; background: white; box-shadow: 0 0 0 3px rgba(0,196,92,0.15); }
   .float-textarea     { resize: none; padding-bottom: 2rem; }
   .float-label        { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.875rem; color: #AEAEB5; pointer-events: none; transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease, transform 0.15s ease; white-space: nowrap; transform-origin: left center; }
   .float-label--textarea { top: 1rem; transform: none; }
   .float-input:focus ~ .float-label,
-  .float-input:not(:placeholder-shown) ~ .float-label { top: 0.45rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; transform: none; }
+  .float-input:not(:placeholder-shown) ~ .float-label { top: 0.45rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #00C45C; transform: none; }
   .float-textarea:focus ~ .float-label--textarea,
-  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea { top: 0.35rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #0284C7; }
+  .float-textarea:not(:placeholder-shown) ~ .float-label--textarea { top: 0.35rem; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.03em; color: #00C45C; }
   .custom-cb-wrapper:hover .cb-box { border-color: #AEAEB5; }
-  .cb-box.is-checked { background: #0284C7; border-color: #0284C7; }
+  .cb-box.is-checked { background: #00C45C; border-color: #00C45C; }
   .cb-box.is-checked .cb-check { opacity: 1 !important; transform: scale(1) !important; }
   #submit-btn.loading { opacity: 0.7; pointer-events: none; }
   #submit-btn.loading::after { content: ''; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-left: 0.25rem; }
@@ -417,7 +389,7 @@ const trust = [
     }
     for (let i = 1; i < TOTAL; i++) {
       const line = getConnector(i);
-      if (line) line.style.background = i < currentStep ? '#0284C7' : '#EBEBEF';
+      if (line) line.style.background = i < currentStep ? '#00C45C' : '#EBEBEF';
     }
   }
 
@@ -493,7 +465,7 @@ const trust = [
     const len = textarea.value.length;
     if (counter) {
       counter.textContent = `${len} / 500`;
-      counter.style.color = len > 480 ? '#DC2626' : len > 440 ? '#0284C7' : '#D4D4D9';
+      counter.style.color = len > 480 ? '#DC2626' : len > 440 ? '#00C45C' : '#D4D4D9';
     }
   });
 
