@@ -1,0 +1,139 @@
+---
+title: "Von ChatGPT gefunden werden: GEO-Leitfaden für Firmen"
+description: "So empfehlen ChatGPT, Perplexity & Google-KI Ihr Unternehmen: llms.txt, strukturierte Daten, zitierfähige Inhalte und Erwähnungen – Schritt für Schritt."
+publishedDate: "2026-11-25"
+author: "Zula Studios Team"
+category: "SEO"
+tags: ["geo", "ki-suche", "chatgpt", "seo", "llms.txt"]
+readingTime: 9
+featured: true
+---
+
+**Kurz beantwortet:** Damit ChatGPT, Perplexity, Claude oder Googles KI-Übersichten Ihr Unternehmen nennen, müssen die KI-Systeme Ihre Seite crawlen dürfen, Ihre Inhalte leicht verstehen und zitieren können und Ihr Unternehmen auch auf anderen, unabhängigen Seiten finden. Diese Optimierung heißt **GEO (Generative Engine Optimization)** – sie baut auf klassischem SEO auf, setzt aber andere Schwerpunkte.
+
+Wir haben die folgenden Schritte selbst auf zulastudios.com umgesetzt. Dieser Leitfaden zeigt, was wir gemacht haben und warum.
+
+## SEO vs. GEO: Was ist der Unterschied?
+
+| | Klassisches SEO | GEO |
+|---|---|---|
+| Ziel | Platz in den blauen Links | Erwähnung und Zitat in der KI-Antwort |
+| Nutzer sieht | Liste mit Ergebnissen | Eine zusammengefasste Antwort |
+| Wichtig | Keywords, Backlinks, Technik | Klare Fakten, Struktur, Erwähnungen |
+| Erfolg messen | Rankings, Klicks | Nennungen in KI-Antworten, Verweis-Traffic |
+
+Die gute Nachricht: Was für GEO hilft, schadet SEO nicht – im Gegenteil. Klare, gut strukturierte Inhalte gefallen Google genauso.
+
+## Schritt 1: KI-Crawler zulassen
+
+Viele Websites blockieren KI-Crawler unbewusst – etwa durch eine strenge Firewall oder eine alte `robots.txt`. Prüfen Sie, ob diese Crawler erlaubt sind:
+
+- **GPTBot, OAI-SearchBot, ChatGPT-User** (OpenAI / ChatGPT)
+- **ClaudeBot, Claude-SearchBot, Claude-User** (Anthropic / Claude)
+- **PerplexityBot, Perplexity-User** (Perplexity)
+- **Google-Extended** (Google Gemini) und **Applebot-Extended** (Apple)
+
+Ein Eintrag in der `robots.txt` sieht so aus:
+
+```text
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+Allow: /
+```
+
+## Schritt 2: Eine llms.txt anlegen
+
+Die `llms.txt` ist ein noch junger, aber zunehmend verbreiteter Vorschlag: eine einfache Textdatei im Markdown-Format unter `ihre-domain.de/llms.txt`, die KI-Systemen in Kurzform erklärt, wer Sie sind, was Sie anbieten und wo die wichtigsten Seiten liegen.
+
+Unsere enthält:
+
+- eine Zusammenfassung in zwei Sätzen (wer, was, wo),
+- harte Fakten: Standort, Einsatzgebiet, Kontakt, Schwerpunkte,
+- alle Leistungen, Referenzen und Ratgeber mit Kurzbeschreibung und Link.
+
+Zusätzlich gibt es eine `llms-full.txt` mit allen Inhalten im Volltext. Wichtig: Beide Dateien werden bei uns **automatisch aus den Website-Daten erzeugt** – neue Leistungen oder Artikel erscheinen dort ohne Zusatzaufwand. Eine von Hand gepflegte Datei veraltet erfahrungsgemäß schnell.
+
+> Ob und wie stark einzelne KI-Anbieter die llms.txt auswerten, ist nicht offiziell bestätigt. Der Aufwand ist aber gering, und eine saubere Zusammenfassung Ihres Unternehmens schadet in keinem Fall.
+
+## Schritt 3: Antwort zuerst schreiben
+
+KI-Systeme zitieren am liebsten Absätze, die eine Frage direkt und vollständig beantworten. Beginnen Sie wichtige Seiten deshalb mit der Antwort, nicht mit einer Einleitung.
+
+**Schlecht:** „In der heutigen digitalen Welt ist ein Onlineshop wichtiger denn je …“
+
+**Gut:** „Ein professioneller Shopify-Shop kostet bei uns zwischen 8.000 € und 14.000 € netto.“
+
+Genau so haben wir unseren Artikel [Was kostet ein Shopify-Shop?](/blog/was-kostet-ein-shopify-shop) aufgebaut.
+
+**Weitere Grundregeln für zitierfähige Inhalte:**
+
+- Konkrete Zahlen statt vager Aussagen (Preise, Zeiträume, Mengen)
+- Eine Frage pro Abschnitt, als Überschrift formuliert
+- FAQ-Abschnitte mit kurzen, eigenständigen Antworten
+- Tabellen für Vergleiche und Übersichten
+
+## Schritt 4: Strukturierte Daten nutzen
+
+Mit Schema.org-Markup sagen Sie Maschinen ausdrücklich, was auf einer Seite steht. Für Unternehmenswebsites sind besonders wichtig:
+
+- **Organization / LocalBusiness:** Name, Adresse, Kontakt, Einsatzgebiet und Kompetenzen (`knowsAbout`)
+- **Service:** für jede Leistungsseite
+- **FAQPage:** für Frage-Antwort-Abschnitte
+- **Article:** für Ratgeber, mit Datum und Autor
+- **BreadcrumbList:** für die Seitenstruktur
+
+## Schritt 5: Bing nicht vergessen
+
+Die Websuche von ChatGPT und Microsoft Copilot greift auf den Bing-Index zurück. Wer nur an Google denkt, verschenkt Sichtbarkeit. Deshalb:
+
+- die Website in den **Bing Webmaster Tools** anmelden (Import aus der Google Search Console ist mit einem Klick möglich),
+- **IndexNow** einrichten, damit neue und geänderte Seiten sofort gemeldet werden statt erst beim nächsten Crawl.
+
+## Schritt 6: Technische Konsistenz
+
+KI-Systeme und Suchmaschinen verlassen sich darauf, dass Ihre Angaben überall gleich sind. Bei unserer eigenen Prüfung fanden wir zum Beispiel, dass in der Konfiguration noch eine alte Domain hinterlegt war – Sitemap, Canonical-Links und strukturierte Daten zeigten damit auf eine Adresse, die nicht existierte. Solche Fehler fallen im Browser nicht auf, verwirren aber jeden Crawler.
+
+**Prüfen Sie:**
+
+- Stimmen Domain, Canonical-Links und Sitemap überein?
+- Sind Name, Adresse und Telefonnummer überall identisch – auf der Website, im Google-Unternehmensprofil und in Verzeichnissen?
+- Widersprechen sich Angaben (z. B. Gründungsjahr und „Jahre Erfahrung“)?
+
+## Schritt 7: Erwähnungen außerhalb Ihrer Website
+
+Das ist der wichtigste und zugleich langsamste Faktor: KI-Systeme empfehlen bevorzugt Unternehmen, über die auf mehreren unabhängigen Seiten gesprochen wird. Ihre eigene Website allein reicht dafür nicht.
+
+**Gute Quellen für Erwähnungen:**
+
+- Google-Unternehmensprofil mit echten Bewertungen
+- Branchenverzeichnisse und Partnerverzeichnisse (z. B. von Shopify)
+- Fachartikel, Gastbeiträge und Interviews
+- Kundenstimmen und Case Studies auf den Seiten Ihrer Kunden
+- Aktive Profile auf LinkedIn mit regelmäßigen Beiträgen
+
+## Wie messe ich den Erfolg?
+
+GEO lässt sich noch nicht so präzise messen wie SEO. Praktikable Ansätze:
+
+- **Verweis-Traffic** von chatgpt.com, perplexity.ai und ähnlichen Quellen in Ihrer Webanalyse beobachten
+- **Regelmäßig selbst fragen:** Stellen Sie ChatGPT, Perplexity und Gemini die Fragen, die Ihre Kunden stellen würden („Welche Shopify-Agentur in Hamburg …?“), und notieren Sie, wer genannt wird
+- **Anfragen erfassen:** Fragen Sie neue Kunden, wie sie auf Sie aufmerksam geworden sind
+
+## Häufige Fragen
+
+### Ist GEO ein Ersatz für SEO?
+
+Nein. GEO baut auf SEO auf. Eine technisch saubere, schnelle Seite mit guten Inhalten ist die Grundlage für beides.
+
+### Wie schnell wirkt GEO?
+
+Technische Maßnahmen wie Crawler-Freigaben, llms.txt und IndexNow wirken innerhalb von Tagen bis Wochen. Erwähnungen auf anderen Seiten aufzubauen dauert Monate – ist aber der nachhaltigste Hebel.
+
+### Brauche ich für GEO eine neue Website?
+
+Meist nicht. Die meisten Maßnahmen lassen sich in bestehende Websites einbauen. Wenn Ihre Seite allerdings langsam, schlecht strukturiert oder technisch veraltet ist, kann ein Relaunch der schnellere Weg sein.
+
+---
+
+**Sie möchten wissen, wie sichtbar Ihr Unternehmen in KI-Suchen ist?** Wir prüfen Ihre Website auf technische Fehler und GEO-Potenzial und setzen die Maßnahmen um. [Projekt starten](/projekt-starten)
