@@ -10,10 +10,37 @@ Disallow: /api/
 # ── Google: full crawl ─────────────────────────────────────────────────────────
 User-agent: Googlebot
 Allow: /
+Disallow: /danke
+Disallow: /api/
 
 # ── Bing ──────────────────────────────────────────────────────────────────────
 User-agent: Bingbot
 Allow: /
+Disallow: /danke
+Disallow: /api/
+
+# ── KI-Suche & Assistenten: ausdrücklich erlaubt ─────────────────────────────
+# Damit ChatGPT, Claude, Perplexity, Gemini & Co. Zula Studios finden und
+# zitieren können. Kompakte Übersicht für KI-Systeme: /llms.txt (Volltext: /llms-full.txt)
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: meta-externalagent
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+Allow: /
+Disallow: /danke
+Disallow: /api/
 
 # ── Disallow known scraper / spam bots ────────────────────────────────────────
 User-agent: AhrefsBot
@@ -29,4 +56,4 @@ User-agent: DotBot
 Disallow: /
 
 # ── Sitemap ───────────────────────────────────────────────────────────────────
-Sitemap: https://zulastudios.de/sitemap-index.xml
+Sitemap: https://zulastudios.com/sitemap-index.xml

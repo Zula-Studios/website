@@ -20,7 +20,7 @@ const schema = [contactPageSchema, localBusinessSchema()];
 
 <BaseLayout
   title="Kontakt Shopify Agentur Hamburg"
-  description="Shopify Agentur Hamburg: hello@zulastudios.com, +49 176 34 44 74 85. Formular und Antwort in 24 Std."
+  description="Kontakt zur Shopify Agentur Zula Studios in Hamburg: hello@zulastudios.com, +49 176 34 44 74 85 oder Formular – Antwort innerhalb von 24 Stunden."
   schema={schema}
   darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Kontakt', url: '/kontakt' }]}
@@ -176,15 +176,9 @@ const schema = [contactPageSchema, localBusinessSchema()];
               </div>
             </div>
 
-            <!-- Phone (optional) -->
-            <div class="float-group">
-              <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
-              <label for="telefon" class="float-label">Telefon (optional)</label>
-            </div>
-
             <!-- Message -->
             <div class="float-group float-group--textarea">
-              <textarea id="nachricht" name="nachricht" required placeholder=" " rows="6" maxlength="1000" class="float-input float-textarea"></textarea>
+              <textarea id="nachricht" name="nachricht" required placeholder=" " rows="5" maxlength="1000" class="float-input float-textarea"></textarea>
               <label for="nachricht" class="float-label float-label--textarea">Ihre Nachricht *</label>
               <div id="char-counter" class="absolute bottom-3 right-3.5 text-[10.5px] text-[#D4D4D9] pointer-events-none tabular-nums">0 / 1000</div>
             </div>

@@ -3,72 +3,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
 import DarkHero from '@/components/DarkHero.astro';
 import IsoIcon from '@/components/IsoIcon.astro';
-import { iso } from '@/data/visuals';
 import { SITE } from '@/config/site';
+import { servicesByCategory, serviceHref } from '@/data/services';
 
-const services = [
-  {
-    num: '01',
-    title: 'Shopify Shop erstellen',
-    desc: 'Von der Konzeption über das Custom Theme bis zum Launch. Performante Shops, die konvertieren.',
-    image: iso.shopify,
-    href: '/leistungen/shopify-shop-erstellen',
-    cta: 'Shop erstellen lassen',
-    features: ['Custom Theme Entwicklung', 'Mobile-first Design', 'SEO-Volloptimierung', 'Zahlungsanbieter-Integration', 'Performance-Optimierung'],
-  },
-  {
-    num: '02',
-    title: 'Shopify Migration',
-    desc: 'Sicher & datenverlustfrei von WooCommerce, Magento, OXID, Shopware und anderen Systemen zu Shopify.',
-    image: iso.migration,
-    href: '/leistungen/shopify-migration',
-    cta: 'Migration starten',
-    features: ['Datenmigration (Produkte, Kunden, Bestellungen)', 'SEO URL-Redirects', 'Zero-Downtime Ansatz', 'QA & Testing', 'Post-Launch Support'],
-  },
-  {
-    num: '03',
-    title: 'WordPress zu Astro Migration',
-    desc: 'WordPress-Website zu blitzschnellem Astro-Frontend mit Headless CMS — inklusive Content-Übernahme, SEO-Redirects und Redaktions-Workflow.',
-    image: iso.astro,
-    href: '/leistungen/wordpress-astro-migration',
-    cta: 'Migration anfragen',
-    features: ['Astro.js Frontend', 'Headless CMS (Sanity, Strapi & Co.)', 'Content- & Medienmigration', '301-Redirects & SEO', 'Core Web Vitals Optimierung', 'Redaktions-Schulung'],
-  },
-  {
-    num: '04',
-    title: 'Landingpages',
-    desc: 'Conversion-starke Landingpages mit Astro.js — schnell, mobil optimiert und perfekt für Ads, Produkt-Launches und Lead-Kampagnen.',
-    image: iso.landing,
-    href: '/leistungen/landingpages',
-    cta: 'Landingpage anfragen',
-    features: ['Astro.js Performance', 'Conversion-Design', 'Formulare & Lead-Capture', 'GA4 & Meta Pixel', 'Core Web Vitals optimiert', 'Launch in 2–3 Wochen'],
-  },
-  {
-    num: '05',
-    title: 'Astro Websites',
-    desc: 'Unternehmenswebsites und Marketing-Sites mit Astro.js — schnell, SEO-stark, optional mit Headless CMS für Ihr Redaktionsteam.',
-    image: iso.astro,
-    href: '/leistungen/astro-websites',
-    cta: 'Website anfragen',
-    features: ['5–15+ Seiten', 'Design System & Komponenten', 'Blog & Referenzen', 'Headless CMS optional', 'Core Web Vitals & SEO', 'Shopify-Anbindung möglich'],
-  },
-  {
-    num: '06',
-    title: 'Individuelle Entwicklung',
-    desc: 'Custom Apps, Liquid-Entwicklung und API-Integrationen — mit Astro.js, Next.js und Laravel dort, wo es technisch Sinn macht. Maßgeschneidert, wenn Standard nicht ausreicht.',
-    image: iso.laravel,
-    href: '/leistungen/individuelle-entwicklung',
-    cta: 'Projekt besprechen',
-    features: ['Custom Shopify Apps', 'Frontends: Astro.js & Next.js', 'Backends & APIs: Laravel', 'ERP / PIM / WMS Integration', 'Headless Commerce', 'Performance-Audits'],
-  },
-];
+// Fortlaufende Nummerierung über alle Kategorien hinweg
+let counter = 0;
+const groups = servicesByCategory.map(g => ({
+  ...g,
+  items: g.items.map(s => ({ ...s, num: String(++counter).padStart(2, '0'), href: serviceHref(s) })),
+}));
+const services = groups.flatMap(g => g.items);
+const showCategoryHeadings = groups.length > 1;
 
 const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Leistungen – Zula Studios Hamburg',
   description:
-    'Shopify, Astro-Websites, Migrationen, Landingpages und individuelle Webentwicklung aus Hamburg.',
+    'Shopify-Shops, Migrationen, Landingpages, individuelle Webentwicklung und KI-Lösungen aus Hamburg.',
   itemListElement: services.map((s, i) => ({
     '@type': 'ListItem',
     position: i + 1,
@@ -80,8 +32,8 @@ const itemListSchema = {
 ---
 
 <BaseLayout
-  title="Leistungen: Shopify, Astro & Webentwicklung Hamburg"
-  description="Shopify Agentur in Hamburg: Shops, Migrationen, Astro-Websites, Landingpages & Custom Code — bundesweit remote. Jetzt kostenloses Erstgespräch vereinbaren."
+  title="Leistungen: Shopify, KI & Webentwicklung Hamburg"
+  description="Shopify Agentur Hamburg: Shops, Migrationen, Landingpages, Custom Development und KI-Lösungen – bundesweit remote. Kostenloses Erstgespräch vereinbaren."
   schema={itemListSchema}
   darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Leistungen', url: '/leistungen' }]}
@@ -92,10 +44,10 @@ const itemListSchema = {
     image="/images/heroes/hero-services.png"
     imageWidth={760}
     imageHeight={700}
-    seo="Leistungen: Shopify, Astro und Webentwicklung in Hamburg. "
+    seo="Leistungen: Shopify, KI und Webentwicklung in Hamburg. "
     crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen' }]}
   >
-    <p>Shopify-Shops, Migrationen, Astro-Websites und individuelle Entwicklung — für Unternehmen in Hamburg und bundesweit remote.</p>
+    <p>Shopify-Shops, Migrationen, individuelle Entwicklung und KI-Lösungen — für Unternehmen in Hamburg und bundesweit remote.</p>
     <div class="hero-actions">
       <a href="/projekt-starten" class="btn btn-primary text-[13px] uppercase tracking-[0.05em]">Projekt anfragen</a>
     </div>
@@ -103,34 +55,51 @@ const itemListSchema = {
 
   <!-- Services -->
   <section class="py-20 lg:py-24 bg-white">
-    <div class="container space-y-0 border-t border-[#EBEBEF]">
-      {services.map((s, i) => (
-        <div class="grid grid-cols-1 lg:grid-cols-[auto_auto_1fr_auto] gap-6 lg:gap-12 py-10 lg:py-14 border-b border-[#EBEBEF] items-start group" data-reveal>
-          <IsoIcon src={s.image} />
-          <span class="text-xs font-bold text-[#00F573] tabular-nums pt-1">{s.num}</span>
-          <div>
-            <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-3">{s.title}</h2>
-            <p class="text-[#62626E] text-base leading-relaxed mb-6 max-w-xl">{s.desc}</p>
-            <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {s.features.map(f => (
-                <li class="flex items-center gap-2.5 text-sm text-[#44444F]">
-                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none" class="text-accent-500 shrink-0">
-                    <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {f}
-                </li>
-              ))}
-            </ul>
+    {groups.map((g, gi) => (
+      <div class:list={['container', showCategoryHeadings && gi > 0 && 'mt-20 lg:mt-24']} id={showCategoryHeadings ? g.category.id : undefined}>
+        {showCategoryHeadings && (
+          <div class="mb-10 lg:mb-12" data-reveal>
+            <SectionLabel tone="emerald" class="mb-3">{g.category.label}</SectionLabel>
+            <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-3" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+              {g.category.title}
+            </h2>
+            <p class="text-[#62626E] text-base leading-relaxed max-w-xl">{g.category.desc}</p>
           </div>
-          <div class="lg:pt-1">
-            <a href={s.href} class="btn btn-primary whitespace-nowrap">
-              {s.cta}
-              <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
+        )}
+        <div class="space-y-0 border-t border-[#EBEBEF]">
+          {g.items.map(s => (
+            <div class="grid grid-cols-1 lg:grid-cols-[auto_auto_1fr_auto] gap-6 lg:gap-12 py-10 lg:py-14 border-b border-[#EBEBEF] items-start group" data-reveal>
+              <IsoIcon src={s.image} />
+              <span class="text-xs font-bold text-[#00F573] tabular-nums pt-1">{s.num}</span>
+              <div>
+                {showCategoryHeadings ? (
+                  <h3 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-3">{s.title}</h3>
+                ) : (
+                  <h2 class="font-bold text-[#0C0C0F] text-2xl lg:text-3xl tracking-[-0.02em] mb-3">{s.title}</h2>
+                )}
+                <p class="text-[#62626E] text-base leading-relaxed mb-6 max-w-xl">{s.desc}</p>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {s.features.map(f => (
+                    <li class="flex items-center gap-2.5 text-sm text-[#44444F]">
+                      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" class="text-accent-500 shrink-0">
+                        <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="lg:pt-1">
+                <a href={s.href} class="btn btn-primary whitespace-nowrap">
+                  {s.cta}
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
   </section>
 
   <!-- CTA -->

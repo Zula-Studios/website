@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { emailHeader, emailSummaryStyle, EMAIL_LINK_STYLE } from '@/lib/email-layout';
 import { contactConfirmationHtml, escapeHtmlText } from '@/lib/email-confirmation-templates';
 import { getSmtpConfig, responseWhenSmtpNotConfigured, sendSmtpMail } from '@/lib/smtp-mail';
 import { SITE } from '@/config/site';
@@ -40,32 +41,29 @@ export const POST: APIRoute = async ({ request }) => {
 
   const row = (label: string, value: string) => `
     <tr>
-      <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; width: 140px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">${label}</td>
-      <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">${value}</td>
+      <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; width: 140px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">${label}</td>
+      <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">${value}</td>
     </tr>`;
 
   const html = `
-    <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #0C0C0F;">
-      <div style="background: #0C0C0F; padding: 28px 32px; border-radius: 12px 12px 0 0;">
-        <p style="color: #38BDF8; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 8px;">Neuer Lead: Gebäudereinigung</p>
-        <h1 style="color: white; font-size: 22px; font-weight: 700; margin: 0;">Zula Studios – Landingpage Gebäudereinigung</h1>
-      </div>
-      <div style="background: #F0F9FF; padding: 16px 32px; border: 1px solid #BAE6FD; border-top: none;">
-        <p style="margin: 0; font-size: 14px; color: #0369A1;">
+    <div style="font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #0A0A0C;">
+      ${emailHeader('Neuer Lead: Gebäudereinigung', 'Zula Studios – Landingpage Gebäudereinigung')}
+      <div style="${emailSummaryStyle()}">
+        <p style="margin: 0; font-size: 14px; color: #0A0A0C;">
           <strong style="font-weight: 700;">Status:</strong> ${escapeHtmlText(statusLabel)}
         </p>
       </div>
-      <div style="background: #FAFAF8; padding: 32px; border: 1px solid #EBEBEF; border-top: none;">
+      <div style="background: #FFFFFF; padding: 32px; border: 1px solid #E4E6EB; border-top: none;">
         <table style="width: 100%; border-collapse: collapse;">
           ${row('Name', escapeHtmlText(name))}
           ${row('Firma', escapeHtmlText(firma))}
-          ${row('E-Mail', `<a href="mailto:${escapeHtmlText(email)}" style="color: #0284C7; text-decoration: none;">${escapeHtmlText(email)}</a>`)}
-          ${telefon ? row('Telefon', `<a href="tel:${escapeHtmlText(telefon.replace(/\s/g, ''))}" style="color: #0284C7; text-decoration: none;">${escapeHtmlText(telefon)}</a>`) : ''}
+          ${row('E-Mail', `<a href="mailto:${escapeHtmlText(email)}" style="${EMAIL_LINK_STYLE}">${escapeHtmlText(email)}</a>`)}
+          ${telefon ? row('Telefon', `<a href="tel:${escapeHtmlText(telefon.replace(/\s/g, ''))}" style="${EMAIL_LINK_STYLE}">${escapeHtmlText(telefon)}</a>`) : ''}
           ${website ? row('Webseite', escapeHtmlText(website)) : ''}
           ${nachricht ? row('Nachricht', `<span style="white-space: pre-wrap; line-height: 1.6;">${escapeHtmlText(nachricht)}</span>`) : ''}
         </table>
       </div>
-      <div style="background: white; padding: 20px 32px; border: 1px solid #EBEBEF; border-top: none; border-radius: 0 0 12px 12px;">
+      <div style="background: #F4F5F7; padding: 20px 32px; border: 1px solid #E4E6EB; border-top: none; border-radius: 0 0 12px 12px;">
         <p style="margin: 0; font-size: 11px; color: #AEAEB5;">Eingegangen: ${new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })} Uhr · Landingpage Gebäudereinigung</p>
       </div>
     </div>

@@ -1,5 +1,6 @@
 ---
 import { SITE } from '@/config/site';
+import ogImages from '@/data/og-images.json';
 
 interface Props {
   title?: string;
@@ -13,14 +14,13 @@ interface Props {
   modifiedDate?: string;
   author?: string;
   breadcrumbs?: { name: string; url: string }[];
-  keywords?: string[];
 }
 
 const {
   title,
   description = SITE.description,
   canonical,
-  ogImage = SITE.ogImage,
+  ogImage: ogImageProp,
   ogType = 'website',
   noindex = false,
   schema,
@@ -28,7 +28,6 @@ const {
   modifiedDate,
   author,
   breadcrumbs,
-  keywords = [],
 } = Astro.props;
 
 // ── Title: site name once at the end, avoid "… | Zula Studios | Zula Studios" ─
@@ -37,16 +36,28 @@ const rawTitle = (title ?? '').trim();
 const titleWithoutBrand = rawTitle
   .replace(new RegExp(`\\s*[|–—-]\\s*${brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i'), '')
   .trim();
+// Google kürzt ab ~60 Zeichen: Marke nur anhängen, wenn der Titel dann noch passt
+const MAX_TITLE = 60;
 const pageTitle = titleWithoutBrand
-  ? `${titleWithoutBrand} | ${brand}`
+  ? `${titleWithoutBrand} | ${brand}`.length <= MAX_TITLE
+    ? `${titleWithoutBrand} | ${brand}`
+    : titleWithoutBrand
   : `${brand} – ${SITE.tagline}`;
 
 // ── Canonical: pathname only (ignore query params like ?stadt=) unless set ───
-const canonicalURL = canonical
-  ? new URL(canonical, SITE.url).toString()
-  : new URL(Astro.url.pathname, SITE.url).toString();
+// Einheitlich ohne Slash am Ende (wie interne Links und Sitemap), damit
+// /seite und /seite/ nicht als zwei Seiten gewertet werden.
+const stripSlash = (url: string) => url.replace(/(?<=[^/])\/+$/, '').replace(/^(https?:\/\/[^/]+)$/, '$1/');
+const canonicalURL = stripSlash(
+  canonical
+    ? new URL(canonical, SITE.url).toString()
+    : new URL(Astro.url.pathname, SITE.url).toString(),
+);
 
 // ── OG Image: always absolute with dimensions ─────────────────────────────────
+// Reihenfolge: explizit gesetzt → seitenspezifisch (scripts/og-images.py) → Standard
+const ogPath = Astro.url.pathname.replace(/(?<=[^/])\/$/, '');
+const ogImage = ogImageProp ?? (ogImages as Record<string, string>)[ogPath] ?? SITE.ogImage;
 const ogImageURL = new URL(ogImage, SITE.url).toString();
 const ogImageAlt = title ? `${title} – ${SITE.name}` : SITE.name;
 
@@ -67,6 +78,16 @@ const organizationSchema = {
   '@id': `${SITE.url}/#organization`,
   name: SITE.name,
   url: SITE.url,
+  description: SITE.description,
+  knowsAbout: [
+    'Shopify', 'Shopify Plus', 'Shopify Migration', 'E-Commerce', 'Liquid',
+    'Astro.js', 'Next.js', 'Laravel', 'Headless Commerce', 'Technisches SEO',
+    'Landingpages', 'KI-Chatbots', 'KI-Integration',
+  ],
+  areaServed: [
+    { '@type': 'City', name: 'Hamburg' },
+    { '@type': 'Country', name: 'Deutschland' },
+  ],
   logo: {
     '@type': 'ImageObject',
     '@id': `${SITE.url}/#logo`,
@@ -126,22 +147,10 @@ const pageSchemas: object[] = Array.isArray(schema)
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
 <meta name="robots" content={robotsContent} />
-<meta name="language" content="de" />
 <meta name="author" content={author ?? SITE.name} />
-{keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 
 <!-- Avoid auto-linking dates/emails; allow telephone for tap-to-call on mobile -->
 <meta name="format-detection" content="date=no, email=no, address=no" />
-
-<!-- ═══════════════════════════════════════════════
-     GEO — Local SEO signals for Google Maps / local pack
-════════════════════════════════════════════════ -->
-<meta name="geo.region" content="DE-HH" />
-<meta name="geo.placename" content={SITE.address.city} />
-<meta name="geo.position" content={`${SITE.geo.latitude};${SITE.geo.longitude}`} />
-<meta name="ICBM" content={`${SITE.geo.latitude}, ${SITE.geo.longitude}`} />
-<meta name="coverage" content="Hamburg, Deutschland" />
-<meta name="distribution" content="global" />
 
 <!-- ═══════════════════════════════════════════════
      OPEN GRAPH (Facebook / LinkedIn / WhatsApp)

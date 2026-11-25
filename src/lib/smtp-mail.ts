@@ -33,7 +33,7 @@ export function getSmtpConfig(): SmtpConfig | null {
     port === 465;
 
   const from =
-    readEnv('SMTP_FROM') ?? 'Zula Studios <noreply@zulastudios.de>';
+    readEnv('SMTP_FROM') ?? 'Zula Studios <noreply@zulastudios.com>';
 
   return {
     host,

@@ -1,0 +1,217 @@
+---
+/**
+ * Generische Leistungsseite für alle Einträge in `src/data/services.ts`
+ * mit `page`-Inhalten (z. B. neue KI-Services). Leistungen mit eigener
+ * .astro-Datei in diesem Ordner haben Vorrang und werden hier nicht erzeugt.
+ * Layout und Styles entsprechen 1:1 den bestehenden Leistungsseiten.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SITE } from '@/config/site';
+import { serviceSchema, faqPageSchema } from '@/lib/schema';
+import SectionLabel from '@/components/SectionLabel.astro';
+import DarkHero from '@/components/DarkHero.astro';
+import IsoIcon from '@/components/IsoIcon.astro';
+import { processIcons } from '@/data/visuals';
+import { generatedServicePages, serviceHref } from '@/data/services';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return generatedServicePages.map(service => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { page } = service;
+const href = serviceHref(service);
+const pageUrl = `${SITE.url}${href}`;
+
+const steps = (page.process?.steps ?? []).map((s, i) => ({ ...s, n: String(i + 1).padStart(2, '0') }));
+const faqs = page.faqs ?? [];
+
+const schemas = [
+  serviceSchema({
+    name: service.title,
+    description: page.metaDescription,
+    serviceType: page.serviceType,
+    url: pageUrl,
+  }),
+  ...(faqs.length > 0 ? [faqPageSchema(faqs)] : []),
+];
+---
+
+<BaseLayout
+  title={page.metaTitle}
+  description={page.metaDescription}
+  schema={schemas}
+  darkHero={false}
+  breadcrumbs={[
+    { name: 'Startseite', url: '/' },
+    { name: 'Leistungen', url: '/leistungen' },
+    { name: service.title, url: href },
+  ]}
+>
+
+  <DarkHero
+    title={page.hero.title}
+    accent={page.hero.accent}
+    image={page.hero.image ?? '/images/heroes/hero-services.png'}
+    imageWidth={page.hero.imageWidth ?? 760}
+    imageHeight={page.hero.imageHeight ?? 700}
+    seo={page.hero.seo}
+    crumbs={[{ label: 'Startseite', href: '/' }, { label: 'Leistungen', href: '/leistungen' }, { label: service.title }]}
+  >
+    <p>{page.hero.text}</p>
+    <div class="hero-actions">
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">{service.cta}</a>
+      {steps.length > 0 && (
+        <a href="#prozess" class="btn btn-ghost py-3.5 px-7 text-[14px] uppercase tracking-[0.06em]">Prozess ansehen</a>
+      )}
+    </div>
+  </DarkHero>
+
+  <!-- GEO -->
+  {page.intro && (
+    <section class="py-12 lg:py-16 bg-white border-b border-[#EBEBEF]">
+      <div class="container max-w-3xl">
+        <p class="text-[#62626E] text-base lg:text-lg leading-relaxed" data-reveal>
+          <strong class="text-[#0C0C0F] font-semibold">{page.intro.lead}</strong> {page.intro.text}
+        </p>
+      </div>
+    </section>
+  )}
+
+  <!-- USE CASES -->
+  {page.useCases && page.useCases.length > 0 && (
+    <section class="py-16 bg-white border-b border-[#EBEBEF]">
+      <div class="container">
+        <div class="flex justify-center mb-6">
+          <SectionLabel tone="coral">Ideal für</SectionLabel>
+        </div>
+        <ul class="chip-grid">
+          {page.useCases.map(s => (
+            <li class="chip">{s}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- BENEFITS -->
+  {page.benefits && (
+    <section class="py-20 lg:py-24 bg-[#FAFAF8]">
+      <div class="container">
+        <div class="mb-12" data-reveal>
+          <SectionLabel tone="emerald" class="mb-3">{page.benefits.label}</SectionLabel>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+            {page.benefits.title}
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {page.benefits.items.map((b, i) => (
+            <div class="p-6 bg-white rounded-2xl border border-[#EBEBEF]" data-reveal data-delay={String(i + 1)}>
+              <div class="mb-4"><IsoIcon src={b.icon} /></div>
+              <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-2">{b.title}</h3>
+              <p class="text-[#88888F] text-sm leading-relaxed">{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- INCLUDED -->
+  {page.included && (
+    <section class="py-20 lg:py-24 bg-white">
+      <div class="container">
+        <div class="mb-12" data-reveal>
+          <SectionLabel tone="emerald" class="mb-3">{page.included.label ?? 'Im Paket enthalten'}</SectionLabel>
+          <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em]" style="font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.1;">
+            {page.included.title}
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4 gap-3">
+          {page.included.items.map((item, i) => (
+            <div class="flex items-center gap-3 bg-[#FAFAF8] border border-[#EBEBEF] rounded-xl px-4 py-3.5" data-reveal data-delay={String((i % 4) + 1)}>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" class="text-emerald-500 shrink-0">
+                <path d="M2 7l4 4 6-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-sm font-medium text-[#44444F]">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- PROCESS -->
+  {page.process && steps.length > 0 && (
+    <section class="py-20 lg:py-24 bg-[#FAFAF8]" id="prozess">
+      <div class="container">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-16 lg:gap-24">
+          <div data-reveal>
+            <SectionLabel tone="emerald" class="mb-4">{page.process.label ?? `In ${steps.length} Schritten`}</SectionLabel>
+            <h2 class="font-bold text-[#0C0C0F] tracking-[-0.03em] mb-4" style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); line-height: 1.1;">
+              {page.process.title}
+            </h2>
+            {page.process.text && (
+              <p class="text-[#88888F] text-sm leading-relaxed">{page.process.text}</p>
+            )}
+          </div>
+          <div class="space-y-0 border-t border-[#EBEBEF] bg-white rounded-2xl px-6 lg:px-8">
+            {steps.map((step, i) => (
+              <div class="flex gap-4 sm:gap-6 py-6 border-b border-[#EBEBEF] last:border-0" data-reveal data-delay={String((i % 3) + 1)}>
+                <IsoIcon src={processIcons[i % processIcons.length]} size="sm" />
+                <span class="text-xs font-bold text-accent-500 tabular-nums shrink-0 mt-0.5 w-6">{step.n}</span>
+                <div>
+                  <h3 class="font-semibold text-[#0C0C0F] text-[15px] mb-1.5">{step.title}</h3>
+                  <p class="text-[#88888F] text-sm leading-relaxed">{step.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- FAQ -->
+  {faqs.length > 0 && (
+    <section class="py-20 bg-white">
+      <div class="container max-w-2xl">
+        <h2 class="font-bold text-[#0C0C0F] text-2xl tracking-[-0.02em] mb-8" data-reveal>Häufige Fragen</h2>
+        <div class="space-y-2">
+          {faqs.map(item => (
+            <details class="group bg-[#FAFAF8] rounded-xl border border-[#EBEBEF] hover:border-[#D4D4D9] transition-colors" data-reveal>
+              <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold text-[#0C0C0F] text-[14.5px] cursor-pointer">
+                {item.q}
+                <span class="w-5 h-5 rounded-full border border-[#EBEBEF] flex items-center justify-center shrink-0 text-[#AEAEB5] group-open:rotate-45 transition-transform">
+                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </span>
+              </summary>
+              <div class="px-5 pb-4 text-[#62626E] text-sm leading-relaxed border-t border-[#EBEBEF] pt-3.5">{item.a}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="bg-[#F4F5F7] py-20 lg:py-28 border-t border-[#E4E6EB]">
+    <div class="container relative z-10 text-center max-w-xl mx-auto">
+      <h2 class="font-bold text-[#0A0A0C] tracking-[-0.03em] text-3xl lg:text-4xl mb-4" data-reveal>
+        {page.finalCta?.title ?? 'Projekt geplant?'}
+      </h2>
+      <p class="text-[#62626E] mb-8" data-reveal data-delay="1">
+        {page.finalCta?.text ?? 'Erzählen Sie uns von Ihrem Projekt — wir melden uns mit einem konkreten Vorschlag.'}
+      </p>
+      <a href="/projekt-starten" class="btn btn-primary py-3.5 px-8 text-[14px] uppercase tracking-[0.06em]" data-reveal data-delay="2">
+        {service.cta}
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

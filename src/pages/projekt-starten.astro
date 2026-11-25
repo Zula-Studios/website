@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { SITE } from '@/config/site';
 import Icon from '@/components/Icon.astro';
 import { iso } from '@/data/visuals';
+import { services, serviceNavLabel } from '@/data/services';
 import SectionLabel from '@/components/SectionLabel.astro';
 import DarkHero from '@/components/DarkHero.astro';
 import { localBusinessSchema } from '@/lib/schema';
@@ -19,23 +20,10 @@ const contactPageSchema = {
 
 const schema = [contactPageSchema, localBusinessSchema()];
 
-const services = [
-  { value: 'shopify-shop',             label: 'Shopify Shop',       desc: 'Neuer Shop von Grund auf',  icon: iso.shopify },
-  { value: 'shopify-migration',        label: 'Migration',          desc: 'Wechsel zu Shopify',        icon: iso.migration },
-  { value: 'wordpress-astro-migration', label: 'WordPress → Astro', desc: 'Migration & Headless CMS',  icon: iso.astro },
-  { value: 'landingpages',             label: 'Landingpage',        desc: 'Ads & Lead-Kampagnen',      icon: iso.landing },
-  { value: 'astro-websites',           label: 'Astro Website',      desc: 'Unternehmenswebsite',       icon: iso.astro },
-  { value: 'individuelle-entwicklung', label: 'Custom App',         desc: 'Apps & Integrationen',      icon: iso.code },
-  { value: 'optimierung',              label: 'Optimierung',        desc: 'Performance & Conversion',  icon: iso.chart },
-  { value: 'beratung',                 label: 'Beratung / Audit',   desc: 'Strategie & Analyse',       icon: iso.talk },
-  { value: 'sonstiges',                label: 'Sonstiges',          desc: 'Anderes Vorhaben',          icon: iso.plan },
-];
-
-const timelines = [
-  { value: 'sofort',     label: 'So bald wie möglich' },
-  { value: '1-3-monate', label: 'In 1–3 Monaten'      },
-  { value: '3-plus',     label: 'In 3+ Monaten'       },
-  { value: 'unklar',     label: 'Noch unklar'         },
+// Auswahl kommt aus der zentralen Leistungsliste (src/data/services.ts)
+const serviceOptions = [
+  ...services.map(s => ({ value: s.slug, label: serviceNavLabel(s), icon: s.image })),
+  { value: 'sonstiges', label: 'Sonstiges', icon: iso.plan },
 ];
 
 const trust = [
@@ -47,8 +35,8 @@ const trust = [
 ---
 
 <BaseLayout
-  title="Projekt starten – Erstgespräch Shopify Agentur Hamburg"
-  description="Kostenloses Erstgespräch & Angebot von Zula Studios Hamburg: Shopify, Migration, Astro-Web. Antwort in 24 Std. — unverbindlich."
+  title="Projekt starten – kostenloses Erstgespräch"
+  description="Kostenloses Erstgespräch & unverbindliches Angebot von Zula Studios Hamburg: Shopify, Migration, Web & KI. Kurzes Formular, Antwort in 24 Stunden."
   schema={schema}
   darkHero={false}
   breadcrumbs={[{ name: 'Startseite', url: '/' }, { name: 'Projekt starten', url: '/projekt-starten' }]}
@@ -126,102 +114,29 @@ const trust = [
             </a>
           </div></aside>
 
-        <!-- Multi-step form -->
+        <!-- Form -->
         <div data-reveal data-delay="2">
 
-          <!-- Step progress bar -->
-          <div class="flex items-center mb-10" id="step-progress" aria-label="Formular-Fortschritt">
-            {[
-              { n: 1, label: 'Leistung' },
-              { n: 2, label: 'Zeitplan' },
-              { n: 3, label: 'Kontakt'  },
-            ].map((s, i) => (
-              <>
-                <div class="step-node flex items-center gap-2.5" data-step-node={s.n}>
-                  <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300">
-                    <span class="step-num">{s.n}</span>
-                    <svg class="step-check hidden w-4 h-4" viewBox="0 0 16 16" fill="none">
-                      <path d="M3 8l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                  <span class="step-label text-xs font-semibold hidden sm:block">{s.label}</span>
-                </div>
-                {i < 2 && <div class="step-connector flex-1 h-0.5 mx-3 rounded-full transition-all duration-500 bg-[#EBEBEF]" data-connector={s.n}></div>}
-              </>
-            ))}
+          <div class="mb-7">
+            <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-1.5">Worum geht's?</h2>
+            <p class="text-[#88888F] text-sm">Optional – ein Klick reicht. Alles Weitere klären wir im Gespräch.</p>
           </div>
 
           <form id="project-form" novalidate>
-
-            <!-- STEP 1: Service -->
-            <div class="form-step" data-step="1">
-              <div class="mb-7">
-                <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-1.5">
-                  Welche Leistung suchen Sie?
-                </h2>
-                <p class="text-[#88888F] text-sm">Wählen Sie den passenden Bereich für Ihr Vorhaben.</p>
-              </div>
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-7">
-                {services.map(s => (
-                  <label class="service-option cursor-pointer">
-                    <input type="radio" name="service" value={s.value} class="sr-only" required />
-                    <div class="svc-card h-full rounded-2xl border-2 border-[#EBEBEF] p-4 flex flex-col gap-3 transition-all duration-150 hover:border-[#D4D4D9] hover:shadow-sm">
-                      <img src={s.icon} alt="" width="96" height="96" class="w-12 h-12 object-contain" loading="lazy" decoding="async" />
-                      <div>
-                        <div class="font-semibold text-[#0C0C0F] text-[13px] leading-tight mb-0.5">{s.label}</div>
-                        <div class="text-[11px] text-[#AEAEB5] leading-snug">{s.desc}</div>
-                      </div>
-                    </div>
-                  </label>
-                ))}
-              </div>
-              <div class="flex flex-col gap-3">
-                <button type="button" class="btn btn-primary w-full justify-center py-3.5 text-[15px] next-btn">
-                  Weiter
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <p class="text-center text-[11px] text-[#D4D4D9]">Schritt 1 von 3</p>
-              </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
+              {serviceOptions.map(s => (
+                <label class="service-option cursor-pointer">
+                  <input type="radio" name="service" value={s.value} class="sr-only" />
+                  <div class="svc-card h-full rounded-2xl border-2 border-[#EBEBEF] p-4 flex items-center gap-3 transition-all duration-150 hover:border-[#D4D4D9] hover:shadow-sm">
+                    <img src={s.icon} alt="" width="96" height="96" class="w-10 h-10 object-contain shrink-0" loading="lazy" decoding="async" />
+                    <div class="font-semibold text-[#0C0C0F] text-[13px] leading-tight">{s.label}</div>
+                  </div>
+                </label>
+              ))}
             </div>
 
-            <!-- STEP 2: Timeline -->
-            <div class="form-step hidden" data-step="2">
-              <div class="mb-7">
-                <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-1.5">Wann soll's losgehen?</h2>
-                <p class="text-[#88888F] text-sm">Hilft uns bei der Planung. Keine Pflichtangabe.</p>
-              </div>
-              <div class="mb-8">
-                <div class="grid grid-cols-2 gap-2.5">
-                  {timelines.map(t => (
-                    <label class="timeline-option cursor-pointer">
-                      <input type="radio" name="timeline" value={t.value} class="sr-only" />
-                      <div class="pill-card rounded-xl border-2 border-[#EBEBEF] px-3.5 py-3 text-center text-[13px] font-medium text-[#62626E] transition-all duration-150 hover:border-[#D4D4D9] hover:text-[#0C0C0F]">
-                        {t.label}
-                      </div>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div class="flex gap-3">
-                <button type="button" class="btn btn-outline py-3.5 px-5 prev-btn">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 7H1M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Zurück
-                </button>
-                <button type="button" class="btn btn-primary flex-1 justify-center py-3.5 text-[15px] next-btn">
-                  Weiter
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-              <p class="text-center text-[11px] text-[#D4D4D9] mt-3">Schritt 2 von 3</p>
-            </div>
-
-            <!-- STEP 3: Contact details -->
-            <div class="form-step hidden" data-step="3">
-              <div class="mb-7">
-                <h2 class="font-bold text-[#0C0C0F] text-xl lg:text-2xl tracking-[-0.02em] mb-1.5">Ihre Kontaktdaten</h2>
-                <p class="text-[#88888F] text-sm">Fast geschafft – wir melden uns innerhalb von 24 Stunden.</p>
-              </div>
-              <div class="space-y-3 mb-5">
+            <div class="space-y-3 mb-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div class="float-group">
                   <input type="text" id="name" name="name" required placeholder=" " class="float-input" autocomplete="name" />
                   <label for="name" class="float-label">Name *</label>
@@ -230,44 +145,34 @@ const trust = [
                   <input type="email" id="email" name="email" required placeholder=" " class="float-input" autocomplete="email" />
                   <label for="email" class="float-label">E-Mail-Adresse *</label>
                 </div>
-                <div class="float-group">
-                  <input type="tel" id="telefon" name="telefon" placeholder=" " class="float-input" autocomplete="tel" />
-                  <label for="telefon" class="float-label">Telefon (optional)</label>
-                </div>
-                <div class="float-group float-group--textarea">
-                  <textarea id="nachricht" name="nachricht" placeholder=" " rows="4" maxlength="500" class="float-input float-textarea"></textarea>
-                  <label for="nachricht" class="float-label float-label--textarea">Projektbeschreibung (optional)</label>
-                  <div id="char-counter" class="absolute bottom-3 right-3.5 text-[10.5px] text-[#D4D4D9] pointer-events-none tabular-nums">0 / 500</div>
-                </div>
-                <p class="text-[12px] text-[#AEAEB5] leading-relaxed pl-1">Keine Lust zu tippen? Einfach leer lassen – wir fragen im Gespräch nach.</p>
               </div>
-              <div class="flex items-start gap-3 mb-6">
-                <div class="custom-cb-wrapper mt-0.5 shrink-0 cursor-pointer" id="cb-wrapper">
-                  <input type="checkbox" id="datenschutz" name="datenschutz" required class="sr-only" />
-                  <div class="cb-box w-5 h-5 rounded-md border-2 border-[#D4D4D9] flex items-center justify-center transition-all duration-150">
-                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="cb-check opacity-0 scale-75 transition-all duration-150">
-                      <path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-                <label for="datenschutz" class="text-xs text-[#88888F] leading-relaxed cursor-pointer">
-                  Ich habe die <a href="/datenschutz" class="text-accent-600 hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *
-                </label>
+              <div class="float-group float-group--textarea">
+                <textarea id="nachricht" name="nachricht" placeholder=" " rows="3" maxlength="500" class="float-input float-textarea"></textarea>
+                <label for="nachricht" class="float-label float-label--textarea">Kurz zum Projekt (optional)</label>
+                <div id="char-counter" class="absolute bottom-3 right-3.5 text-[10.5px] text-[#D4D4D9] pointer-events-none tabular-nums">0 / 500</div>
               </div>
-              <div class="flex gap-3">
-                <button type="button" class="btn btn-outline py-3.5 px-5 prev-btn">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M13 7H1M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  Zurück
-                </button>
-                <button type="submit" class="btn btn-primary flex-1 justify-center py-3.5 text-[15px]" id="submit-btn">
-                  Kostenloses Erstgespräch anfragen
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-              </div>
-              <p id="form-error" class="hidden mt-3 text-sm text-red-600 text-center leading-relaxed"></p>
-              <p class="text-center text-[11px] text-[#D4D4D9] mt-3">Schritt 3 von 3</p>
             </div>
 
+            <div class="flex items-start gap-3 mb-6">
+              <div class="custom-cb-wrapper mt-0.5 shrink-0 cursor-pointer" id="cb-wrapper">
+                <input type="checkbox" id="datenschutz" name="datenschutz" required class="sr-only" />
+                <div class="cb-box w-5 h-5 rounded-md border-2 border-[#D4D4D9] flex items-center justify-center transition-all duration-150">
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="cb-check opacity-0 scale-75 transition-all duration-150">
+                    <path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              <label for="datenschutz" class="text-xs text-[#88888F] leading-relaxed cursor-pointer">
+                Ich habe die <a href="/datenschutz" class="text-accent-600 hover:underline">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu. *
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full justify-center py-3.5 text-[15px]" id="submit-btn">
+              Kostenloses Erstgespräch anfragen
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p id="form-error" class="hidden mt-3 text-sm text-red-600 text-center leading-relaxed"></p>
+            <p class="text-center text-[11px] text-[#D4D4D9] mt-3">Wir antworten innerhalb von 24 Stunden · Kein Spam</p>
           </form>
         </div>
       </div>
@@ -281,27 +186,7 @@ const trust = [
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: none; }
   }
-  .form-step { animation: stepEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  @keyframes stepEnter {
-    from { opacity: 0; transform: translateX(28px); }
-    to   { opacity: 1; transform: none; }
-  }
-  .form-step.step-back { animation: stepEnterBack 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  @keyframes stepEnterBack {
-    from { opacity: 0; transform: translateX(-28px); }
-    to   { opacity: 1; transform: none; }
-  }
-  .step-circle { background: white; border-color: #EBEBEF; color: #AEAEB5; }
-  .step-label  { color: #AEAEB5; }
-  [data-step-state="active"] .step-circle { background: #00C45C; border-color: #00C45C; color: white; }
-  [data-step-state="active"] .step-label  { color: #0A0A0C; }
-  [data-step-state="done"] .step-circle   { background: #00C45C; border-color: #00C45C; color: white; }
-  [data-step-state="done"] .step-num      { display: none; }
-  [data-step-state="done"] .step-check    { display: block !important; }
-  [data-step-state="done"] .step-label    { color: #00C45C; }
   .service-option input:checked ~ .svc-card { border-color: #00C45C; background: #F0F9FF; box-shadow: 0 0 0 1px #00C45C; }
-  .service-option input:checked ~ .svc-card .svc-icon { background: #00C45C; color: white; }
-  .timeline-option input:checked ~ .pill-card { border-color: #00C45C; background: #F0F9FF; color: #0369A1; font-weight: 600; box-shadow: 0 0 0 1px #00C45C; }
   .float-group { position: relative; }
   .float-input { width: 100%; padding: 1.5rem 1rem 0.625rem; background: #FAFAF8; border: 1.5px solid #EBEBEF; border-radius: 0.875rem; font-size: 0.875rem; color: #0A0A0C; outline: none; transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease; font-family: inherit; }
   .float-input:hover  { border-color: #D4D4D9; }
@@ -324,20 +209,18 @@ const trust = [
 </style>
 
 <script>
-  let currentStep = 1;
-  const TOTAL = 3;
   const STORAGE_KEY = 'zula-projekt-form';
+  const form = document.getElementById('project-form') as HTMLFormElement | null;
 
-  type SavedState = { step?: number; fields?: Record<string, string>; datenschutz?: boolean };
+  type SavedState = { fields?: Record<string, string>; datenschutz?: boolean };
 
   function saveState() {
-    const form = document.getElementById('project-form') as HTMLFormElement | null;
     if (!form) return;
     const fd = new FormData(form);
     const fields: Record<string, string> = {};
     fd.forEach((v, k) => { if (k !== 'datenschutz') fields[k] = v.toString(); });
     const cb = document.getElementById('datenschutz') as HTMLInputElement | null;
-    const state: SavedState = { step: currentStep, fields, datenschutz: cb?.checked ?? false };
+    const state: SavedState = { fields, datenschutz: cb?.checked ?? false };
     try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* storage voll/blockiert */ }
   }
 
@@ -366,82 +249,14 @@ const trust = [
 
     const ta = document.getElementById('nachricht') as HTMLTextAreaElement | null;
     if (ta?.value) ta.dispatchEvent(new Event('input'));
-
-    const step = Math.min(Math.max(state.step ?? 1, 1), TOTAL);
-    if (step > 1) {
-      getStepEl(1)?.classList.add('hidden');
-      getStepEl(step)?.classList.remove('hidden');
-      currentStep = step;
-    }
   }
 
-  function getStepEl(n: number) { return document.querySelector<HTMLElement>(`.form-step[data-step="${n}"]`); }
-  function getNode(n: number)   { return document.querySelector<HTMLElement>(`[data-step-node="${n}"]`); }
-  function getConnector(n: number) { return document.querySelector<HTMLElement>(`[data-connector="${n}"]`); }
-
-  function updateProgress() {
-    for (let i = 1; i <= TOTAL; i++) {
-      const node = getNode(i);
-      if (!node) continue;
-      if (i < currentStep)      node.dataset.stepState = 'done';
-      else if (i === currentStep) node.dataset.stepState = 'active';
-      else delete node.dataset.stepState;
-    }
-    for (let i = 1; i < TOTAL; i++) {
-      const line = getConnector(i);
-      if (line) line.style.background = i < currentStep ? '#00C45C' : '#EBEBEF';
-    }
-  }
-
-  function goToStep(next: number, direction: 'forward' | 'back' = 'forward') {
-    const current = getStepEl(currentStep);
-    const target  = getStepEl(next);
-    if (!target) return;
-    current?.classList.add('hidden');
-    target.classList.remove('hidden', 'step-back');
-    if (direction === 'back') target.classList.add('step-back');
-    currentStep = next;
-    updateProgress();
-    saveState();
-    document.getElementById('project-form')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function validateStep(step: number): boolean {
-    if (step === 1) {
-      const selected = document.querySelector<HTMLInputElement>('input[name="service"]:checked');
-      if (!selected) {
-        document.querySelectorAll('.svc-card').forEach(c => {
-          (c as HTMLElement).style.borderColor = '#FDA4AF';
-          setTimeout(() => ((c as HTMLElement).style.borderColor = ''), 1200);
-        });
-        return false;
-      }
-    }
-    if (step === 3) {
-      const form = document.getElementById('project-form') as HTMLFormElement;
-      return form.checkValidity();
-    }
-    return true;
-  }
-
-  document.querySelectorAll('.next-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (!validateStep(currentStep)) return;
-      if (currentStep < TOTAL) goToStep(currentStep + 1, 'forward');
-    });
-  });
-
-  document.querySelectorAll('.prev-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (currentStep > 1) goToStep(currentStep - 1, 'back');
-    });
-  });
-
-  document.querySelectorAll('.service-option input').forEach(input => {
-    input.addEventListener('change', () => {
-      setTimeout(() => {
-        if (currentStep === 1 && validateStep(1)) goToStep(2, 'forward');
-      }, 260);
+  // Zweiter Klick auf die gewählte Kachel hebt die Auswahl wieder auf (Feld ist optional)
+  document.querySelectorAll<HTMLInputElement>('.service-option input').forEach(input => {
+    let wasChecked = false;
+    input.closest('label')?.addEventListener('pointerdown', () => { wasChecked = input.checked; });
+    input.addEventListener('click', () => {
+      if (wasChecked) { input.checked = false; wasChecked = false; saveState(); }
     });
   });
 
@@ -471,17 +286,17 @@ const trust = [
 
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
 
-  document.getElementById('project-form')?.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const form = e.currentTarget as HTMLFormElement;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
-    const cbInp = document.getElementById('datenschutz') as HTMLInputElement | null;
-    const cbBoxEl = document.querySelector<HTMLElement>('#cb-wrapper .cb-box');
-
-    if (!cbInp?.checked) {
-      cbBoxEl?.parentElement?.classList.add('shake');
-      setTimeout(() => cbBoxEl?.parentElement?.classList.remove('shake'), 500);
+    if (!cbInput?.checked) {
+      cbBox?.parentElement?.classList.add('shake');
+      setTimeout(() => cbBox?.parentElement?.classList.remove('shake'), 500);
       return;
     }
 
@@ -519,9 +334,8 @@ const trust = [
     }
   });
 
-  document.getElementById('project-form')?.addEventListener('input', saveState);
-  document.getElementById('project-form')?.addEventListener('change', saveState);
+  form?.addEventListener('input', saveState);
+  form?.addEventListener('change', saveState);
 
   restoreState();
-  updateProgress();
 </script>

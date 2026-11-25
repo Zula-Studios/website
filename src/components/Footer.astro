@@ -1,5 +1,6 @@
 ---
 import { SITE } from '@/config/site';
+import { services, serviceHref, serviceFooterLabel } from '@/data/services';
 const year = new Date().getFullYear();
 ---
 
@@ -90,12 +91,12 @@ const year = new Date().getFullYear();
       <nav aria-label="Leistungen Navigation">
         <h3 class="text-[#0A0A0C] text-[13px] font-semibold mb-5 tracking-[-0.01em]">Leistungen</h3>
         <ul class="space-y-3 text-[13.5px]">
-          <li><a href="/leistungen/shopify-shop-erstellen" class="hover:text-[#00C45C] transition-colors">Shopify Shop erstellen</a></li>
-          <li><a href="/leistungen/shopify-migration" class="hover:text-[#00C45C] transition-colors">Shopify Migration</a></li>
-          <li><a href="/leistungen/wordpress-astro-migration" class="hover:text-[#00C45C] transition-colors">WordPress zu Astro</a></li>
-          <li><a href="/leistungen/landingpages" class="hover:text-[#00C45C] transition-colors">Landingpages</a></li>
-          <li><a href="/leistungen/astro-websites" class="hover:text-[#00C45C] transition-colors">Astro Websites</a></li>
-          <li><a href="/leistungen/individuelle-entwicklung" class="hover:text-[#00C45C] transition-colors">Laravel & Astro.js Entwicklung</a></li>
+          {services.map(s => (
+            <li><a href={serviceHref(s)} class="hover:text-[#00C45C] transition-colors">{serviceFooterLabel(s)}</a></li>
+          ))}
+          <li><a href="/webseite-barbershops" class="hover:text-[#00C45C] transition-colors">Webseite für Barbershops</a></li>
+          <li><a href="/barbershop-webseite" class="hover:text-[#00C45C] transition-colors">Barbershop-Pakete & Preise</a></li>
+          <li><a href="/gebaeudereinigung" class="hover:text-[#00C45C] transition-colors">Webseite für Gebäudereinigung</a></li>
           <li><a href="/leistungen" class="hover:text-[#00C45C] transition-colors">Alle Leistungen</a></li>
         </ul>
       </nav>

@@ -1,10 +1,12 @@
+import { services, serviceHref, serviceNavLabel } from '../data/services';
+
 export const SITE = {
   name: 'Zula Studios',
   // ≤ 60 chars total when used in default title: "Zula Studios – {tagline}"
   tagline: 'Shopify Agentur Hamburg',
   description:
     'Shopify Agentur in Hamburg: Shops, Migrationen, Astro-Websites und Laravel-Entwicklung. 10+ Projekte. Kostenloses Erstgespräch für Unternehmen in HH & DE.',
-  url: 'https://zulastudios.de',
+  url: 'https://zulastudios.com',
   email: 'hello@zulastudios.com',
   phone: '+49 (0) 176 34 44 74 85',
   twitterHandle: '@zulastudios',
@@ -43,14 +45,7 @@ export const NAV_LINKS = [
   {
     label: 'Services',
     href: '#',
-    children: [
-      { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen' },
-      { label: 'Shopify Migration', href: '/leistungen/shopify-migration' },
-      { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration' },
-      { label: 'Landingpages', href: '/leistungen/landingpages' },
-      { label: 'Astro Websites', href: '/leistungen/astro-websites' },
-      { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung' },
-    ],
+    children: services.map(s => ({ label: serviceNavLabel(s), href: serviceHref(s) })),
   },
   { label: 'Über uns', href: '/ueber-uns' },
   { label: 'Karriere', href: '/karriere' },

@@ -1,6 +1,6 @@
 ---
 import { SITE } from '@/config/site';
-import { iso } from '@/data/visuals';
+import { servicesByCategory, serviceHref, serviceNavLabel } from '@/data/services';
 
 const pathname = Astro.url.pathname;
 const phoneHref = SITE.phone.replace(/\s/g, '');
@@ -11,14 +11,11 @@ const navLinks = [
   { label: 'Kontakt', href: '/kontakt' },
 ];
 
-const services = [
-  { label: 'Shopify Shop erstellen', href: '/leistungen/shopify-shop-erstellen', icon: iso.shopify },
-  { label: 'Shopify Migration', href: '/leistungen/shopify-migration', icon: iso.migration },
-  { label: 'WordPress zu Astro', href: '/leistungen/wordpress-astro-migration', icon: iso.astro },
-  { label: 'Landingpages', href: '/leistungen/landingpages', icon: iso.landing },
-  { label: 'Astro Websites', href: '/leistungen/astro-websites', icon: iso.astro },
-  { label: 'Individuelle Entwicklung', href: '/leistungen/individuelle-entwicklung', icon: iso.laravel },
-];
+const serviceGroups = servicesByCategory.map(g => ({
+  label: g.category.label,
+  items: g.items.map(s => ({ label: serviceNavLabel(s), href: serviceHref(s), icon: s.image })),
+}));
+const showGroupLabels = serviceGroups.length > 1;
 const servicesOpen = pathname.startsWith('/leistungen');
 ---
 
@@ -32,7 +29,7 @@ const servicesOpen = pathname.startsWith('/leistungen');
           alt=""
           width="367"
           height="344"
-          class="site-logo h-9 w-auto"
+          class="site-logo h-11 w-auto"
           decoding="async"
         />
         <span class="sr-only">{SITE.name}</span>
@@ -68,11 +65,19 @@ const servicesOpen = pathname.startsWith('/leistungen');
 
           <div class="nav-panel absolute top-full left-1/2 -translate-x-1/2 pt-3 opacity-0 invisible group-hover/nav:opacity-100 group-hover/nav:visible group-focus-within/nav:opacity-100 group-focus-within/nav:visible transition-all duration-200">
             <div class="w-[22rem] bg-white rounded-2xl shadow-[0_16px_48px_rgba(10,10,12,0.12)] border border-[#E4E6EB] p-2">
-              {services.map(s => (
-                <a href={s.href} class="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#F4F5F7] transition-colors group/item">
-                  <img src={s.icon} alt="" width="72" height="72" class="w-11 h-11 object-contain shrink-0" loading="lazy" decoding="async" />
-                  <span class="text-[13.5px] font-semibold text-[#0A0A0C] group-hover/item:text-[#00C45C] transition-colors">{s.label}</span>
-                </a>
+              {serviceGroups.map((g, gi) => (
+                <Fragment>
+                  {showGroupLabels && gi > 0 && <div class="h-px bg-[#E4E6EB] mx-3 my-1"></div>}
+                  {showGroupLabels && (
+                    <p class="px-3 pt-2 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#88888F]">{g.label}</p>
+                  )}
+                  {g.items.map(s => (
+                    <a href={s.href} class="flex items-center gap-3 px-2.5 py-2 rounded-xl hover:bg-[#F4F5F7] transition-colors group/item">
+                      <img src={s.icon} alt="" width="72" height="72" class="w-11 h-11 object-contain shrink-0" loading="lazy" decoding="async" />
+                      <span class="text-[13.5px] font-semibold text-[#0A0A0C] group-hover/item:text-[#00C45C] transition-colors">{s.label}</span>
+                    </a>
+                  ))}
+                </Fragment>
               ))}
               <div class="h-px bg-[#E4E6EB] mx-3 my-1"></div>
               <a href="/leistungen" class="flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold uppercase tracking-[0.06em] text-[#00C45C] hover:bg-[#ECFFF4] transition-colors">
@@ -141,11 +146,18 @@ const servicesOpen = pathname.startsWith('/leistungen');
           </svg>
         </summary>
         <div class="pb-1">
-          {services.map(s => (
-            <a href={s.href} class="flex items-center gap-3 px-3 py-2 rounded-xl text-[14px] font-medium text-white/85 hover:bg-white/10 transition-colors">
-              <img src={s.icon} alt="" width="64" height="64" class="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" loading="lazy" decoding="async" />
-              {s.label}
-            </a>
+          {serviceGroups.map(g => (
+            <Fragment>
+              {showGroupLabels && (
+                <p class="px-3 pt-3 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] text-white/50">{g.label}</p>
+              )}
+              {g.items.map(s => (
+                <a href={s.href} class="flex items-center gap-3 px-3 py-2 rounded-xl text-[14px] font-medium text-white/85 hover:bg-white/10 transition-colors">
+                  <img src={s.icon} alt="" width="64" height="64" class="w-10 h-10 object-contain shrink-0 rounded-lg bg-white" loading="lazy" decoding="async" />
+                  {s.label}
+                </a>
+              ))}
+            </Fragment>
           ))}
           <a href="/leistungen" class="flex items-center px-3 py-2.5 text-[13px] font-bold uppercase tracking-[0.06em] text-[#00F573]">Alle Leistungen</a>
         </div>

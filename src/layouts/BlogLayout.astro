@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { SITE } from '@/config/site';
+import ogImages from '@/data/og-images.json';
 
 interface Props {
   title: string;
@@ -39,15 +40,20 @@ const articleSchema = {
   '@type': 'Article',
   headline: title,
   description,
-  author: { '@type': 'Person', name: author, url: SITE.url },
+  // Team-Beiträge der Organisation zuordnen, echte Namen als Person
+  author:
+    author === 'Zula Studios Team'
+      ? { '@type': 'Organization', '@id': `${SITE.url}/#organization`, name: SITE.name, url: SITE.url }
+      : { '@type': 'Person', name: author, url: `${SITE.url}/ueber-uns`, worksFor: { '@id': `${SITE.url}/#organization` } },
   publisher: {
     '@type': 'Organization',
+    '@id': `${SITE.url}/#organization`,
     name: SITE.name,
     logo: { '@type': 'ImageObject', url: new URL(SITE.logo, SITE.url).toString() },
   },
   datePublished: publishedDate,
   dateModified: modifiedDate ?? publishedDate,
-  image: ogImage ? new URL(ogImage, SITE.url).toString() : new URL(SITE.ogImage, SITE.url).toString(),
+  image: new URL(ogImage ?? (ogImages as Record<string, string>)[`/blog/${slug}`] ?? SITE.ogImage, SITE.url).toString(),
   url: new URL(`/blog/${slug}`, SITE.url).toString(),
   mainEntityOfPage: { '@type': 'WebPage', '@id': new URL(`/blog/${slug}`, SITE.url).toString() },
 };

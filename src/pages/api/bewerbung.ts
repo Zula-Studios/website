@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { emailHeader, emailSummaryStyle, EMAIL_LINK_STYLE } from '@/lib/email-layout';
 import { applicationConfirmationHtml } from '@/lib/email-confirmation-templates';
 import { getStelleLabel } from '@/data/careers';
 import { getSmtpConfig, responseWhenSmtpNotConfigured, sendSmtpMail } from '@/lib/smtp-mail';
@@ -148,50 +149,47 @@ export const POST: APIRoute = async ({ request }) => {
   const attachmentName = safeFilename(rawName);
 
   const html = `
-    <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #0C0C0F;">
-      <div style="background: #0C0C0F; padding: 28px 32px; border-radius: 12px 12px 0 0;">
-        <p style="color: #38BDF8; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 8px;">Neue Bewerbung</p>
-        <h1 style="color: white; font-size: 22px; font-weight: 700; margin: 0;">Zula Studios – Bewerbungsformular</h1>
-      </div>
-      <div style="background: #FAFAF8; padding: 32px; border: 1px solid #EBEBEF; border-top: none;">
+    <div style="font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #0A0A0C;">
+      ${emailHeader('Neue Bewerbung', 'Zula Studios – Bewerbungsformular')}
+      <div style="background: #FFFFFF; padding: 32px; border: 1px solid #E4E6EB; border-top: none;">
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; width: 140px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Position</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F; font-weight: 600;">${esc(stelleLabel)}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; width: 140px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Position</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C; font-weight: 600;">${esc(stelleLabel)}</td>
           </tr>
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Lebenslauf</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">Im Anhang: ${esc(attachmentName)} (${(fileEntry.size / 1024).toFixed(0)} KB)</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Lebenslauf</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">Im Anhang: ${esc(attachmentName)} (${(fileEntry.size / 1024).toFixed(0)} KB)</td>
           </tr>
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Name</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F; font-weight: 500;">${esc(vorname)} ${esc(nachname)}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Name</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C; font-weight: 500;">${esc(vorname)} ${esc(nachname)}</td>
           </tr>
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">E-Mail</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">
-              <a href="mailto:${encodeURIComponent(email)}" style="color: #0284C7; text-decoration: none;">${esc(email)}</a>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">E-Mail</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">
+              <a href="mailto:${encodeURIComponent(email)}" style="${EMAIL_LINK_STYLE}">${esc(email)}</a>
             </td>
           </tr>
           ${telefon ? `<tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Telefon</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">
-              <a href="tel:${String(telefon).replace(/\s/g, '')}" style="color: #0284C7; text-decoration: none;">${esc(String(telefon))}</a>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Telefon</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">
+              <a href="tel:${String(telefon).replace(/\s/g, '')}" style="${EMAIL_LINK_STYLE}">${esc(String(telefon))}</a>
             </td>
           </tr>` : ''}
           ${portfolioTrim ? `<tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">Links</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0284C7; word-break: break-all;">
-              ${portfolioSafe ? `<a href="${esc(portfolioSafe)}" style="color: #0284C7;">${esc(portfolioTrim)}</a>` : esc(portfolioTrim)}
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">Links</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #00873F; word-break: break-all;">
+              ${portfolioSafe ? `<a href="${esc(portfolioSafe)}" style="${EMAIL_LINK_STYLE}">${esc(portfolioTrim)}</a>` : esc(portfolioTrim)}
             </td>
           </tr>` : ''}
           <tr>
             <td style="padding: 14px 0 0; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">Anschreiben</td>
-            <td style="padding: 14px 0 0; font-size: 15px; color: #0C0C0F; line-height: 1.6; white-space: pre-wrap;">${esc(nachricht)}</td>
+            <td style="padding: 14px 0 0; font-size: 15px; color: #0A0A0C; line-height: 1.6; white-space: pre-wrap;">${esc(nachricht)}</td>
           </tr>
         </table>
       </div>
-      <div style="background: white; padding: 20px 32px; border: 1px solid #EBEBEF; border-top: none; border-radius: 0 0 12px 12px;">
+      <div style="background: #F4F5F7; padding: 20px 32px; border: 1px solid #E4E6EB; border-top: none; border-radius: 0 0 12px 12px;">
         <p style="margin: 0; font-size: 11px; color: #AEAEB5;">Eingegangen: ${new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })} Uhr · Bewerbungsformular</p>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { emailHeader, emailSummaryStyle, EMAIL_LINK_STYLE } from '@/lib/email-layout';
 import { contactConfirmationHtml } from '@/lib/email-confirmation-templates';
 import { getSmtpConfig, responseWhenSmtpNotConfigured, sendSmtpMail } from '@/lib/smtp-mail';
 import { SITE } from '@/config/site';
@@ -32,36 +33,33 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const html = `
-    <div style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; color: #0C0C0F;">
-      <div style="background: #0C0C0F; padding: 28px 32px; border-radius: 12px 12px 0 0;">
-        <p style="color: #38BDF8; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin: 0 0 8px;">Neue Kontaktanfrage</p>
-        <h1 style="color: white; font-size: 22px; font-weight: 700; margin: 0;">Zula Studios – Kontaktformular</h1>
-      </div>
-      <div style="background: #FAFAF8; padding: 32px; border: 1px solid #EBEBEF; border-top: none;">
+    <div style="font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #0A0A0C;">
+      ${emailHeader('Neue Kontaktanfrage', 'Zula Studios – Kontaktformular')}
+      <div style="background: #FFFFFF; padding: 32px; border: 1px solid #E4E6EB; border-top: none;">
         <table style="width: 100%; border-collapse: collapse;">
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; width: 130px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Name</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F; font-weight: 500;">${name}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; width: 130px; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Name</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C; font-weight: 500;">${name}</td>
           </tr>
           <tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">E-Mail</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">
-              <a href="mailto:${email}" style="color: #0284C7; text-decoration: none;">${email}</a>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">E-Mail</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">
+              <a href="mailto:${email}" style="${EMAIL_LINK_STYLE}">${email}</a>
             </td>
           </tr>
           ${telefon ? `<tr>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Telefon</td>
-            <td style="padding: 10px 0; border-bottom: 1px solid #EBEBEF; font-size: 15px; color: #0C0C0F;">
-              <a href="tel:${telefon.replace(/\s/g, '')}" style="color: #0284C7; text-decoration: none;">${telefon}</a>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em;">Telefon</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #E4E6EB; font-size: 15px; color: #0A0A0C;">
+              <a href="tel:${telefon.replace(/\s/g, '')}" style="${EMAIL_LINK_STYLE}">${telefon}</a>
             </td>
           </tr>` : ''}
           <tr>
             <td style="padding: 14px 0 0; font-size: 12px; font-weight: 600; color: #88888F; text-transform: uppercase; letter-spacing: 0.08em; vertical-align: top;">Nachricht</td>
-            <td style="padding: 14px 0 0; font-size: 15px; color: #0C0C0F; line-height: 1.6; white-space: pre-wrap;">${nachricht.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td>
+            <td style="padding: 14px 0 0; font-size: 15px; color: #0A0A0C; line-height: 1.6; white-space: pre-wrap;">${nachricht.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</td>
           </tr>
         </table>
       </div>
-      <div style="background: white; padding: 20px 32px; border: 1px solid #EBEBEF; border-top: none; border-radius: 0 0 12px 12px;">
+      <div style="background: #F4F5F7; padding: 20px 32px; border: 1px solid #E4E6EB; border-top: none; border-radius: 0 0 12px 12px;">
         <p style="margin: 0; font-size: 11px; color: #AEAEB5;">Eingegangen: ${new Date().toLocaleString('de-DE', { timeZone: 'Europe/Berlin' })} Uhr · Zula Studios Kontaktformular</p>
       </div>
     </div>

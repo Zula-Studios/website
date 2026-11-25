@@ -20,7 +20,11 @@ const dateLabel = new Date(CAREERS_DATE_POSTED).toLocaleDateString('de-DE', {
   year: 'numeric',
 });
 
-const description = `${job.title} bei ${SITE.name}: ${job.teaser} Remote in Deutschland. Jetzt bewerben.`;
+// Meta-Description ≤ 160 Zeichen: Zusätze nur anhängen, solange sie passen
+const description = [' Remote in Deutschland.', ' Jetzt bewerben.'].reduce(
+  (acc, part) => (acc.length + part.length <= 160 ? acc + part : acc),
+  `${job.title} bei ${SITE.name}: ${job.teaser}`,
+);
 
 const jobPostingJsonLd = {
   '@context': 'https://schema.org',
@@ -65,7 +69,7 @@ const schema = [
 ---
 
 <BaseLayout
-  title={`${job.title} – Karriere`}
+  title={`${job.title} – Karriere`.length <= 45 ? `${job.title} – Karriere` : job.title}
   {description}
   schema={schema}
   darkHero={false}

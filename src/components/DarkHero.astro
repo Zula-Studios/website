@@ -23,6 +23,9 @@ const {
   imageWidth = 800,
   imageHeight = 800,
 } = Astro.props;
+
+// Keyword-Zeile sichtbar über dem Titel (kein versteckter Text in der H1)
+const eyebrow = seo?.trim().replace(/\s*[—–:.-]\s*$/, '');
 ---
 
 <section class="bg-[#0A0A0C] pt-24 lg:pt-28 overflow-hidden">
@@ -46,7 +49,9 @@ const {
         class="font-extrabold italic uppercase text-white tracking-[-0.035em]"
         style="font-size: clamp(2.35rem, 5vw, 4.25rem); line-height: 0.92;"
       >
-        {seo && <span class="sr-only">{seo}</span>}
+        {eyebrow && (
+          <span class="block not-italic normal-case text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.14em] text-[#00F573] mb-4 leading-snug">{eyebrow}</span>
+        )}
         {title}<br />
         <span class="text-[#00F573]">{accent}</span>
       </h1>
